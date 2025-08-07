@@ -6,6 +6,7 @@ import com.ecommerce.api.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -23,7 +24,12 @@ public class AuthController {
 
     // User login
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@Valid @RequestBody LoginRequest request) {
+    public ResponseEntity<Map<String, Object>> login(@Valid @RequestBody LoginRequest request, BindingResult result) {
+        if (result.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            result.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+            return ResponseEntity.badRequest().body(Map.of("errors", errors));
+        }
         Optional<Map<String, Object>> response = authService.login(request);
 
         if (response.isPresent()) {
