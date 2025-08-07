@@ -36,8 +36,8 @@ import {
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { Product } from '../../types';
-import { useCart } from '../../context/CartContext';
-import { useUser } from '../../context/UserContext';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { addToCart } from '../../store/slices/cartSlice';
 
 // Mock product data - replace with actual API call
 const mockProduct: Product = {
@@ -56,8 +56,8 @@ const ProductDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const toast = useToast();
-  const { addToCart } = useCart();
-  const { user } = useUser();
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
   
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -86,13 +86,16 @@ const ProductDetailPage: React.FC = () => {
   const handleAddToCart = () => {
     if (!product) return;
 
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: product.price,
+    dispatch(addToCart({
+      product: {
+        id: parseInt(product.id),
+        name: product.name,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        stockQuantity: 10, // Mock stock quantity
+      },
       quantity: quantity,
-      imageUrl: product.imageUrl,
-    });
+    }));
 
     toast({
       title: 'Added to cart!',

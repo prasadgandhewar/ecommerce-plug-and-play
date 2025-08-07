@@ -23,26 +23,34 @@ import {
   AlertIcon,
   Grid,
   GridItem,
-  Flex,
-  Spacer,
 } from '@chakra-ui/react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
-import { useCart } from '../../context/CartContext';
+import { useAppSelector, useAppDispatch } from '../../store/hooks';
+import { updateQuantity, removeFromCart } from '../../store/slices/cartSlice';
 
 const CartPage: React.FC = () => {
-  const { cartItems, updateQuantity, removeFromCart, getCartTotal, getCartItemsCount } = useCart();
+  const dispatch = useAppDispatch();
+  const { items: cartItems, totalAmount, totalItems } = useAppSelector((state) => state.cart);
   const navigate = useNavigate();
 
   const bgColor = useColorModeValue('gray.50', 'gray.900');
   const cardBg = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
 
-  const handleQuantityChange = (id: string, quantity: number) => {
+  const handleUpdateQuantity = (id: number, quantity: number) => {
+    dispatch(updateQuantity({ id, quantity }));
+  };
+
+  const handleRemoveFromCart = (id: number) => {
+    dispatch(removeFromCart(id));
+  };
+
+  const handleQuantityChange = (id: number, quantity: number) => {
     if (quantity < 1) {
-      removeFromCart(id);
+      handleRemoveFromCart(id);
     } else {
-      updateQuantity(id, quantity);
+      handleUpdateQuantity(id, quantity);
     }
   };
 
@@ -93,7 +101,7 @@ const CartPage: React.FC = () => {
             <VStack align="start" spacing={1}>
               <Heading size="xl">Shopping Cart</Heading>
               <Text color="gray.600">
-                {getCartItemsCount()} {getCartItemsCount() === 1 ? 'item' : 'items'} in your cart
+                {totalItems} {totalItems === 1 ? 'item' : 'items'} in your cart
               </Text>
             </VStack>
             <Button
@@ -180,7 +188,7 @@ const CartPage: React.FC = () => {
                             variant="ghost"
                             colorScheme="red"
                             size="sm"
-                            onClick={() => removeFromCart(item.id)}
+                            onClick={() => handleRemoveFromCart(item.id)}
                           />
                         </VStack>
 
@@ -234,21 +242,21 @@ const CartPage: React.FC = () => {
 
                     <VStack spacing={4} w="full">
                       <HStack justify="space-between" w="full">
-                        <Text>Subtotal ({getCartItemsCount()} items):</Text>
-                        <Text fontWeight="semibold">${getCartTotal().toFixed(2)}</Text>
+                        <Text>Subtotal ({totalItems} items):</Text>
+                        <Text fontWeight="semibold">${totalAmount.toFixed(2)}</Text>
                       </HStack>
 
                       <HStack justify="space-between" w="full">
                         <Text>Shipping:</Text>
                         <Text fontWeight="semibold" color="green.500">
-                          {getCartTotal() > 50 ? 'FREE' : '$5.99'}
+                          {totalAmount > 50 ? 'FREE' : '$5.99'}
                         </Text>
                       </HStack>
 
                       <HStack justify="space-between" w="full">
                         <Text>Tax:</Text>
                         <Text fontWeight="semibold">
-                          ${(getCartTotal() * 0.08).toFixed(2)}
+                          ${(totalAmount * 0.08).toFixed(2)}
                         </Text>
                       </HStack>
 
@@ -260,20 +268,20 @@ const CartPage: React.FC = () => {
                         </Text>
                         <Text fontSize="xl" fontWeight="bold" color="primary.500">
                           ${(
-                            getCartTotal() +
-                            (getCartTotal() > 50 ? 0 : 5.99) +
-                            getCartTotal() * 0.08
+                            totalAmount +
+                            (totalAmount > 50 ? 0 : 5.99) +
+                            totalAmount * 0.08
                           ).toFixed(2)}
                         </Text>
                       </HStack>
                     </VStack>
 
-                    {getCartTotal() < 50 && (
+                    {totalAmount < 50 && (
                       <Alert status="info" borderRadius="md">
                         <AlertIcon />
                         <VStack align="start" spacing={1}>
                           <Text fontSize="sm" fontWeight="semibold">
-                            Add ${(50 - getCartTotal()).toFixed(2)} more for free shipping!
+                            Add ${(50 - totalAmount).toFixed(2)} more for free shipping!
                           </Text>
                         </VStack>
                       </Alert>

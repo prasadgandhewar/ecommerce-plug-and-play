@@ -35,8 +35,8 @@ import {
   BellIcon,
 } from '@chakra-ui/icons';
 
-import { useCart } from '../../context/CartContext';
-import { useUser } from '../../context/UserContext';
+import { useAppSelector, useAppDispatch } from '../../store/hooks';
+import { logoutUser } from '../../store/slices/authSlice';
 
 const NavLink = ({ children, href }: { children: React.ReactNode; href: string }) => (
   <Link
@@ -62,13 +62,14 @@ const NavLink = ({ children, href }: { children: React.ReactNode; href: string }
 
 const Header: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { cartItems } = useCart();
-  const { user, logout, isAuthenticated } = useUser();
+  const dispatch = useAppDispatch();
+  const { items: cartItems } = useAppSelector((state) => state.cart);
+  const { user, isAuthenticated } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   const handleLogout = () => {
-    logout();
+    dispatch(logoutUser());
     navigate('/');
   };
 
@@ -183,7 +184,7 @@ const Header: React.FC = () => {
                 >
                   <Avatar
                     size="sm"
-                    name={user?.name}
+                    name={user ? `${user.firstName} ${user.lastName}` : 'User'}
                     bg="primary.500"
                   />
                 </MenuButton>

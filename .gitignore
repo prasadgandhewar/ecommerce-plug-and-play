@@ -1,0 +1,22 @@
+# Ignore Maven target folders
+**/target/
+
+# Ignore logs
+*.log
+
+# Ignore IDE files
+/.idea/
+*.iml
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore node_modules (if any)
+**/node_modules/
+
+# Environment files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
