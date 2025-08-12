@@ -1,14 +1,59 @@
-// Product types
+// Product types - Updated to match backend DTOs
 export interface Product {
-  id: string;
+  id: number; // Changed from string to number to match backend
   name: string;
   price: number;
   category: string;
   description: string;
   imageUrl: string;
-  inStock: boolean;
+  stockQuantity: number; // Added to match backend
+  isActive: boolean; // Added to match backend
+  createdAt: string; // Added to match backend
+  updatedAt: string; // Added to match backend
+  // Optional fields for frontend compatibility
+  inStock?: boolean; // Computed from stockQuantity > 0
   rating?: number;
   reviewCount?: number;
+}
+
+// Product request for creating/updating products
+export interface ProductRequest {
+  name: string;
+  description: string;
+  price: number;
+  stockQuantity: number;
+  category: string;
+  imageUrl?: string;
+}
+
+// Paginated response from backend
+export interface PaginatedProductResponse {
+  content: Product[];
+  pageable: {
+    sort: {
+      empty: boolean;
+      sorted: boolean;
+      unsorted: boolean;
+    };
+    offset: number;
+    pageSize: number;
+    pageNumber: number;
+    paged: boolean;
+    unpaged: boolean;
+  };
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: {
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+  };
+  first: boolean;
+  numberOfElements: number;
+  empty: boolean;
 }
 
 // Cart types
@@ -66,14 +111,16 @@ export interface RegisterForm {
   confirmPassword: string;
 }
 
-// Filter types
+// Filter types - Updated to match backend API
 export interface ProductFilters {
-  category?: string[];
-  priceRange?: [number, number];
-  inStock?: boolean;
-  rating?: number;
-  sortBy?: 'name' | 'price' | 'rating' | 'newest';
-  sortOrder?: 'asc' | 'desc';
+  category?: string;
+  page?: number;
+  size?: number;
+  sortBy?: string;
+  sortDir?: 'asc' | 'desc';
+  name?: string; // For search
+  minPrice?: number;
+  maxPrice?: number;
 }
 
 // Search types

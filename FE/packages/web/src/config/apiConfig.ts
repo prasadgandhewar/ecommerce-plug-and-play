@@ -11,12 +11,13 @@ export const API_CONFIG = {
     PROFILE: '/auth/profile',
   },
   
-  // Product endpoints
+  // Product endpoints - Updated to match backend exactly
   PRODUCTS: {
     LIST: '/products',
     DETAIL: '/products/:id',
     SEARCH: '/products/search',
-    CATEGORIES: '/products/categories',
+    CATEGORY: '/products/category/:category',
+    PRICE_RANGE: '/products/price-range',
     CREATE: '/products',
     UPDATE: '/products/:id',
     DELETE: '/products/:id',

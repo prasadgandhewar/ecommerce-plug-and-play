@@ -1,10 +1,19 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import productService, { Product, ProductFilters } from '../../services/productService';
+import productService from '../../services/productService';
+import { Product, ProductRequest, ProductFilters, PaginatedProductResponse } from '../../types';
 
 export interface ProductState {
   products: Product[];
   currentProduct: Product | null;
   categories: string[];
+  pagination: {
+    totalElements: number;
+    totalPages: number;
+    size: number;
+    number: number;
+    first: boolean;
+    last: boolean;
+  } | null;
   isLoading: boolean;
   error: string | null;
   filters: ProductFilters;
@@ -14,6 +23,7 @@ const initialState: ProductState = {
   products: [],
   currentProduct: null,
   categories: [],
+  pagination: null,
   isLoading: false,
   error: null,
   filters: {
@@ -49,12 +59,72 @@ export const fetchProductById = createAsyncThunk(
 
 export const searchProducts = createAsyncThunk(
   'products/searchProducts',
-  async ({ keyword, page = 0, size = 20 }: { keyword: string; page?: number; size?: number }, { rejectWithValue }) => {
+  async (name: string, { rejectWithValue }) => {
     try {
-      const response = await productService.searchProducts(keyword, page, size);
+      const response = await productService.searchProducts(name);
       return response;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to search products');
+    }
+  }
+);
+
+export const fetchProductsByCategory = createAsyncThunk(
+  'products/fetchProductsByCategory',
+  async (category: string, { rejectWithValue }) => {
+    try {
+      const response = await productService.getProductsByCategory(category);
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to fetch products by category');
+    }
+  }
+);
+
+export const fetchProductsByPriceRange = createAsyncThunk(
+  'products/fetchProductsByPriceRange',
+  async ({ minPrice, maxPrice }: { minPrice: number; maxPrice: number }, { rejectWithValue }) => {
+    try {
+      const response = await productService.getProductsByPriceRange(minPrice, maxPrice);
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to fetch products by price range');
+    }
+  }
+);
+
+export const createProduct = createAsyncThunk(
+  'products/createProduct',
+  async (productData: ProductRequest, { rejectWithValue }) => {
+    try {
+      const response = await productService.createProduct(productData);
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to create product');
+    }
+  }
+);
+
+export const updateProduct = createAsyncThunk(
+  'products/updateProduct',
+  async ({ id, productData }: { id: number; productData: ProductRequest }, { rejectWithValue }) => {
+    try {
+      const response = await productService.updateProduct(id, productData);
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to update product');
+    }
+  }
+);
+
+export const deleteProduct = createAsyncThunk(
+  'products/deleteProduct',
+  async (id: number, { rejectWithValue }) => {
+    try {
+      await productService.deleteProduct(id);
+      return id;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to delete product');
     }
   }
 );
@@ -84,17 +154,29 @@ const productSlice = createSlice({
     clearCurrentProduct: (state) => {
       state.currentProduct = null;
     },
+    clearProducts: (state) => {
+      state.products = [];
+      state.pagination = null;
+    },
   },
   extraReducers: (builder) => {
     builder
-      // Fetch products
+      // Fetch products (paginated)
       .addCase(fetchProducts.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.products = action.payload;
+        state.products = action.payload.content;
+        state.pagination = {
+          totalElements: action.payload.totalElements,
+          totalPages: action.payload.totalPages,
+          size: action.payload.size,
+          number: action.payload.number,
+          first: action.payload.first,
+          last: action.payload.last,
+        };
         state.error = null;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
@@ -123,9 +205,91 @@ const productSlice = createSlice({
       .addCase(searchProducts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.products = action.payload;
+        state.pagination = null; // Search doesn't return paginated data
         state.error = null;
       })
       .addCase(searchProducts.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      // Fetch products by category
+      .addCase(fetchProductsByCategory.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchProductsByCategory.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.products = action.payload;
+        state.pagination = null; // Category search doesn't return paginated data
+        state.error = null;
+      })
+      .addCase(fetchProductsByCategory.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      // Fetch products by price range
+      .addCase(fetchProductsByPriceRange.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchProductsByPriceRange.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.products = action.payload;
+        state.pagination = null; // Price range search doesn't return paginated data
+        state.error = null;
+      })
+      .addCase(fetchProductsByPriceRange.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      // Create product
+      .addCase(createProduct.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(createProduct.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.products.unshift(action.payload); // Add new product to the beginning
+        state.error = null;
+      })
+      .addCase(createProduct.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      // Update product
+      .addCase(updateProduct.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const index = state.products.findIndex(p => p.id === action.payload.id);
+        if (index !== -1) {
+          state.products[index] = action.payload;
+        }
+        if (state.currentProduct && state.currentProduct.id === action.payload.id) {
+          state.currentProduct = action.payload;
+        }
+        state.error = null;
+      })
+      .addCase(updateProduct.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      // Delete product
+      .addCase(deleteProduct.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.products = state.products.filter(p => p.id !== action.payload);
+        if (state.currentProduct && state.currentProduct.id === action.payload) {
+          state.currentProduct = null;
+        }
+        state.error = null;
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
       })
@@ -146,5 +310,11 @@ const productSlice = createSlice({
   },
 });
 
-export const { clearError, setFilters, clearCurrentProduct } = productSlice.actions;
+export const { 
+  clearError, 
+  setFilters, 
+  clearCurrentProduct, 
+  clearProducts 
+} = productSlice.actions;
+
 export default productSlice.reducer;

@@ -32,10 +32,10 @@ public class ProductController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String sortDir) {
-
-        Sort sort = sortDir.equalsIgnoreCase("desc") ?
+        
+        Sort sort = sortDir.equalsIgnoreCase("desc") ? 
             Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
-
+        
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<ProductResponse> products = productService.getAllProducts(pageable);
 

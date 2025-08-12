@@ -32,39 +32,31 @@ import {
   Card,
   CardBody,
   useToast,
+  Spinner,
+  Center,
 } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Product } from '../../types';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { addToCart } from '../../store/slices/cartSlice';
-
-// Mock product data - replace with actual API call
-const mockProduct: Product = {
-  id: '1',
-  name: 'Premium Wireless Headphones',
-  price: 299.99,
-  category: 'Electronics',
-  description: 'High-quality wireless headphones with active noise cancellation and premium sound quality.',
-  imageUrl: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500',
-  inStock: true,
-  rating: 4.8,
-  reviewCount: 157,
-};
+import { RootState, AppDispatch } from '../../store';
+import { fetchProductById } from '../../store/slices/productSlice';
+import { addToCartAsync } from '../../store/slices/cartSlice';
 
 const ProductDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const toast = useToast();
-  const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
+  const dispatch = useDispatch<AppDispatch>();
   
-  const [product, setProduct] = useState<Product | null>(null);
+  const { currentProduct: product, isLoading, error } = useSelector((state: RootState) => state.products);
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const { isLoading: cartLoading } = useSelector((state: RootState) => state.cart);
+  
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState('Black');
   const [selectedSize, setSelectedSize] = useState('M');
-  const [isLoading, setIsLoading] = useState(true);
   const [isWishlisted, setIsWishlisted] = useState(false);
 
   const bgColor = useColorModeValue('white', 'gray.800');
@@ -72,38 +64,48 @@ const ProductDetailPage: React.FC = () => {
   const shippingBgColor = useColorModeValue('gray.50', 'gray.700');
 
   useEffect(() => {
-    // Simulate API call
-    const fetchProduct = async () => {
-      setIsLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setProduct(mockProduct);
-      setIsLoading(false);
-    };
+    if (id) {
+      dispatch(fetchProductById(parseInt(id)));
+    }
+  }, [dispatch, id]);
 
-    fetchProduct();
-  }, [id]);
-
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!product) return;
 
-    dispatch(addToCart({
-      product: {
-        id: parseInt(product.id),
-        name: product.name,
-        price: product.price,
-        imageUrl: product.imageUrl,
-        stockQuantity: 10, // Mock stock quantity
-      },
-      quantity: quantity,
-    }));
+    if (!isAuthenticated) {
+      toast({
+        title: 'Login Required',
+        description: 'Please login to add items to cart.',
+        status: 'warning',
+        duration: 3000,
+        isClosable: true,
+      });
+      navigate('/login');
+      return;
+    }
 
-    toast({
-      title: 'Added to cart!',
-      description: `${product.name} has been added to your cart.`,
-      status: 'success',
-      duration: 3000,
-      isClosable: true,
-    });
+    try {
+      await dispatch(addToCartAsync({
+        productId: product.id,
+        quantity: quantity,
+      })).unwrap();
+
+      toast({
+        title: 'Added to cart!',
+        description: `${product.name} has been added to your cart.`,
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to add item to cart.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
 
   const handleWishlist = () => {
@@ -241,7 +243,7 @@ const ProductDetailPage: React.FC = () => {
                   {[...Array(5)].map((_, i) => (
                     <Text
                       key={i}
-                      color={i < Math.floor(product.rating || 0) ? 'yellow.400' : 'gray.300'}
+                      color={i < Math.floor(product.rating || 4.5) ? 'yellow.400' : 'gray.300'}
                       fontSize="md"
                     >
                       ★
@@ -249,7 +251,7 @@ const ProductDetailPage: React.FC = () => {
                   ))}
                 </HStack>
                 <Text color="gray.600">
-                  {product.rating} ({product.reviewCount} reviews)
+                  {product.rating || 4.5} ({product.reviewCount || 0} reviews)
                 </Text>
               </HStack>
 
@@ -300,7 +302,7 @@ const ProductDetailPage: React.FC = () => {
                   value={quantity}
                   onChange={(_, value) => setQuantity(value)}
                   min={1}
-                  max={10}
+                  max={product.stockQuantity || 1}
                   maxW="100px"
                 >
                   <NumberInputField />
@@ -314,6 +316,19 @@ const ProductDetailPage: React.FC = () => {
 
             <Divider />
 
+            {/* Stock Status */}
+            <HStack justify="space-between">
+              <Text fontSize="sm" color="gray.600">
+                Stock Available:
+              </Text>
+              <Badge 
+                colorScheme={product.stockQuantity > 0 ? 'green' : 'red'}
+                variant="solid"
+              >
+                {product.stockQuantity > 0 ? `${product.stockQuantity} units` : 'Out of Stock'}
+              </Badge>
+            </HStack>
+
             {/* Action Buttons */}
             <VStack spacing={3}>
               <Button
@@ -321,6 +336,9 @@ const ProductDetailPage: React.FC = () => {
                 colorScheme="primary"
                 w="full"
                 onClick={handleAddToCart}
+                isDisabled={product.stockQuantity === 0}
+                isLoading={cartLoading}
+                loadingText="Adding to Cart..."
                 _hover={{
                   transform: 'translateY(-1px)',
                   shadow: 'lg',

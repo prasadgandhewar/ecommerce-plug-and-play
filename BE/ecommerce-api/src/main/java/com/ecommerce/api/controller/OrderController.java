@@ -30,10 +30,10 @@ public class OrderController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "createdAt") String sortBy,
             @RequestParam(defaultValue = "desc") String sortDir) {
-
-        Sort sort = sortDir.equalsIgnoreCase("desc") ?
+        
+        Sort sort = sortDir.equalsIgnoreCase("desc") ? 
             Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
-
+        
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<Order> orders = orderService.getAllOrders(pageable);
 

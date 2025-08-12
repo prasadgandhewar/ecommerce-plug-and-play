@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Container,
@@ -36,109 +36,188 @@ import {
   DrawerCloseButton,
   useDisclosure,
   useBreakpointValue,
+  useToast,
+  Spinner,
+  Center,
+  Alert,
+  AlertIcon,
 } from '@chakra-ui/react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { SearchIcon, SettingsIcon } from '@chakra-ui/icons';
+
+import { RootState, AppDispatch } from '../../store';
+import { 
+  fetchProducts, 
+  searchProducts, 
+  fetchProductsByCategory, 
+  fetchProductsByPriceRange,
+  fetchCategories,
+  setFilters
+} from '../../store/slices/productSlice';
+import { addToCartAsync } from '../../store/slices/cartSlice';
+import { Product } from '../../types';
 
 const ProductsPage: React.FC = () => {
-  const [sortBy, setSortBy] = useState('featured');
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const toast = useToast();
+  
+  const { 
+    products, 
+    categories, 
+    pagination, 
+    isLoading, 
+    error, 
+    filters 
+  } = useSelector((state: RootState) => state.products);
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const { isLoading: cartLoading } = useSelector((state: RootState) => state.cart);
+
+  const [sortBy, setSortBy] = useState('id');
+  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [priceRange, setPriceRange] = useState([0, 1000]);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   // Color mode values
   const filterBgColor = useColorModeValue('white', 'gray.800');
   const filterBorderColor = useColorModeValue('gray.200', 'gray.700');
+
+  // Load initial data
+  useEffect(() => {
+    dispatch(fetchProducts({ page: 0, size: 20 }));
+    dispatch(fetchCategories());
+  }, [dispatch]);
+
+  // Handle sort change
+  const handleSortChange = (value: string) => {
+    setSortBy(value);
+    const newFilters = { 
+      ...filters, 
+      page: 0, 
+      sortBy: value, 
+      sortDir: sortDir 
+    };
+    dispatch(setFilters(newFilters));
+    dispatch(fetchProducts(newFilters));
+  };
+
+  // Handle sort direction change
+  const handleSortDirChange = (direction: 'asc' | 'desc') => {
+    setSortDir(direction);
+    const newFilters = { 
+      ...filters, 
+      page: 0, 
+      sortBy: sortBy, 
+      sortDir: direction 
+    };
+    dispatch(setFilters(newFilters));
+    dispatch(fetchProducts(newFilters));
+  };
+
+  // Handle search
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      dispatch(searchProducts(searchTerm.trim()));
+    } else {
+      dispatch(fetchProducts({ page: 0, size: 20 }));
+    }
+  };
+
+  // Handle category filter
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    setCurrentPage(0);
+    if (category) {
+      dispatch(fetchProductsByCategory(category));
+    } else {
+      dispatch(fetchProducts({ page: 0, size: 20 }));
+    }
+  };
+
+  // Handle price range filter
+  const handlePriceRangeFilter = () => {
+    dispatch(fetchProductsByPriceRange({ 
+      minPrice: priceRange[0], 
+      maxPrice: priceRange[1] 
+    }));
+  };
+
+  // Handle page change
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    const newFilters = { 
+      ...filters, 
+      page: page 
+    };
+    dispatch(setFilters(newFilters));
+    dispatch(fetchProducts(newFilters));
+  };
+
+  // Handle add to cart
+  const handleAddToCart = async (product: Product) => {
+    if (!isAuthenticated) {
+      toast({
+        title: 'Login Required',
+        description: 'Please login to add items to cart.',
+        status: 'warning',
+        duration: 3000,
+        isClosable: true,
+      });
+      navigate('/login');
+      return;
+    }
+
+    try {
+      await dispatch(addToCartAsync({
+        productId: product.id,
+        quantity: 1,
+      })).unwrap();
+
+      toast({
+        title: 'Added to Cart',
+        description: `${product.name} has been added to your cart.`,
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to add item to cart.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
+  // Handle product click
+  const handleProductClick = (productId: number) => {
+    navigate(`/products/${productId}`);
+  };
   const cardBgColor = useColorModeValue('white', 'gray.800');
-
-  // Mock products data
-  const products = [
-    {
-      id: 1,
-      name: 'Wireless Bluetooth Headphones',
-      price: 99.99,
-      originalPrice: 129.99,
-      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop',
-      rating: 4.5,
-      reviews: 128,
-      badge: 'Best Seller',
-      category: 'Electronics',
-    },
-    {
-      id: 2,
-      name: 'Smart Fitness Watch',
-      price: 199.99,
-      originalPrice: 249.99,
-      image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=300&fit=crop',
-      rating: 4.8,
-      reviews: 89,
-      badge: 'New',
-      category: 'Electronics',
-    },
-    {
-      id: 3,
-      name: 'Ergonomic Laptop Stand',
-      price: 49.99,
-      originalPrice: 69.99,
-      image: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=300&h=300&fit=crop',
-      rating: 4.3,
-      reviews: 45,
-      badge: 'Sale',
-      category: 'Office',
-    },
-    {
-      id: 4,
-      name: 'Premium Coffee Maker',
-      price: 79.99,
-      originalPrice: 99.99,
-      image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=300&h=300&fit=crop',
-      rating: 4.6,
-      reviews: 76,
-      badge: 'Popular',
-      category: 'Kitchen',
-    },
-    {
-      id: 5,
-      name: 'Mechanical Keyboard',
-      price: 129.99,
-      originalPrice: 159.99,
-      image: 'https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=300&h=300&fit=crop',
-      rating: 4.7,
-      reviews: 234,
-      badge: 'Hot',
-      category: 'Electronics',
-    },
-    {
-      id: 6,
-      name: 'Yoga Mat Premium',
-      price: 39.99,
-      originalPrice: 59.99,
-      image: 'https://images.unsplash.com/photo-1592432678016-e910d50d99b0?w=300&h=300&fit=crop',
-      rating: 4.4,
-      reviews: 67,
-      badge: 'Eco-Friendly',
-      category: 'Sports',
-    },
-  ];
-
-  const categories = ['Electronics', 'Fashion', 'Home', 'Sports', 'Books', 'Kitchen', 'Office'];
 
   const FilterPanel = () => (
     <VStack spacing={6} align="stretch" w="250px">
       <Box>
         <Heading size="sm" mb={3}>Categories</Heading>
-        <CheckboxGroup
-          value={selectedCategories}
-          onChange={(values) => setSelectedCategories(values as string[])}
+        <Select
+          placeholder="Select category"
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
         >
-          <VStack align="start" spacing={2}>
-            {categories.map((category) => (
-              <Checkbox key={category} value={category}>
-                {category}
-              </Checkbox>
-            ))}
-          </VStack>
-        </CheckboxGroup>
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </Select>
       </Box>
 
       <Divider />
@@ -265,23 +344,25 @@ const ProductsPage: React.FC = () => {
                 >
                   <Box position="relative">
                     <Image
-                      src={product.image}
+                      src={product.imageUrl}
                       alt={product.name}
                       borderTopRadius="lg"
                       h="250px"
                       w="full"
                       objectFit="cover"
                     />
-                    <Badge
-                      position="absolute"
-                      top={3}
-                      left={3}
-                      colorScheme="accent"
-                      variant="solid"
-                      fontSize="xs"
-                    >
-                      {product.badge}
-                    </Badge>
+                    {product.category && (
+                      <Badge
+                        position="absolute"
+                        top={3}
+                        left={3}
+                        colorScheme="accent"
+                        variant="solid"
+                        fontSize="xs"
+                      >
+                        {product.category}
+                      </Badge>
+                    )}
                     <HStack
                       position="absolute"
                       top={3}
@@ -319,35 +400,30 @@ const ProductsPage: React.FC = () => {
                       </Box>
                       
                       <HStack>
-                        <HStack spacing={1}>
-                          {[...Array(5)].map((_, i) => (
-                            <Text
-                              key={i}
-                              color={i < Math.floor(product.rating) ? 'yellow.400' : 'gray.300'}
-                              fontSize="sm"
-                            >
-                              ★
+                        {product.rating && (
+                          <>
+                            <HStack spacing={1}>
+                              {[...Array(5)].map((_, i) => (
+                                <Text
+                                  key={i}
+                                  color={i < Math.floor(product.rating || 0) ? 'yellow.400' : 'gray.300'}
+                                  fontSize="sm"
+                                >
+                                  ★
+                                </Text>
+                              ))}
+                            </HStack>
+                            <Text fontSize="sm" color="gray.500">
+                              ({product.reviewCount || 0})
                             </Text>
-                          ))}
-                        </HStack>
-                        <Text fontSize="sm" color="gray.500">
-                          ({product.reviews})
-                        </Text>
+                          </>
+                        )}
                       </HStack>
 
                       <HStack spacing={2}>
                         <Text fontSize="lg" fontWeight="bold" color="primary.500">
                           ${product.price}
                         </Text>
-                        {product.originalPrice && (
-                          <Text
-                            fontSize="sm"
-                            color="gray.500"
-                            textDecoration="line-through"
-                          >
-                            ${product.originalPrice}
-                          </Text>
-                        )}
                       </HStack>
 
                       <Button
