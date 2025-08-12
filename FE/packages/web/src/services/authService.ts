@@ -1,5 +1,5 @@
 import api from './api';
-import { API_CONFIG } from '../config/apiConfig';
+import { API_CONFIG, createApiMethod } from '../config/apiConfig';
 
 export interface LoginRequest {
   email: string;
@@ -33,13 +33,22 @@ export interface AuthResponse {
 }
 
 class AuthService {
+  // Create endpoint builders for each auth endpoint
+  private readonly endpoints = {
+    login: createApiMethod.post(API_CONFIG.AUTH.LOGIN),
+    register: createApiMethod.post(API_CONFIG.AUTH.REGISTER),
+    profile: createApiMethod.get(API_CONFIG.AUTH.PROFILE),
+  };
+
   async login(credentials: LoginRequest): Promise<AuthResponse> {
-    const response = await api.post(API_CONFIG.AUTH.LOGIN, credentials);
+    const endpoint = this.endpoints.login();
+    const response = await api.post(endpoint, credentials);
     return response.data;
   }
 
   async register(userData: RegisterRequest): Promise<AuthResponse> {
-    const response = await api.post(API_CONFIG.AUTH.REGISTER, userData);
+    const endpoint = this.endpoints.register();
+    const response = await api.post(endpoint, userData);
     return response.data;
   }
 

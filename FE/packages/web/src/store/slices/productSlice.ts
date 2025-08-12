@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { REDUX_ACTION_TYPES } from '../../config/apiConfig';
 import productService from '../../services/productService';
 import { Product, ProductRequest, ProductFilters, PaginatedProductResponse } from '../../types';
 
@@ -34,7 +35,7 @@ const initialState: ProductState = {
 
 // Async thunks
 export const fetchProducts = createAsyncThunk(
-  'products/fetchProducts',
+  REDUX_ACTION_TYPES.PRODUCTS.FETCH_PRODUCTS,
   async (filters: ProductFilters = {}, { rejectWithValue }) => {
     try {
       const response = await productService.getProducts(filters);
@@ -46,7 +47,7 @@ export const fetchProducts = createAsyncThunk(
 );
 
 export const fetchProductById = createAsyncThunk(
-  'products/fetchProductById',
+  REDUX_ACTION_TYPES.PRODUCTS.FETCH_PRODUCT_BY_ID,
   async (id: number, { rejectWithValue }) => {
     try {
       const response = await productService.getProductById(id);
@@ -58,7 +59,7 @@ export const fetchProductById = createAsyncThunk(
 );
 
 export const searchProducts = createAsyncThunk(
-  'products/searchProducts',
+  REDUX_ACTION_TYPES.PRODUCTS.SEARCH_PRODUCTS,
   async (name: string, { rejectWithValue }) => {
     try {
       const response = await productService.searchProducts(name);
@@ -70,7 +71,7 @@ export const searchProducts = createAsyncThunk(
 );
 
 export const fetchProductsByCategory = createAsyncThunk(
-  'products/fetchProductsByCategory',
+  REDUX_ACTION_TYPES.PRODUCTS.FETCH_BY_CATEGORY,
   async (category: string, { rejectWithValue }) => {
     try {
       const response = await productService.getProductsByCategory(category);
@@ -82,7 +83,7 @@ export const fetchProductsByCategory = createAsyncThunk(
 );
 
 export const fetchProductsByPriceRange = createAsyncThunk(
-  'products/fetchProductsByPriceRange',
+  REDUX_ACTION_TYPES.PRODUCTS.FETCH_BY_PRICE_RANGE,
   async ({ minPrice, maxPrice }: { minPrice: number; maxPrice: number }, { rejectWithValue }) => {
     try {
       const response = await productService.getProductsByPriceRange(minPrice, maxPrice);
@@ -94,7 +95,7 @@ export const fetchProductsByPriceRange = createAsyncThunk(
 );
 
 export const createProduct = createAsyncThunk(
-  'products/createProduct',
+  REDUX_ACTION_TYPES.PRODUCTS.CREATE_PRODUCT,
   async (productData: ProductRequest, { rejectWithValue }) => {
     try {
       const response = await productService.createProduct(productData);
@@ -106,7 +107,7 @@ export const createProduct = createAsyncThunk(
 );
 
 export const updateProduct = createAsyncThunk(
-  'products/updateProduct',
+  REDUX_ACTION_TYPES.PRODUCTS.UPDATE_PRODUCT,
   async ({ id, productData }: { id: number; productData: ProductRequest }, { rejectWithValue }) => {
     try {
       const response = await productService.updateProduct(id, productData);
@@ -118,7 +119,7 @@ export const updateProduct = createAsyncThunk(
 );
 
 export const deleteProduct = createAsyncThunk(
-  'products/deleteProduct',
+  REDUX_ACTION_TYPES.PRODUCTS.DELETE_PRODUCT,
   async (id: number, { rejectWithValue }) => {
     try {
       await productService.deleteProduct(id);
@@ -130,7 +131,7 @@ export const deleteProduct = createAsyncThunk(
 );
 
 export const fetchCategories = createAsyncThunk(
-  'products/fetchCategories',
+  REDUX_ACTION_TYPES.PRODUCTS.FETCH_CATEGORIES,
   async (_, { rejectWithValue }) => {
     try {
       const response = await productService.getCategories();

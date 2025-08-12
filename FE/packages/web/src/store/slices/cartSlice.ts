@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { REDUX_ACTION_TYPES } from '../../config/apiConfig';
 import cartService, { CartItem as CartServiceItem, CartResponse } from '../../services/cartService';
 
 export interface CartItem {
@@ -42,7 +43,7 @@ const initialState: CartState = {
 
 // Async thunks for cart operations
 export const addToCartAsync = createAsyncThunk(
-  'cart/addToCartAsync',
+  REDUX_ACTION_TYPES.CART.ADD_TO_CART,
   async ({ productId, quantity }: { productId: number; quantity: number }, { rejectWithValue }) => {
     try {
       const response = await cartService.addToCart({ productId, quantity });
@@ -54,7 +55,7 @@ export const addToCartAsync = createAsyncThunk(
 );
 
 export const removeFromCartAsync = createAsyncThunk(
-  'cart/removeFromCartAsync',
+  REDUX_ACTION_TYPES.CART.REMOVE_FROM_CART,
   async (productId: number, { rejectWithValue }) => {
     try {
       await cartService.removeFromCart(productId);
@@ -66,7 +67,7 @@ export const removeFromCartAsync = createAsyncThunk(
 );
 
 export const updateCartItemAsync = createAsyncThunk(
-  'cart/updateCartItemAsync',
+  REDUX_ACTION_TYPES.CART.UPDATE_CART_ITEM,
   async ({ cartItemId, quantity }: { cartItemId: number; quantity: number }, { rejectWithValue }) => {
     try {
       const response = await cartService.updateCartItem({ cartItemId, quantity });
@@ -78,7 +79,7 @@ export const updateCartItemAsync = createAsyncThunk(
 );
 
 export const fetchCartAsync = createAsyncThunk(
-  'cart/fetchCartAsync',
+  REDUX_ACTION_TYPES.CART.FETCH_CART,
   async (_, { rejectWithValue }) => {
     try {
       const response = await cartService.getCart();
@@ -90,7 +91,7 @@ export const fetchCartAsync = createAsyncThunk(
 );
 
 export const clearCartAsync = createAsyncThunk(
-  'cart/clearCartAsync',
+  REDUX_ACTION_TYPES.CART.CLEAR_CART,
   async (_, { rejectWithValue }) => {
     try {
       await cartService.clearCart();

@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { REDUX_ACTION_TYPES } from '../../config/apiConfig';
 import authService, { LoginRequest, RegisterRequest, User, AuthResponse } from '../../services/authService';
 
 export interface AuthState {
@@ -19,7 +20,7 @@ const initialState: AuthState = {
 
 // Async thunks
 export const loginUser = createAsyncThunk(
-  'auth/login',
+  REDUX_ACTION_TYPES.AUTH.LOGIN,
   async (credentials: LoginRequest, { rejectWithValue }) => {
     try {
       const response = await authService.login(credentials);
@@ -33,7 +34,7 @@ export const loginUser = createAsyncThunk(
 );
 
 export const registerUser = createAsyncThunk(
-  'auth/register',
+  REDUX_ACTION_TYPES.AUTH.REGISTER,
   async (userData: RegisterRequest, { rejectWithValue }) => {
     try {
       const response = await authService.register(userData);
@@ -47,7 +48,7 @@ export const registerUser = createAsyncThunk(
 );
 
 export const logoutUser = createAsyncThunk(
-  'auth/logout',
+  REDUX_ACTION_TYPES.AUTH.LOGOUT,
   async () => {
     authService.logout();
   }
