@@ -68,7 +68,7 @@ public class OrderService {
 
             // Add order items
             for (Map<String, Object> itemData : items) {
-                Long productId = Long.valueOf(itemData.get("productId").toString());
+                String productId = itemData.get("productId").toString(); // Changed from Long to String
                 Integer quantity = Integer.valueOf(itemData.get("quantity").toString());
 
                 Optional<Product> product = productRepository.findById(productId);

@@ -29,7 +29,7 @@ public class ProductService {
         return products.map(this::convertToResponse);
     }
 
-    public Optional<ProductResponse> getProductById(Long id) {
+    public Optional<ProductResponse> getProductById(String id) {
         Optional<Product> product = productRepository.findById(id);
         return product.filter(p -> p.getIsActive()).map(this::convertToResponse);
     }
@@ -48,7 +48,7 @@ public class ProductService {
         return convertToResponse(savedProduct);
     }
 
-    public Optional<ProductResponse> updateProduct(Long id, ProductRequest request) {
+    public Optional<ProductResponse> updateProduct(String id, ProductRequest request) {
         Optional<Product> optionalProduct = productRepository.findById(id);
         if (optionalProduct.isPresent()) {
             Product product = optionalProduct.get();
@@ -65,7 +65,7 @@ public class ProductService {
         return Optional.empty();
     }
 
-    public boolean deleteProduct(Long id) {
+    public boolean deleteProduct(String id) {
         Optional<Product> optionalProduct = productRepository.findById(id);
         if (optionalProduct.isPresent()) {
             Product product = optionalProduct.get();
@@ -92,7 +92,12 @@ public class ProductService {
     }
 
     public List<String> getCategories() {
-        return productRepository.findDistinctCategories();
+        List<Product> products = productRepository.findDistinctCategoryProducts();
+        return products.stream()
+                .map(Product::getCategory)
+                .distinct()
+                .filter(category -> category != null && !category.isEmpty())
+                .collect(Collectors.toList());
     }
 
     private ProductResponse convertToResponse(Product product) {

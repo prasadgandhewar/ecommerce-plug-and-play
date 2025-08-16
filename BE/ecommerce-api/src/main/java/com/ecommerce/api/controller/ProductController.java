@@ -44,7 +44,7 @@ public class ProductController {
 
     // Get product by ID
     @GetMapping("/{id}")
-    public ResponseEntity<ProductResponse> getProductById(@PathVariable Long id) {
+    public ResponseEntity<ProductResponse> getProductById(@PathVariable String id) {
         Optional<ProductResponse> product = productService.getProductById(id);
         return product.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
@@ -58,14 +58,14 @@ public class ProductController {
 
     // Update product
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductRequest request) {
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable String id, @Valid @RequestBody ProductRequest request) {
         Optional<ProductResponse> product = productService.updateProduct(id, request);
         return product.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     // Delete product (soft delete)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
         boolean deleted = productService.deleteProduct(id);
         return deleted ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }

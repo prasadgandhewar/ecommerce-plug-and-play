@@ -32,7 +32,7 @@ public class CartService {
     public Optional<CartItem> addToCart(Map<String, Object> request) {
         try {
             Long userId = Long.valueOf(request.get("userId").toString());
-            Long productId = Long.valueOf(request.get("productId").toString());
+            String productId = request.get("productId").toString(); // Changed from Long to String
             Integer quantity = Integer.valueOf(request.get("quantity").toString());
 
             Optional<User> user = userRepository.findById(userId);
