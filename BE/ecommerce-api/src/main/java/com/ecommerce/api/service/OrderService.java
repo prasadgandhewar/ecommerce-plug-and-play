@@ -1,23 +1,27 @@
 package com.ecommerce.api.service;
 
+import com.ecommerce.api.dto.OrderItemResponse;
+import com.ecommerce.api.dto.OrderResponse;
+import com.ecommerce.api.dto.ProductResponse;
 import com.ecommerce.api.entity.Order;
 import com.ecommerce.api.entity.OrderItem;
-import com.ecommerce.api.entity.Product;
 import com.ecommerce.api.entity.User;
 import com.ecommerce.api.repository.OrderRepository;
-import com.ecommerce.api.repository.ProductRepository;
 import com.ecommerce.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class OrderService {
 
     @Autowired
@@ -27,17 +31,19 @@ public class OrderService {
     private UserRepository userRepository;
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductService productService;
 
-    public Page<Order> getAllOrders(Pageable pageable) {
-        return orderRepository.findAll(pageable);
+    public Page<OrderResponse> getAllOrders(Pageable pageable) {
+        Page<Order> orders = orderRepository.findAll(pageable);
+        return orders.map(this::convertToOrderResponse);
     }
 
-    public Optional<Order> getOrderById(Long id) {
-        return orderRepository.findById(id);
+    public Optional<OrderResponse> getOrderById(Long id) {
+        Optional<Order> order = orderRepository.findById(id);
+        return order.map(this::convertToOrderResponse);
     }
 
-    public Optional<Order> createOrder(Map<String, Object> orderRequest) {
+    public Optional<OrderResponse> createOrder(Map<String, Object> orderRequest) {
         try {
             Long userId = Long.valueOf(orderRequest.get("userId").toString());
             String shippingAddress = (String) orderRequest.get("shippingAddress");
@@ -48,13 +54,11 @@ public class OrderService {
             @SuppressWarnings("unchecked")
             List<Map<String, Object>> items = (List<Map<String, Object>>) orderRequest.get("items");
 
-            Optional<User> user = userRepository.findById(userId);
-            if (!user.isPresent()) {
-                return Optional.empty();
-            }
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
 
             Order order = new Order();
-            order.setUser(user.get());
+            order.setUser(user);
             order.setStatus(Order.OrderStatus.PENDING);
             order.setShippingAddress(shippingAddress);
             order.setBillingAddress(billingAddress);
@@ -68,18 +72,23 @@ public class OrderService {
 
             // Add order items
             for (Map<String, Object> itemData : items) {
-                String productId = itemData.get("productId").toString(); // Changed from Long to String
+                String productId = itemData.get("productId").toString();
                 Integer quantity = Integer.valueOf(itemData.get("quantity").toString());
 
-                Optional<Product> product = productRepository.findById(productId);
-                if (product.isPresent()) {
+                // Fetch product from MongoDB
+                Optional<ProductResponse> productOpt = productService.getProductById(productId);
+                if (productOpt.isPresent()) {
+                    ProductResponse product = productOpt.get();
+                    
                     OrderItem orderItem = new OrderItem();
                     orderItem.setOrder(savedOrder);
-                    orderItem.setProduct(product.get());
+                    orderItem.setProductId(productId);
+                    orderItem.setProductName(product.getName());
+                    orderItem.setProductImageUrl(product.getImageUrl());
                     orderItem.setQuantity(quantity);
-                    orderItem.setUnitPrice(product.get().getPrice());
+                    orderItem.setUnitPrice(product.getPrice());
 
-                    BigDecimal subtotal = product.get().getPrice().multiply(BigDecimal.valueOf(quantity));
+                    BigDecimal subtotal = product.getPrice().multiply(BigDecimal.valueOf(quantity));
                     orderItem.setSubtotal(subtotal);
                     totalAmount = totalAmount.add(subtotal);
 
@@ -90,13 +99,45 @@ public class OrderService {
             savedOrder.setTotalAmount(totalAmount);
             Order finalOrder = orderRepository.save(savedOrder);
 
-            return Optional.of(finalOrder);
+            return Optional.of(convertToOrderResponse(finalOrder));
         } catch (Exception e) {
             return Optional.empty();
         }
     }
 
-    public Optional<Order> updateOrderStatus(Long id, String status) {
+    private OrderResponse convertToOrderResponse(Order order) {
+        OrderResponse response = new OrderResponse();
+        response.setId(order.getId());
+        response.setUserId(order.getUser().getId());
+        response.setStatus(order.getStatus());
+        response.setTotalAmount(order.getTotalAmount());
+        response.setShippingAddress(order.getShippingAddress());
+        response.setBillingAddress(order.getBillingAddress());
+        response.setPaymentMethod(order.getPaymentMethod());
+        response.setNotes(order.getNotes());
+        response.setCreatedAt(order.getCreatedAt());
+
+        List<OrderItemResponse> orderItemResponses = order.getOrderItems().stream()
+                .map(this::convertToOrderItemResponse)
+                .collect(Collectors.toList());
+        response.setOrderItems(orderItemResponses);
+
+        return response;
+    }
+
+    private OrderItemResponse convertToOrderItemResponse(OrderItem orderItem) {
+        OrderItemResponse response = new OrderItemResponse();
+        response.setId(orderItem.getId());
+        response.setProductId(orderItem.getProductId());
+        response.setProductName(orderItem.getProductName());
+        response.setProductImageUrl(orderItem.getProductImageUrl());
+        response.setQuantity(orderItem.getQuantity());
+        response.setUnitPrice(orderItem.getUnitPrice());
+        response.setSubtotal(orderItem.getSubtotal());
+        return response;
+    }
+
+    public Optional<OrderResponse> updateOrderStatus(Long id, String status) {
         Optional<Order> optionalOrder = orderRepository.findById(id);
         if (optionalOrder.isPresent()) {
             Order order = optionalOrder.get();
@@ -104,7 +145,7 @@ public class OrderService {
                 Order.OrderStatus orderStatus = Order.OrderStatus.valueOf(status.toUpperCase());
                 order.setStatus(orderStatus);
                 Order updatedOrder = orderRepository.save(order);
-                return Optional.of(updatedOrder);
+                return Optional.of(convertToOrderResponse(updatedOrder));
             } catch (IllegalArgumentException e) {
                 return Optional.empty();
             }
@@ -112,28 +153,34 @@ public class OrderService {
         return Optional.empty();
     }
 
-    public List<Order> getOrdersByUserId(Long userId) {
-        return orderRepository.findByUserIdOrderByCreatedAtDesc(userId);
+    public List<OrderResponse> getOrdersByUserId(Long userId) {
+        List<Order> orders = orderRepository.findByUserIdOrderByCreatedAtDesc(userId);
+        return orders.stream()
+                .map(this::convertToOrderResponse)
+                .collect(Collectors.toList());
     }
 
-    public Optional<List<Order>> getOrdersByStatus(String status) {
+    public Optional<List<OrderResponse>> getOrdersByStatus(String status) {
         try {
             Order.OrderStatus orderStatus = Order.OrderStatus.valueOf(status.toUpperCase());
             List<Order> orders = orderRepository.findByStatusOrderByCreatedAtDesc(orderStatus);
-            return Optional.of(orders);
+            List<OrderResponse> orderResponses = orders.stream()
+                    .map(this::convertToOrderResponse)
+                    .collect(Collectors.toList());
+            return Optional.of(orderResponses);
         } catch (IllegalArgumentException e) {
             return Optional.empty();
         }
     }
 
-    public Optional<Order> cancelOrder(Long id) {
+    public Optional<OrderResponse> cancelOrder(Long id) {
         Optional<Order> optionalOrder = orderRepository.findById(id);
         if (optionalOrder.isPresent()) {
             Order order = optionalOrder.get();
             if (order.getStatus() == Order.OrderStatus.PENDING || order.getStatus() == Order.OrderStatus.CONFIRMED) {
                 order.setStatus(Order.OrderStatus.CANCELLED);
                 Order updatedOrder = orderRepository.save(order);
-                return Optional.of(updatedOrder);
+                return Optional.of(convertToOrderResponse(updatedOrder));
             }
         }
         return Optional.empty();

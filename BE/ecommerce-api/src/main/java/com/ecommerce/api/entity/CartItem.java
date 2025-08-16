@@ -25,10 +25,9 @@ public class CartItem {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @NotNull(message = "Product is required")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @NotNull(message = "Product ID is required")
+    @Column(name = "product_id", nullable = false)
+    private String productId; // MongoDB Product ID reference
 
     @NotNull(message = "Quantity is required")
     @Min(value = 1, message = "Quantity must be at least 1")

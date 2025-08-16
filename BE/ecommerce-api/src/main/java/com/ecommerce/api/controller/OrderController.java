@@ -1,6 +1,6 @@
 package com.ecommerce.api.controller;
 
-import com.ecommerce.api.entity.Order;
+import com.ecommerce.api.dto.OrderResponse;
 import com.ecommerce.api.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,7 +25,7 @@ public class OrderController {
 
     // Get all orders with pagination
     @GetMapping
-    public ResponseEntity<Page<Order>> getAllOrders(
+    public ResponseEntity<Page<OrderResponse>> getAllOrders(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "createdAt") String sortBy,
@@ -35,52 +35,52 @@ public class OrderController {
             Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
         
         Pageable pageable = PageRequest.of(page, size, sort);
-        Page<Order> orders = orderService.getAllOrders(pageable);
+        Page<OrderResponse> orders = orderService.getAllOrders(pageable);
 
         return ResponseEntity.ok(orders);
     }
 
     // Get order by ID
     @GetMapping("/{id}")
-    public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
-        Optional<Order> order = orderService.getOrderById(id);
+    public ResponseEntity<OrderResponse> getOrderById(@PathVariable Long id) {
+        Optional<OrderResponse> order = orderService.getOrderById(id);
         return order.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     // Create new order
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody Map<String, Object> orderRequest) {
-        Optional<Order> order = orderService.createOrder(orderRequest);
+    public ResponseEntity<OrderResponse> createOrder(@RequestBody Map<String, Object> orderRequest) {
+        Optional<OrderResponse> order = orderService.createOrder(orderRequest);
         return order.map(o -> ResponseEntity.status(HttpStatus.CREATED).body(o))
                    .orElse(ResponseEntity.badRequest().build());
     }
 
     // Update order status
     @PutMapping("/{id}/status")
-    public ResponseEntity<Order> updateOrderStatus(@PathVariable Long id, @RequestBody Map<String, String> request) {
+    public ResponseEntity<OrderResponse> updateOrderStatus(@PathVariable Long id, @RequestBody Map<String, String> request) {
         String status = request.get("status");
-        Optional<Order> order = orderService.updateOrderStatus(id, status);
+        Optional<OrderResponse> order = orderService.updateOrderStatus(id, status);
         return order.map(ResponseEntity::ok).orElse(ResponseEntity.badRequest().build());
     }
 
     // Get orders by user ID
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable Long userId) {
-        List<Order> orders = orderService.getOrdersByUserId(userId);
+    public ResponseEntity<List<OrderResponse>> getOrdersByUserId(@PathVariable Long userId) {
+        List<OrderResponse> orders = orderService.getOrdersByUserId(userId);
         return ResponseEntity.ok(orders);
     }
 
     // Get orders by status
     @GetMapping("/status/{status}")
-    public ResponseEntity<List<Order>> getOrdersByStatus(@PathVariable String status) {
-        Optional<List<Order>> orders = orderService.getOrdersByStatus(status);
+    public ResponseEntity<List<OrderResponse>> getOrdersByStatus(@PathVariable String status) {
+        Optional<List<OrderResponse>> orders = orderService.getOrdersByStatus(status);
         return orders.map(ResponseEntity::ok).orElse(ResponseEntity.badRequest().build());
     }
 
     // Cancel order
     @PutMapping("/{id}/cancel")
-    public ResponseEntity<Order> cancelOrder(@PathVariable Long id) {
-        Optional<Order> order = orderService.cancelOrder(id);
+    public ResponseEntity<OrderResponse> cancelOrder(@PathVariable Long id) {
+        Optional<OrderResponse> order = orderService.cancelOrder(id);
         return order.map(ResponseEntity::ok).orElse(ResponseEntity.badRequest().build());
     }
 
