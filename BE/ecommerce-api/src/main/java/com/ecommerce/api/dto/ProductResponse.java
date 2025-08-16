@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ProductResponse {
 
-    private Long id;
+    private String id;
     private String name;
     private String description;
     private BigDecimal price;

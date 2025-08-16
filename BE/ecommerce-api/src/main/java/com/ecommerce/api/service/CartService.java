@@ -101,18 +101,19 @@ public class CartService {
     public Map<String, Object> getCartTotal(Long userId) {
         List<CartItem> cartItems = cartItemRepository.findByUserId(userId);
 
-        double total = cartItems.stream()
-                .mapToDouble(item -> item.getProduct().getPrice().doubleValue() * item.getQuantity())
-                .sum();
+        double totalAmount = 0.0;
+        int totalItems = 0;
 
-        int itemCount = cartItems.stream()
-                .mapToInt(CartItem::getQuantity)
-                .sum();
+        for (CartItem item : cartItems) {
+            double itemTotal = item.getProduct().getPrice().doubleValue() * item.getQuantity();
+            totalAmount += itemTotal;
+            totalItems += item.getQuantity();
+        }
 
         return Map.of(
-            "total", total,
-            "itemCount", itemCount,
-            "items", cartItems.size()
+            "totalAmount", totalAmount,
+            "totalItems", totalItems,
+            "itemCount", cartItems.size()
         );
     }
 }

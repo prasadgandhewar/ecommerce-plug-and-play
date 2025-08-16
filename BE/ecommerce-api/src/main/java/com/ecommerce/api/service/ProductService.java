@@ -4,6 +4,7 @@ import com.ecommerce.api.dto.ProductRequest;
 import com.ecommerce.api.dto.ProductResponse;
 import com.ecommerce.api.entity.Product;
 import com.ecommerce.api.repository.ProductRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,9 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     public Page<ProductResponse> getAllProducts(Pageable pageable) {
         Page<Product> products = productRepository.findByIsActiveTrue(pageable);
@@ -65,7 +69,7 @@ public class ProductService {
         Optional<Product> optionalProduct = productRepository.findById(id);
         if (optionalProduct.isPresent()) {
             Product product = optionalProduct.get();
-            product.setIsActive(false);
+            product.setIsActive(false); // Soft delete
             productRepository.save(product);
             return true;
         }
@@ -74,37 +78,24 @@ public class ProductService {
 
     public List<ProductResponse> getProductsByCategory(String category) {
         List<Product> products = productRepository.findByCategoryAndIsActiveTrue(category);
-        return products.stream()
-                .map(this::convertToResponse)
-                .collect(Collectors.toList());
+        return products.stream().map(this::convertToResponse).collect(Collectors.toList());
     }
 
     public List<ProductResponse> searchProducts(String name) {
         List<Product> products = productRepository.findByNameContainingIgnoreCaseAndIsActiveTrue(name);
-        return products.stream()
-                .map(this::convertToResponse)
-                .collect(Collectors.toList());
+        return products.stream().map(this::convertToResponse).collect(Collectors.toList());
     }
 
     public List<ProductResponse> getProductsByPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
         List<Product> products = productRepository.findByPriceBetweenAndIsActiveTrue(minPrice, maxPrice);
-        return products.stream()
-                .map(this::convertToResponse)
-                .collect(Collectors.toList());
+        return products.stream().map(this::convertToResponse).collect(Collectors.toList());
+    }
+
+    public List<String> getCategories() {
+        return productRepository.findDistinctCategories();
     }
 
     private ProductResponse convertToResponse(Product product) {
-        ProductResponse response = new ProductResponse();
-        response.setId(product.getId());
-        response.setName(product.getName());
-        response.setDescription(product.getDescription());
-        response.setPrice(product.getPrice());
-        response.setStockQuantity(product.getStockQuantity());
-        response.setCategory(product.getCategory());
-        response.setImageUrl(product.getImageUrl());
-        response.setIsActive(product.getIsActive());
-        response.setCreatedAt(product.getCreatedAt());
-        response.setUpdatedAt(product.getUpdatedAt());
-        return response;
+        return modelMapper.map(product, ProductResponse.class);
     }
 }

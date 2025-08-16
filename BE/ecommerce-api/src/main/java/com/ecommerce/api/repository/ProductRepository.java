@@ -26,21 +26,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p WHERE p.isActive = true AND " +
            "(:category IS NULL OR p.category = :category) AND " +
-           "(:minPrice IS NULL OR p.price >= :minPrice) AND " +
-           "(:maxPrice IS NULL OR p.price <= :maxPrice)")
-    Page<Product> findActiveProductsWithFilters(
-            @Param("category") String category,
-            @Param("minPrice") BigDecimal minPrice,
-            @Param("maxPrice") BigDecimal maxPrice,
-            Pageable pageable);
+           "p.price BETWEEN :minPrice AND :maxPrice")
+    List<Product> findByFilters(@Param("category") String category,
+                               @Param("minPrice") BigDecimal minPrice,
+                               @Param("maxPrice") BigDecimal maxPrice);
 
-    @Query("SELECT p FROM Product p WHERE p.isActive = true AND " +
-           "(LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-           "LOWER(p.description) LIKE LOWER(CONCAT('%', :keyword, '%')))")
-    Page<Product> searchActiveProducts(@Param("keyword") String keyword, Pageable pageable);
-
-    @Query("SELECT DISTINCT p.category FROM Product p WHERE p.isActive = true")
+    @Query("SELECT DISTINCT p.category FROM Product p WHERE p.isActive = true AND p.category IS NOT NULL")
     List<String> findDistinctCategories();
-
-    List<Product> findByStockQuantityLessThan(Integer threshold);
 }
