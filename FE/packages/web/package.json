@@ -32,7 +32,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:plant": "set REACT_APP_THEME=plant&& react-scripts start",
+    "start:tech": "set REACT_APP_THEME=tech&& react-scripts start",
     "build": "react-scripts build",
+    "build:plant": "set REACT_APP_THEME=plant&& react-scripts build",
+    "build:tech": "set REACT_APP_THEME=tech&& react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint src --ext .ts,.tsx",

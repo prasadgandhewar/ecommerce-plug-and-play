@@ -25,8 +25,11 @@ import {
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { FaShieldAlt, FaShippingFast, FaHeart, FaStar, FaQuoteLeft } from 'react-icons/fa';
+import { useTheme } from '../../context/ThemeContext';
 
 const HomePage: React.FC = () => {
+  const { currentTheme } = useTheme();
+  
   // Mock data for featured products
   const featuredProducts = [
     {
@@ -75,51 +78,12 @@ const HomePage: React.FC = () => {
     },
   ];
 
-  const categories = [
-    {
-      name: 'Houseplants',
-      image: 'https://images.unsplash.com/photo-1586093248969-3d8ea0c76a99?w=300&h=300&fit=crop',
-      count: '120+ items',
-    },
-    {
-      name: 'Outdoor Plants',
-      image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&h=300&fit=crop',
-      count: '89+ items',
-    },
-    {
-      name: 'Succulents',
-      image: 'https://images.unsplash.com/photo-1509423350716-97f2360af622?w=300&h=300&fit=crop',
-      count: '156+ items',
-    },
-    {
-      name: 'Desert Bloom',
-      image: 'https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=300&h=300&fit=crop',
-      count: '67+ items',
-    },
-  ];
+  const categories = currentTheme.content.categories;
 
-  const features = [
-    {
-      icon: FaShieldAlt,
-      title: 'Secure Payment',
-      description: 'Elementum feugiat diam',
-    },
-    {
-      icon: FaShippingFast,
-      title: 'Free Shipping',
-      description: 'For $50 order',
-    },
-    {
-      icon: FaHeart,
-      title: 'Delivered with Care',
-      description: 'Lacinia pellentesque leo',
-    },
-    {
-      icon: FaStar,
-      title: 'Excellent Service',
-      description: 'Blandit gravida viverra',
-    },
-  ];
+  const features = currentTheme.content.features.map((feature, index) => ({
+    ...feature,
+    icon: [FaShieldAlt, FaShippingFast, FaHeart, FaStar][index] || FaShieldAlt
+  }));
 
   const testimonials = [
     {
@@ -164,7 +128,7 @@ const HomePage: React.FC = () => {
                 textTransform="uppercase"
                 opacity={0.9}
               >
-                Welcome to Urban Jungle Co.
+                Welcome to {currentTheme.branding.companyName}
               </Text>
               <Heading
                 fontSize={{ base: '3xl', md: '5xl', lg: '6xl' }}
@@ -172,11 +136,10 @@ const HomePage: React.FC = () => {
                 lineHeight="1.1"
                 letterSpacing="-0.02em"
               >
-                Discover the Beauty of Nature at Your Fingertips
+                {currentTheme.content.heroTitle}
               </Heading>
               <Text fontSize={{ base: 'lg', md: 'xl' }} maxW="2xl" opacity={0.95} lineHeight="1.7">
-                Transform your living space with our curated collection of premium plants. 
-                Whether you're a seasoned gardener or just starting your green journey, we have the perfect plants for you.
+                {currentTheme.content.heroSubtitle}
               </Text>
               <HStack spacing={4} pt={4}>
                 <Button

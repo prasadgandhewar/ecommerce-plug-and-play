@@ -34,6 +34,8 @@ import {
   FaPhone,
   FaEnvelope,
 } from 'react-icons/fa';
+import { useTheme } from '../../context/ThemeContext';
+import { BrandLogo } from '../common/BrandLogo';
 
 const ListHeader = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -44,6 +46,8 @@ const ListHeader = ({ children }: { children: React.ReactNode }) => {
 };
 
 const Footer: React.FC = () => {
+  const { currentTheme } = useTheme();
+  
   return (
     <Box
       bg="neutral.800"
@@ -55,43 +59,11 @@ const Footer: React.FC = () => {
           {/* Company Info */}
           <Stack spacing={6}>
             <Box>
-              <HStack spacing={3} mb={6}>
-                <Box 
-                  p={2} 
-                  borderRadius="xl" 
-                  bg="primary.600" 
-                  color="white"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  {/* @ts-ignore */}
-                  <FaLeaf size="20px" />
-                </Box>
-                <VStack spacing={0} align="start">
-                  <Text 
-                    fontSize="xl"
-                    fontWeight="800"
-                    color="white"
-                    lineHeight="1"
-                  >
-                    Urban Jungle Co.
-                  </Text>
-                  <Text 
-                    fontSize="xs"
-                    color="neutral.400"
-                    lineHeight="1"
-                    letterSpacing="wider"
-                    textTransform="uppercase"
-                  >
-                    Premium Plants
-                  </Text>
-                </VStack>
-              </HStack>
+              <Box mb={6}>
+                <BrandLogo size="md" />
+              </Box>
               <Text fontSize="sm" color="neutral.400" lineHeight="1.6">
-                Transform your living space with our curated collection of premium plants. 
-                We believe in the transformative power of nature to create beautiful, 
-                healthy living environments.
+                {currentTheme.content.footer?.description || 'Transform your space with our curated collection of premium products.'}
               </Text>
             </Box>
             <Stack direction="row" spacing={4}>
@@ -201,7 +173,7 @@ const Footer: React.FC = () => {
                 fontSize="sm"
                 transition="all 0.2s"
               >
-                Plant Care Tips
+                {currentTheme.content.footer?.quickLinks.blog || 'Blog'}
               </Link>
             </VStack>
           </Stack>
@@ -260,10 +232,10 @@ const Footer: React.FC = () => {
 
           {/* Newsletter & Contact */}
           <Stack align="flex-start">
-            <ListHeader>Stay Connected</ListHeader>
+            <ListHeader>{currentTheme.content.footer?.newsletter.title || 'Stay Connected'}</ListHeader>
             <VStack align="start" spacing={4} w="full">
               <Text fontSize="sm" color="neutral.400">
-                Subscribe to get special offers, plant care tips, and exclusive deals.
+                {currentTheme.content.footer?.newsletter.description || 'Subscribe to get special offers and exclusive deals.'}
               </Text>
               
               <VStack w="full" spacing={3}>
@@ -300,17 +272,17 @@ const Footer: React.FC = () => {
                 <HStack spacing={3}>
                   {/* @ts-ignore */}
                   <FaMapMarkerAlt color="var(--chakra-colors-primary-400)" />
-                  <Text fontSize="sm">123 Garden Street, Plant City, PC 12345</Text>
+                  <Text fontSize="sm">{currentTheme.content.footer?.contact.address || '123 Main Street, City, ST 12345'}</Text>
                 </HStack>
                 <HStack spacing={3}>
                   {/* @ts-ignore */}
                   <FaPhone color="var(--chakra-colors-primary-400)" />
-                  <Text fontSize="sm">+1 (555) 123-PLANT</Text>
+                  <Text fontSize="sm">{currentTheme.content.footer?.contact.phone || '+1 (555) 123-4567'}</Text>
                 </HStack>
                 <HStack spacing={3}>
                   {/* @ts-ignore */}
                   <FaEnvelope color="var(--chakra-colors-primary-400)" />
-                  <Text fontSize="sm">hello@urbanjungleco.com</Text>
+                  <Text fontSize="sm">{currentTheme.content.footer?.contact.email || 'hello@example.com'}</Text>
                 </HStack>
               </VStack>
             </VStack>
@@ -327,7 +299,7 @@ const Footer: React.FC = () => {
             align={{ base: 'center', md: 'center' }}
           >
             <Text fontSize="sm" color="neutral.500">
-              © {new Date().getFullYear()} Urban Jungle Co. All rights reserved.
+              © {new Date().getFullYear()} {currentTheme.content.footer?.copyright || currentTheme.branding.companyName}. All rights reserved.
             </Text>
             <Stack direction={{ base: 'column', sm: 'row' }} spacing={6}>
               <Link 

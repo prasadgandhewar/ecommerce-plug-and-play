@@ -40,6 +40,9 @@ import {
   BellIcon,
 } from '@chakra-ui/icons';
 import { FaLeaf, FaSearch, FaShoppingBag, FaUser, FaHeart } from 'react-icons/fa';
+import { useTheme } from '../../context/ThemeContext';
+import { BrandLogo } from '../common/BrandLogo';
+import { ThemeSwitcher } from '../common/ThemeSwitcher';
 
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { logoutUser } from '../../store/slices/authSlice';
@@ -73,6 +76,7 @@ const Header: React.FC = () => {
   const { user, isAuthenticated } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
   const isMobile = useBreakpointValue({ base: true, lg: false });
+  const { currentTheme } = useTheme();
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -99,40 +103,9 @@ const Header: React.FC = () => {
               textDecoration="none"
               _hover={{ textDecoration: 'none' }}
             >
-              <HStack spacing={3}>
-                <Box 
-                  p={2} 
-                  borderRadius="xl" 
-                  bg="primary.600" 
-                  color="white"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  {/* @ts-ignore */}
-                  <FaLeaf size="20px" />
-                </Box>
-                <VStack spacing={0} align="start">
-                  <Text 
-                    fontSize="xl"
-                    fontWeight="800"
-                    color="neutral.800"
-                    lineHeight="1"
-                  >
-                    Urban Jungle Co.
-                  </Text>
-                  <Text 
-                    fontSize="xs"
-                    color="neutral.500"
-                    lineHeight="1"
-                    letterSpacing="wider"
-                    textTransform="uppercase"
-                  >
-                    Premium Plants
-                  </Text>
-                </VStack>
-              </HStack>
+              <BrandLogo size="md" />
             </Link>
+            {!isMobile && <ThemeSwitcher size="sm" />}
           </HStack>
 
           {/* Desktop Navigation */}
@@ -155,7 +128,7 @@ const Header: React.FC = () => {
                   <FaSearch color="gray" size="16px" />
                 </InputLeftElement>
                 <Input
-                  placeholder="Search plants..."
+                  placeholder={currentTheme.content.searchPlaceholder}
                   bg="gray.50"
                   border="none"
                   borderRadius="full"
@@ -352,39 +325,7 @@ const Header: React.FC = () => {
             right={6}
           />
           <DrawerHeader pt={8} pb={4}>
-            <HStack spacing={3}>
-              <Box 
-                p={2} 
-                borderRadius="xl" 
-                bg="primary.600" 
-                color="white"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                {/* @ts-ignore */}
-                <FaLeaf size="18px" />
-              </Box>
-              <VStack spacing={0} align="start">
-                <Text 
-                  fontSize="lg"
-                  fontWeight="800"
-                  color="neutral.800"
-                  lineHeight="1"
-                >
-                  Urban Jungle Co.
-                </Text>
-                <Text 
-                  fontSize="xs"
-                  color="neutral.500"
-                  lineHeight="1"
-                  letterSpacing="wider"
-                  textTransform="uppercase"
-                >
-                  Premium Plants
-                </Text>
-              </VStack>
-            </HStack>
+            <BrandLogo size="lg" />
           </DrawerHeader>
           
           <DrawerBody px={6}>
@@ -396,7 +337,7 @@ const Header: React.FC = () => {
                   <FaSearch color="gray" size="16px" />
                 </InputLeftElement>
                 <Input
-                  placeholder="Search plants..."
+                  placeholder={currentTheme.content.searchPlaceholder}
                   bg="gray.50"
                   border="none"
                   borderRadius="xl"

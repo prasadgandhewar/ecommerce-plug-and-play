@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ChakraProvider, Box } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { Provider } from 'react-redux';
-import { theme } from './styles/chakraTheme';
 import { store } from './store';
+import { ThemeProvider } from './context/ThemeContext';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import HomePage from './pages/HomePage/HomePage';
@@ -18,7 +18,7 @@ import ProfilePage from './pages/ProfilePage/ProfilePage';
 function App() {
   return (
     <Provider store={store}>
-      <ChakraProvider theme={theme}>
+      <ThemeProvider>
         <Router>
           <Box minH="100vh" display="flex" flexDirection="column">
             <Header />
@@ -37,7 +37,7 @@ function App() {
             <Footer />
           </Box>
         </Router>
-      </ChakraProvider>
+      </ThemeProvider>
     </Provider>
   );
 }
