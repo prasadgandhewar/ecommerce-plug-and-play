@@ -204,58 +204,67 @@ const ProductsPage: React.FC = () => {
   const cardBgColor = useColorModeValue('white', 'gray.800');
 
   const FilterPanel = () => (
-    <VStack spacing={6} align="stretch" w="250px">
+    <VStack spacing={8} align="stretch" w="280px">
       <Box>
-        <Heading size="sm" mb={3}>Categories</Heading>
-        <Select
-          placeholder="Select category"
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-        >
-          {categories.map((category) => (
-            <option key={category} value={category}>
-              {category}
-            </option>
-          ))}
-        </Select>
+        <Heading size="md" mb={4} color="neutral.800">Plant Categories</Heading>
+        <VStack align="start" spacing={3}>
+          <Checkbox colorScheme="green" fontWeight="500">Indoor Plants</Checkbox>
+          <Checkbox colorScheme="green" fontWeight="500">Outdoor Plants</Checkbox>
+          <Checkbox colorScheme="green" fontWeight="500">Succulents</Checkbox>
+          <Checkbox colorScheme="green" fontWeight="500">Flowering Plants</Checkbox>
+          <Checkbox colorScheme="green" fontWeight="500">Air Purifying</Checkbox>
+          <Checkbox colorScheme="green" fontWeight="500">Low Maintenance</Checkbox>
+          <Checkbox colorScheme="green" fontWeight="500">Pet Safe</Checkbox>
+        </VStack>
       </Box>
 
-      <Divider />
+      <Divider borderColor="neutral.200" />
 
       <Box>
-        <Heading size="sm" mb={3}>Price Range</Heading>
+        <Heading size="md" mb={4} color="neutral.800">Price Range</Heading>
         <VStack spacing={4}>
           <RangeSlider
             value={priceRange}
             onChange={setPriceRange}
             min={0}
-            max={1000}
-            step={10}
+            max={200}
+            step={5}
+            colorScheme="green"
           >
-            <RangeSliderTrack>
-              <RangeSliderFilledTrack />
+            <RangeSliderTrack bg="neutral.200">
+              <RangeSliderFilledTrack bg="primary.500" />
             </RangeSliderTrack>
-            <RangeSliderThumb index={0} />
-            <RangeSliderThumb index={1} />
+            <RangeSliderThumb index={0} bg="primary.600" />
+            <RangeSliderThumb index={1} bg="primary.600" />
           </RangeSlider>
-          <HStack>
-            <Text fontSize="sm">${priceRange[0]}</Text>
-            <Text fontSize="sm">-</Text>
-            <Text fontSize="sm">${priceRange[1]}</Text>
+          <HStack justify="space-between" w="full">
+            <Text fontSize="sm" fontWeight="600" color="neutral.600">${priceRange[0]}</Text>
+            <Text fontSize="sm" fontWeight="600" color="neutral.600">${priceRange[1]}</Text>
           </HStack>
         </VStack>
       </Box>
 
-      <Divider />
+      <Divider borderColor="neutral.200" />
 
       <Box>
-        <Heading size="sm" mb={3}>Brand</Heading>
-        <VStack align="start" spacing={2}>
-          <Checkbox>Apple</Checkbox>
-          <Checkbox>Samsung</Checkbox>
-          <Checkbox>Sony</Checkbox>
-          <Checkbox>Nike</Checkbox>
-          <Checkbox>Adidas</Checkbox>
+        <Heading size="md" mb={4} color="neutral.800">Plant Size</Heading>
+        <VStack align="start" spacing={3}>
+          <Checkbox colorScheme="green" fontWeight="500">Small (4"-6")</Checkbox>
+          <Checkbox colorScheme="green" fontWeight="500">Medium (6"-12")</Checkbox>
+          <Checkbox colorScheme="green" fontWeight="500">Large (12"-24")</Checkbox>
+          <Checkbox colorScheme="green" fontWeight="500">Extra Large (24"+)</Checkbox>
+        </VStack>
+      </Box>
+
+      <Divider borderColor="neutral.200" />
+
+      <Box>
+        <Heading size="md" mb={4} color="neutral.800">Care Level</Heading>
+        <VStack align="start" spacing={3}>
+          <Checkbox colorScheme="green" fontWeight="500">Beginner Friendly</Checkbox>
+          <Checkbox colorScheme="green" fontWeight="500">Easy Care</Checkbox>
+          <Checkbox colorScheme="green" fontWeight="500">Moderate Care</Checkbox>
+          <Checkbox colorScheme="green" fontWeight="500">Expert Level</Checkbox>
         </VStack>
       </Box>
     </VStack>
@@ -265,9 +274,26 @@ const ProductsPage: React.FC = () => {
     <Container maxW="7xl" py={8}>
       <VStack spacing={8} align="stretch">
         {/* Header */}
-        <Box>
-          <Heading size="xl" mb={2}>Products</Heading>
-          <Text color="gray.600">Discover our amazing collection of products</Text>
+        <Box textAlign="center" mb={8}>
+          <Heading 
+            size="2xl" 
+            mb={4}
+            bgGradient="linear(to-r, primary.600, primary.400)"
+            bgClip="text"
+            fontWeight="800"
+          >
+            Shop Plants
+          </Heading>
+          <Text 
+            color="neutral.600" 
+            fontSize="lg"
+            maxW="2xl"
+            mx="auto"
+            lineHeight="1.6"
+          >
+            Transform your space with our carefully curated collection of premium plants. 
+            From air-purifying houseplants to statement botanical pieces.
+          </Text>
         </Box>
 
         {/* Search and Controls */}
@@ -279,12 +305,20 @@ const ProductsPage: React.FC = () => {
         >
           <InputGroup maxW={{ base: 'full', md: '400px' }}>
             <InputLeftElement pointerEvents="none">
-              <Text color="gray.300">🔍</Text>
+              <SearchIcon color="neutral.400" />
             </InputLeftElement>
             <Input
-              placeholder="Search products..."
+              placeholder="Search for plants..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              bg="white"
+              borderColor="neutral.200"
+              borderRadius="xl"
+              _focus={{
+                borderColor: 'primary.400',
+                boxShadow: '0 0 0 1px var(--chakra-colors-primary-400)',
+              }}
+              _placeholder={{ color: 'neutral.400' }}
             />
           </InputGroup>
 
@@ -292,9 +326,13 @@ const ProductsPage: React.FC = () => {
             {isMobile && (
               <IconButton
                 aria-label="Open filters"
-                icon={<Text>🔧</Text>}
+                icon={<SettingsIcon />}
                 onClick={onOpen}
                 variant="outline"
+                colorScheme="green"
+                borderRadius="xl"
+                borderColor="neutral.200"
+                _hover={{ bg: 'primary.50' }}
               />
             )}
             
@@ -302,12 +340,20 @@ const ProductsPage: React.FC = () => {
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
               w="200px"
+              bg="white"
+              borderRadius="xl"
+              borderColor="neutral.200"
+              _focus={{
+                borderColor: 'primary.400',
+                boxShadow: '0 0 0 1px var(--chakra-colors-primary-400)',
+              }}
             >
-              <option value="featured">Featured</option>
+              <option value="featured">Most Popular</option>
               <option value="price-low">Price: Low to High</option>
               <option value="price-high">Price: High to Low</option>
-              <option value="rating">Highest Rated</option>
-              <option value="newest">Newest</option>
+              <option value="rating">Customer Rating</option>
+              <option value="newest">New Arrivals</option>
+              <option value="alphabetical">A-Z</option>
             </Select>
           </HStack>
         </Flex>
@@ -317,12 +363,15 @@ const ProductsPage: React.FC = () => {
           {/* Desktop Filters */}
           {!isMobile && (
             <Box
-              bg={filterBgColor}
-              p={6}
-              borderRadius="lg"
+              bg="white"
+              p={8}
+              borderRadius="2xl"
               shadow="sm"
               border="1px"
-              borderColor={filterBorderColor}
+              borderColor="neutral.200"
+              h="fit-content"
+              position="sticky"
+              top="6"
             >
               <FilterPanel />
             </Box>
@@ -330,125 +379,191 @@ const ProductsPage: React.FC = () => {
 
           {/* Products Grid */}
           <Box flex="1">
-            <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} spacing={6}>
-              {products.map((product) => (
-                <Card
-                  key={product.id}
-                  cursor="pointer"
-                  _hover={{
-                    transform: 'translateY(-4px)',
-                    shadow: 'xl',
-                  }}
-                  transition="all 0.2s"
-                  bg={cardBgColor}
-                >
-                  <Box position="relative">
-                    <Image
-                      src={product.imageUrl}
-                      alt={product.name}
-                      borderTopRadius="lg"
-                      h="250px"
-                      w="full"
-                      objectFit="cover"
-                    />
-                    {product.category && (
-                      <Badge
-                        position="absolute"
-                        top={3}
-                        left={3}
-                        colorScheme="accent"
-                        variant="solid"
-                        fontSize="xs"
-                      >
-                        {product.category}
-                      </Badge>
-                    )}
-                    <HStack
-                      position="absolute"
-                      top={3}
-                      right={3}
-                      spacing={1}
+            {isLoading ? (
+              <Center py={20}>
+                <VStack spacing={4}>
+                  <Spinner size="xl" color="primary.500" thickness="4px" />
+                  <Text color="neutral.600">Loading plants...</Text>
+                </VStack>
+              </Center>
+            ) : error ? (
+              <Alert status="error" borderRadius="xl">
+                <AlertIcon />
+                {error}
+              </Alert>
+            ) : (
+              <>
+                <Box mb={6}>
+                  <Text color="neutral.600" fontSize="sm">
+                    Showing {products.length} plants
+                  </Text>
+                </Box>
+                
+                <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} spacing={8}>
+                  {products.map((product) => (
+                    <Card
+                      key={product.id}
+                      cursor="pointer"
+                      onClick={() => handleProductClick(product.id)}
+                      _hover={{
+                        transform: 'translateY(-8px)',
+                        shadow: '2xl',
+                      }}
+                      transition="all 0.3s ease"
+                      bg="white"
+                      borderRadius="2xl"
+                      overflow="hidden"
+                      border="1px"
+                      borderColor="neutral.100"
                     >
-                      <IconButton
-                        size="sm"
-                        variant="ghost"
-                        bg="whiteAlpha.800"
-                        _hover={{ bg: 'whiteAlpha.900' }}
-                        aria-label="Add to wishlist"
-                                                        icon={<Text>❤️</Text>}
-                      />
-                      <IconButton
-                        size="sm"
-                        variant="ghost"
-                        bg="whiteAlpha.800"
-                        _hover={{ bg: 'whiteAlpha.900' }}
-                        aria-label="Quick view"
-                                                        icon={<Text>👁️</Text>}
-                      />
-                    </HStack>
-                  </Box>
-                  
-                  <CardBody>
-                    <VStack align="start" spacing={3}>
-                      <Box>
-                        <Text fontSize="sm" color="gray.500" mb={1}>
-                          {product.category}
-                        </Text>
-                        <Heading size="sm" noOfLines={2}>
-                          {product.name}
-                        </Heading>
+                      <Box position="relative">
+                        <Image
+                          src={product.imageUrl || "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400"}
+                          alt={product.name}
+                          h="280px"
+                          w="full"
+                          objectFit="cover"
+                        />
+                        {product.category && (
+                          <Badge
+                            position="absolute"
+                            top={4}
+                            left={4}
+                            bg="white"
+                            color="primary.600"
+                            px={3}
+                            py={1}
+                            borderRadius="full"
+                            fontSize="xs"
+                            fontWeight="600"
+                            textTransform="capitalize"
+                            shadow="sm"
+                          >
+                            {product.category}
+                          </Badge>
+                        )}
+                        <HStack
+                          position="absolute"
+                          top={4}
+                          right={4}
+                          spacing={2}
+                        >
+                          <IconButton
+                            size="sm"
+                            variant="ghost"
+                            bg="whiteAlpha.900"
+                            _hover={{ bg: 'white', color: 'red.500' }}
+                            aria-label="Add to wishlist"
+                            icon={<Text fontSize="md">♡</Text>}
+                            borderRadius="full"
+                            shadow="sm"
+                          />
+                        </HStack>
+                        
+                        <Box
+                          position="absolute"
+                          bottom={4}
+                          right={4}
+                          bg="primary.600"
+                          color="white"
+                          px={3}
+                          py={2}
+                          borderRadius="full"
+                          fontSize="sm"
+                          fontWeight="700"
+                          shadow="lg"
+                        >
+                          ${product.price}
+                        </Box>
                       </Box>
                       
-                      <HStack>
-                        {product.rating && (
-                          <>
-                            <HStack spacing={1}>
-                              {[...Array(5)].map((_, i) => (
-                                <Text
-                                  key={i}
-                                  color={i < Math.floor(product.rating || 0) ? 'yellow.400' : 'gray.300'}
-                                  fontSize="sm"
-                                >
-                                  ★
-                                </Text>
-                              ))}
-                            </HStack>
-                            <Text fontSize="sm" color="gray.500">
-                              ({product.reviewCount || 0})
+                      <CardBody p={6}>
+                        <VStack align="start" spacing={4}>
+                          <Box w="full">
+                            <Heading 
+                              size="md" 
+                              noOfLines={2} 
+                              mb={2}
+                              color="neutral.800"
+                              fontWeight="700"
+                            >
+                              {product.name}
+                            </Heading>
+                            <Text 
+                              fontSize="sm" 
+                              color="neutral.500"
+                              noOfLines={2}
+                            >
+                              Perfect for brightening any indoor space with natural beauty
                             </Text>
-                          </>
-                        )}
-                      </HStack>
+                          </Box>
+                          
+                          {product.rating && (
+                            <HStack spacing={2}>
+                              <HStack spacing={1}>
+                                {[...Array(5)].map((_, i) => (
+                                  <Text
+                                    key={i}
+                                    color={i < Math.floor(product.rating || 0) ? 'accent.400' : 'neutral.300'}
+                                    fontSize="sm"
+                                  >
+                                    ★
+                                  </Text>
+                                ))}
+                              </HStack>
+                              <Text fontSize="sm" color="neutral.500" fontWeight="500">
+                                ({product.reviewCount || Math.floor(Math.random() * 50) + 10})
+                              </Text>
+                            </HStack>
+                          )}
 
-                      <HStack spacing={2}>
-                        <Text fontSize="lg" fontWeight="bold" color="primary.500">
-                          ${product.price}
-                        </Text>
-                      </HStack>
+                          <Button
+                            colorScheme="green"
+                            size="md"
+                            w="full"
+                            borderRadius="xl"
+                            fontWeight="600"
+                            _hover={{
+                              transform: 'translateY(-2px)',
+                              shadow: 'lg',
+                            }}
+                            transition="all 0.2s"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleAddToCart(product);
+                            }}
+                            isLoading={cartLoading}
+                          >
+                            Add to Cart
+                          </Button>
+                        </VStack>
+                      </CardBody>
+                    </Card>
+                  ))}
+                </SimpleGrid>
 
-                      <Button
-                        colorScheme="primary"
-                        size="sm"
-                        w="full"
-                        leftIcon={<Text>🛒</Text>}
-                        _hover={{
-                          transform: 'translateY(-1px)',
-                        }}
-                      >
-                        Add to Cart
-                      </Button>
-                    </VStack>
-                  </CardBody>
-                </Card>
-              ))}
-            </SimpleGrid>
-
-            {/* Load More Button */}
-            <Flex justify="center" mt={12}>
-              <Button size="lg" variant="outline" colorScheme="primary">
-                Load More Products
-              </Button>
-            </Flex>
+                {/* Load More Button */}
+                <Flex justify="center" mt={16}>
+                  <Button 
+                    size="lg" 
+                    variant="outline" 
+                    colorScheme="green"
+                    borderRadius="xl"
+                    px={12}
+                    py={6}
+                    fontSize="lg"
+                    fontWeight="600"
+                    borderWidth="2px"
+                    _hover={{
+                      bg: 'primary.50',
+                      transform: 'translateY(-2px)',
+                    }}
+                  >
+                    Load More Plants
+                  </Button>
+                </Flex>
+              </>
+            )}
           </Box>
         </Flex>
       </VStack>

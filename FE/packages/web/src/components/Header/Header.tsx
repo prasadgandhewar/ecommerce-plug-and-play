@@ -25,6 +25,11 @@ import {
   DrawerContent,
   DrawerCloseButton,
   useBreakpointValue,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Container,
+  Icon,
 } from '@chakra-ui/react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { 
@@ -34,6 +39,7 @@ import {
   SearchIcon,
   BellIcon,
 } from '@chakra-ui/icons';
+import { FaLeaf, FaSearch, FaShoppingBag, FaUser, FaHeart } from 'react-icons/fa';
 
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { logoutUser } from '../../store/slices/authSlice';
@@ -42,19 +48,19 @@ const NavLink = ({ children, href }: { children: React.ReactNode; href: string }
   <Link
     as={RouterLink}
     to={href}
-    px={3}
+    px={4}
     py={2}
-    rounded="md"
+    rounded="lg"
     fontSize="md"
-    fontWeight="medium"
-    color={useColorModeValue('gray.700', 'gray.200')}
+    fontWeight="600"
+    color="neutral.700"
     _hover={{
       textDecoration: 'none',
-      bg: useColorModeValue('primary.50', 'gray.700'),
-      color: useColorModeValue('primary.600', 'white'),
+      bg: 'primary.50',
+      color: 'primary.600',
       transform: 'translateY(-1px)',
     }}
-    transition="all 0.2s"
+    transition="all 0.2s ease"
   >
     {children}
   </Link>
@@ -66,7 +72,7 @@ const Header: React.FC = () => {
   const { items: cartItems } = useAppSelector((state) => state.cart);
   const { user, isAuthenticated } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
-  const isMobile = useBreakpointValue({ base: true, md: false });
+  const isMobile = useBreakpointValue({ base: true, lg: false });
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -75,97 +81,145 @@ const Header: React.FC = () => {
 
   return (
     <Box 
-      bg={useColorModeValue('white', 'gray.900')} 
-      px={4} 
-      shadow="lg"
+      bg="white" 
+      shadow="sm"
       position="sticky"
       top={0}
       zIndex={10}
+      borderBottom="1px"
+      borderColor="gray.100"
     >
-      <Flex h={16} alignItems="center" justifyContent="space-between" maxW="7xl" mx="auto">
-        {/* Logo */}
-        <Box>
-          <Link
-            as={RouterLink}
-            to="/"
-            fontSize="2xl"
-            fontWeight="bold"
-            color="primary.500"
-            textDecoration="none"
-            _hover={{ textDecoration: 'none' }}
-          >
-            <HStack spacing={2}>
-              <Text fontSize="3xl">🛒</Text>
-              <Text 
-                bgGradient="linear(to-r, primary.500, accent.500)"
-                bgClip="text"
-                fontSize="xl"
-                fontWeight="extrabold"
-              >
-                E-Store
-              </Text>
-            </HStack>
-          </Link>
-        </Box>
-
-        {/* Desktop Navigation */}
-        {!isMobile && (
-          <HStack spacing={8} alignItems="center">
-            <HStack as="nav" spacing={4}>
-              <NavLink href="/">Home</NavLink>
-              <NavLink href="/products">Products</NavLink>
-              <NavLink href="/categories">Categories</NavLink>
-              <NavLink href="/deals">Deals</NavLink>
-            </HStack>
+      <Container maxW="7xl">
+        <Flex h={20} alignItems="center" justifyContent="space-between">
+          {/* Logo */}
+          <HStack spacing={4}>
+            <Link
+              as={RouterLink}
+              to="/"
+              textDecoration="none"
+              _hover={{ textDecoration: 'none' }}
+            >
+              <HStack spacing={3}>
+                <Box 
+                  p={2} 
+                  borderRadius="xl" 
+                  bg="primary.600" 
+                  color="white"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  {/* @ts-ignore */}
+                  <FaLeaf size="20px" />
+                </Box>
+                <VStack spacing={0} align="start">
+                  <Text 
+                    fontSize="xl"
+                    fontWeight="800"
+                    color="neutral.800"
+                    lineHeight="1"
+                  >
+                    Urban Jungle Co.
+                  </Text>
+                  <Text 
+                    fontSize="xs"
+                    color="neutral.500"
+                    lineHeight="1"
+                    letterSpacing="wider"
+                    textTransform="uppercase"
+                  >
+                    Premium Plants
+                  </Text>
+                </VStack>
+              </HStack>
+            </Link>
           </HStack>
-        )}
 
-        {/* Right Side Actions */}
-        <Flex alignItems="center">
-          <HStack spacing={3}>
-            {/* Search Icon */}
-            <IconButton
-              size="md"
-              variant="ghost"
-              aria-label="Search"
-              icon={<SearchIcon />}
-              _hover={{ bg: useColorModeValue('primary.50', 'gray.700') }}
-            />
+          {/* Desktop Navigation */}
+          {!isMobile && (
+            <HStack spacing={1}>
+              <NavLink href="/">Home</NavLink>
+              <NavLink href="/products">Shop</NavLink>
+              <NavLink href="/categories">Categories</NavLink>
+              <NavLink href="/about">About</NavLink>
+              <NavLink href="/contact">Contact</NavLink>
+            </HStack>
+          )}
 
-            {/* Notifications */}
-            <IconButton
-              size="md"
-              variant="ghost"
-              aria-label="Notifications"
-              icon={<BellIcon />}
-              _hover={{ bg: useColorModeValue('primary.50', 'gray.700') }}
-            />
+          {/* Search Bar - Desktop Only */}
+          {!isMobile && (
+            <Box flex="1" maxW="400px" mx={8}>
+              <InputGroup>
+                <InputLeftElement pointerEvents="none">
+                  {/* @ts-ignore */}
+                  <FaSearch color="gray" size="16px" />
+                </InputLeftElement>
+                <Input
+                  placeholder="Search plants..."
+                  bg="gray.50"
+                  border="none"
+                  borderRadius="full"
+                  _focus={{
+                    bg: 'white',
+                    boxShadow: 'outline',
+                  }}
+                />
+              </InputGroup>
+            </Box>
+          )}
+
+          {/* Right Side Actions */}
+          <HStack spacing={4}>
+            {/* Wishlist - Desktop Only */}
+            {!isMobile && (
+              <IconButton
+                size="lg"
+                variant="ghost"
+                aria-label="Wishlist"
+                // @ts-ignore
+                icon={<FaHeart size="18px" />}
+                color="neutral.600"
+                _hover={{ 
+                  bg: 'primary.50',
+                  color: 'primary.600',
+                }}
+                borderRadius="xl"
+              />
+            )}
 
             {/* Cart */}
             <Box position="relative">
               <IconButton
                 as={RouterLink}
                 to="/cart"
-                size="md"
+                size="lg"
                 variant="ghost"
                 aria-label="Shopping Cart"
-                icon={<Text fontSize="xl">🛒</Text>}
-                _hover={{ bg: useColorModeValue('primary.50', 'gray.700') }}
+                // @ts-ignore
+                icon={<FaShoppingBag size="18px" />}
+                color="neutral.600"
+                _hover={{ 
+                  bg: 'primary.50',
+                  color: 'primary.600',
+                }}
+                borderRadius="xl"
               />
               {cartItems.length > 0 && (
                 <Badge
                   position="absolute"
                   top="-1"
                   right="-1"
-                  bg="accent.500"
+                  bg="primary.600"
                   color="white"
                   borderRadius="full"
                   fontSize="xs"
-                  minW="20px"
-                  h="20px"
+                  minW="22px"
+                  h="22px"
                   display="flex"
                   alignItems="center"
                   justifyContent="center"
+                  fontWeight="700"
+                  border="2px solid white"
                 >
                   {cartItems.length}
                 </Badge>
@@ -178,48 +232,89 @@ const Header: React.FC = () => {
                 <MenuButton
                   as={Button}
                   rounded="full"
-                  variant="link"
+                  variant="ghost"
                   cursor="pointer"
                   minW={0}
+                  _hover={{ bg: 'primary.50' }}
+                  p={1}
                 >
                   <Avatar
                     size="sm"
                     name={user ? `${user.firstName} ${user.lastName}` : 'User'}
-                    bg="primary.500"
+                    bg="primary.600"
+                    color="white"
                   />
                 </MenuButton>
-                <MenuList>
-                  <MenuItem as={RouterLink} to="/profile">
-                    Profile
+                <MenuList borderRadius="xl" border="none" shadow="xl" py={2}>
+                  <MenuItem 
+                    as={RouterLink} 
+                    to="/profile"
+                    borderRadius="lg"
+                    mx={2}
+                    my={1}
+                  >
+                    My Account
                   </MenuItem>
-                  <MenuItem as={RouterLink} to="/orders">
-                    Orders
+                  <MenuItem 
+                    as={RouterLink} 
+                    to="/orders"
+                    borderRadius="lg"
+                    mx={2}
+                    my={1}
+                  >
+                    My Orders
                   </MenuItem>
-                  <MenuItem as={RouterLink} to="/settings">
-                    Settings
+                  <MenuItem 
+                    as={RouterLink} 
+                    to="/wishlist"
+                    borderRadius="lg"
+                    mx={2}
+                    my={1}
+                  >
+                    Wishlist
                   </MenuItem>
                   <MenuDivider />
-                  <MenuItem onClick={handleLogout}>
+                  <MenuItem 
+                    onClick={handleLogout}
+                    borderRadius="lg"
+                    mx={2}
+                    my={1}
+                    color="red.500"
+                  >
                     Sign Out
                   </MenuItem>
                 </MenuList>
               </Menu>
             ) : (
-              <HStack spacing={2}>
+              <HStack spacing={3}>
                 <Button
                   as={RouterLink}
                   to="/login"
                   variant="ghost"
-                  size="sm"
-                  colorScheme="primary"
+                  size="md"
+                  color="neutral.700"
+                  fontWeight="600"
+                  borderRadius="xl"
+                  _hover={{
+                    bg: 'primary.50',
+                    color: 'primary.600',
+                  }}
                 >
                   Sign In
                 </Button>
                 <Button
                   as={RouterLink}
                   to="/register"
-                  size="sm"
-                  colorScheme="primary"
+                  size="md"
+                  bg="primary.600"
+                  color="white"
+                  fontWeight="600"
+                  borderRadius="xl"
+                  _hover={{
+                    bg: 'primary.700',
+                    transform: 'translateY(-1px)',
+                  }}
+                  px={6}
                 >
                   Sign Up
                 </Button>
@@ -229,50 +324,212 @@ const Header: React.FC = () => {
             {/* Mobile menu button */}
             {isMobile && (
               <IconButton
-                size="md"
+                size="lg"
                 icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
                 aria-label="Open Menu"
-                display={{ md: 'none' }}
+                variant="ghost"
                 onClick={isOpen ? onClose : onOpen}
+                borderRadius="xl"
+                color="neutral.600"
+                _hover={{ 
+                  bg: 'primary.50',
+                  color: 'primary.600',
+                }}
               />
             )}
           </HStack>
         </Flex>
-      </Flex>
+      </Container>
 
       {/* Mobile Navigation Drawer */}
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>Menu</DrawerHeader>
-          <DrawerBody>
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="sm">
+        <DrawerOverlay bg="blackAlpha.600" />
+        <DrawerContent borderTopLeftRadius="2xl" borderBottomLeftRadius="2xl">
+          <DrawerCloseButton 
+            size="lg" 
+            borderRadius="full"
+            top={6}
+            right={6}
+          />
+          <DrawerHeader pt={8} pb={4}>
+            <HStack spacing={3}>
+              <Box 
+                p={2} 
+                borderRadius="xl" 
+                bg="primary.600" 
+                color="white"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
+                {/* @ts-ignore */}
+                <FaLeaf size="18px" />
+              </Box>
+              <VStack spacing={0} align="start">
+                <Text 
+                  fontSize="lg"
+                  fontWeight="800"
+                  color="neutral.800"
+                  lineHeight="1"
+                >
+                  Urban Jungle Co.
+                </Text>
+                <Text 
+                  fontSize="xs"
+                  color="neutral.500"
+                  lineHeight="1"
+                  letterSpacing="wider"
+                  textTransform="uppercase"
+                >
+                  Premium Plants
+                </Text>
+              </VStack>
+            </HStack>
+          </DrawerHeader>
+          
+          <DrawerBody px={6}>
             <VStack spacing={4} align="stretch">
-              <Link as={RouterLink} to="/" onClick={onClose}>
-                Home
-              </Link>
-              <Link as={RouterLink} to="/products" onClick={onClose}>
-                Products
-              </Link>
-              <Link as={RouterLink} to="/categories" onClick={onClose}>
-                Categories
-              </Link>
-              <Link as={RouterLink} to="/deals" onClick={onClose}>
-                Deals
-              </Link>
-              <Link as={RouterLink} to="/cart" onClick={onClose}>
-                Cart ({cartItems.length})
-              </Link>
-              {!isAuthenticated && (
-                <>
-                  <Link as={RouterLink} to="/login" onClick={onClose}>
-                    Sign In
-                  </Link>
-                  <Link as={RouterLink} to="/register" onClick={onClose}>
-                    Sign Up
-                  </Link>
-                </>
-              )}
+              {/* Search Bar */}
+              <InputGroup>
+                <InputLeftElement pointerEvents="none">
+                  {/* @ts-ignore */}
+                  <FaSearch color="gray" size="16px" />
+                </InputLeftElement>
+                <Input
+                  placeholder="Search plants..."
+                  bg="gray.50"
+                  border="none"
+                  borderRadius="xl"
+                />
+              </InputGroup>
+
+              {/* Navigation Links */}
+              <VStack spacing={2} align="stretch" pt={4}>
+                <Link 
+                  as={RouterLink} 
+                  to="/" 
+                  onClick={onClose}
+                  px={4}
+                  py={3}
+                  borderRadius="xl"
+                  fontWeight="600"
+                  _hover={{ bg: 'primary.50' }}
+                >
+                  Home
+                </Link>
+                <Link 
+                  as={RouterLink} 
+                  to="/products" 
+                  onClick={onClose}
+                  px={4}
+                  py={3}
+                  borderRadius="xl"
+                  fontWeight="600"
+                  _hover={{ bg: 'primary.50' }}
+                >
+                  Shop
+                </Link>
+                <Link 
+                  as={RouterLink} 
+                  to="/categories" 
+                  onClick={onClose}
+                  px={4}
+                  py={3}
+                  borderRadius="xl"
+                  fontWeight="600"
+                  _hover={{ bg: 'primary.50' }}
+                >
+                  Categories
+                </Link>
+                <Link 
+                  as={RouterLink} 
+                  to="/about" 
+                  onClick={onClose}
+                  px={4}
+                  py={3}
+                  borderRadius="xl"
+                  fontWeight="600"
+                  _hover={{ bg: 'primary.50' }}
+                >
+                  About
+                </Link>
+                <Link 
+                  as={RouterLink} 
+                  to="/contact" 
+                  onClick={onClose}
+                  px={4}
+                  py={3}
+                  borderRadius="xl"
+                  fontWeight="600"
+                  _hover={{ bg: 'primary.50' }}
+                >
+                  Contact
+                </Link>
+              </VStack>
+
+              {/* Action Buttons */}
+              <VStack spacing={3} pt={6}>
+                <Button
+                  as={RouterLink}
+                  to="/cart"
+                  onClick={onClose}
+                  w="full"
+                  variant="outline"
+                  borderRadius="xl"
+                  // @ts-ignore
+                  leftIcon={<FaShoppingBag />}
+                  justifyContent="space-between"
+                  rightIcon={
+                    cartItems.length > 0 ? (
+                      <Badge bg="primary.600" color="white" borderRadius="full">
+                        {cartItems.length}
+                      </Badge>
+                    ) : undefined
+                  }
+                >
+                  Shopping Cart
+                </Button>
+                
+                <Button
+                  as={RouterLink}
+                  to="/wishlist"
+                  onClick={onClose}
+                  w="full"
+                  variant="outline"
+                  borderRadius="xl"
+                  // @ts-ignore
+                  leftIcon={<FaHeart />}
+                >
+                  Wishlist
+                </Button>
+
+                {!isAuthenticated && (
+                  <VStack w="full" spacing={2} pt={4}>
+                    <Button
+                      as={RouterLink}
+                      to="/login"
+                      onClick={onClose}
+                      w="full"
+                      variant="outline"
+                      borderRadius="xl"
+                    >
+                      Sign In
+                    </Button>
+                    <Button
+                      as={RouterLink}
+                      to="/register"
+                      onClick={onClose}
+                      w="full"
+                      bg="primary.600"
+                      color="white"
+                      borderRadius="xl"
+                      _hover={{ bg: 'primary.700' }}
+                    >
+                      Sign Up
+                    </Button>
+                  </VStack>
+                )}
+              </VStack>
             </VStack>
           </DrawerBody>
         </DrawerContent>
