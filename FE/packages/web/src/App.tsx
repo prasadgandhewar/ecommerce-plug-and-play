@@ -4,6 +4,7 @@ import { Box } from '@chakra-ui/react';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import { ThemeProvider } from './context/ThemeContext';
+import './styles/mobile.css';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import HomePage from './pages/HomePage/HomePage';

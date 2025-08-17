@@ -3,6 +3,15 @@ import { ThemeConfig } from '../config/themes';
 
 export const createChakraTheme = (themeConfig: ThemeConfig) => {
   return extendTheme({
+    // Enhanced breakpoints for better responsive design
+    breakpoints: {
+      base: '0px',
+      sm: '480px',
+      md: '768px',
+      lg: '992px',
+      xl: '1280px',
+      '2xl': '1536px',
+    },
     colors: {
       brand: themeConfig.colors.brand,
       primary: themeConfig.colors.primary,
@@ -54,39 +63,46 @@ export const createChakraTheme = (themeConfig: ThemeConfig) => {
       full: '9999px',
     },
     components: {
+      Container: {
+        baseStyle: {
+          px: { base: 4, md: 6, lg: 8 },
+        },
+      },
       Button: {
         baseStyle: {
           fontWeight: '600',
           borderRadius: 'lg',
           transition: 'all 0.2s',
+          minH: { base: '44px', md: '48px' }, // Touch-friendly minimum
+          minW: { base: '44px', md: '48px' },
           _focus: {
             boxShadow: 'outline',
           },
         },
         sizes: {
           sm: {
-            fontSize: 'sm',
-            px: 4,
-            py: 2,
-            h: '2rem',
+            fontSize: { base: 'sm', md: 'md' },
+            px: { base: 3, md: 4 },
+            py: { base: 2, md: 2 },
+            h: { base: '2rem', md: '2.25rem' },
           },
           md: {
-            fontSize: 'md',
-            px: 6,
-            py: 3,
-            h: '2.5rem',
+            fontSize: { base: 'md', md: 'lg' },
+            px: { base: 4, md: 6 },
+            py: { base: 3, md: 3 },
+            h: { base: '2.5rem', md: '2.75rem' },
           },
           lg: {
-            fontSize: 'lg',
-            px: 8,
-            py: 4,
-            h: '3rem',
+            fontSize: { base: 'lg', md: 'xl' },
+            px: { base: 6, md: 8 },
+            py: { base: 4, md: 4 },
+            h: { base: '3rem', md: '3.25rem' },
           },
           xl: {
-            fontSize: 'xl',
-            px: 10,
-            py: 5,
-            h: '3.5rem',
+            fontSize: { base: 'xl', md: '2xl' },
+            px: { base: 8, md: 10 },
+            py: { base: 5, md: 5 },
+            h: { base: '3.5rem', md: '3.75rem' },
           },
         },
         variants: {
@@ -209,11 +225,20 @@ export const createChakraTheme = (themeConfig: ThemeConfig) => {
             borderRadius: 'lg',
             border: '2px solid',
             borderColor: 'gray.200',
+            fontSize: { base: '16px', md: 'md' }, // Prevents zoom on iOS
+            minH: { base: '44px', md: '48px' },
+            px: { base: 4, md: 6 },
             _focus: {
               borderColor: 'primary.500',
               boxShadow: 'outline',
             },
           },
+        },
+      },
+      IconButton: {
+        baseStyle: {
+          minW: { base: '44px', md: '48px' },
+          minH: { base: '44px', md: '48px' },
         },
       },
       Badge: {
@@ -238,17 +263,35 @@ export const createChakraTheme = (themeConfig: ThemeConfig) => {
     },
     styles: {
       global: {
+        '*': {
+          borderColor: 'gray.200',
+          boxSizing: 'border-box',
+        },
+        html: {
+          scrollBehavior: 'smooth',
+          WebkitTextSizeAdjust: '100%',
+          WebkitFontSmoothing: 'antialiased',
+          MozOsxFontSmoothing: 'grayscale',
+        },
         body: {
           bg: 'white',
           color: 'neutral.800',
           fontSize: 'md',
           lineHeight: '1.6',
+          minH: '100vh',
+          overflowX: 'hidden',
+          WebkitOverflowScrolling: 'touch',
         },
-        '*': {
-          borderColor: 'gray.200',
+        // Improve focus indicators for accessibility
+        '*:focus': {
+          outline: '2px solid',
+          outlineColor: 'primary.500',
+          outlineOffset: '2px',
         },
-        html: {
-          scrollBehavior: 'smooth',
+        // Better touch targets for mobile
+        'button, a[role="button"], input, select, textarea': {
+          minHeight: { base: '44px', md: 'auto' },
+          minWidth: { base: '44px', md: 'auto' },
         },
       },
     },

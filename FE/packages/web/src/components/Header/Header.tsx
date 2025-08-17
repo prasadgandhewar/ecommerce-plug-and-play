@@ -93,17 +93,17 @@ const Header: React.FC = () => {
       borderBottom="1px"
       borderColor="gray.100"
     >
-      <Container maxW="7xl">
-        <Flex h={20} alignItems="center" justifyContent="space-between">
+      <Container maxW="7xl" px={{ base: 4, md: 6 }}>
+        <Flex h={{ base: 16, md: 20 }} alignItems="center" justifyContent="space-between">
           {/* Logo */}
-          <HStack spacing={4}>
+          <HStack spacing={{ base: 2, md: 4 }}>
             <Link
               as={RouterLink}
               to="/"
               textDecoration="none"
               _hover={{ textDecoration: 'none' }}
             >
-              <BrandLogo size="md" />
+              <BrandLogo size={{ base: 'sm', md: 'md' }} />
             </Link>
             {!isMobile && <ThemeSwitcher size="sm" />}
           </HStack>
@@ -142,7 +142,7 @@ const Header: React.FC = () => {
           )}
 
           {/* Right Side Actions */}
-          <HStack spacing={4}>
+          <HStack spacing={{ base: 2, md: 4 }}>
             {/* Wishlist - Desktop Only */}
             {!isMobile && (
               <IconButton
@@ -165,11 +165,11 @@ const Header: React.FC = () => {
               <IconButton
                 as={RouterLink}
                 to="/cart"
-                size="lg"
+                size={{ base: 'md', md: 'lg' }}
                 variant="ghost"
                 aria-label="Shopping Cart"
                 // @ts-ignore
-                icon={<FaShoppingBag size="18px" />}
+                icon={<FaShoppingBag size={{ base: '16px', md: '18px' }} />}
                 color="neutral.600"
                 _hover={{ 
                   bg: 'primary.50',
@@ -186,8 +186,8 @@ const Header: React.FC = () => {
                   color="white"
                   borderRadius="full"
                   fontSize="xs"
-                  minW="22px"
-                  h="22px"
+                  minW={{ base: '18px', md: '22px' }}
+                  h={{ base: '18px', md: '22px' }}
                   display="flex"
                   alignItems="center"
                   justifyContent="center"
@@ -259,7 +259,7 @@ const Header: React.FC = () => {
                 </MenuList>
               </Menu>
             ) : (
-              <HStack spacing={3}>
+              <HStack spacing={{ base: 2, md: 3 }} display={{ base: 'none', md: 'flex' }}>
                 <Button
                   as={RouterLink}
                   to="/login"
@@ -297,7 +297,7 @@ const Header: React.FC = () => {
             {/* Mobile menu button */}
             {isMobile && (
               <IconButton
-                size="lg"
+                size="md"
                 icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
                 aria-label="Open Menu"
                 variant="ghost"

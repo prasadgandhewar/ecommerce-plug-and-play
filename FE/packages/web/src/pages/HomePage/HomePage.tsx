@@ -114,15 +114,16 @@ const HomePage: React.FC = () => {
         bgSize="cover"
         bgPosition="center"
         color="white"
-        py={{ base: 20, md: 32 }}
+        py={{ base: 16, md: 24, lg: 32 }}
+        px={{ base: 4, md: 0 }}
         position="relative"
         overflow="hidden"
       >
         <Container maxW="7xl">
-          <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} gap={12} alignItems="center">
-            <VStack spacing={8} align={{ base: 'center', lg: 'start' }} textAlign={{ base: 'center', lg: 'left' }}>
+          <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} gap={{ base: 8, lg: 12 }} alignItems="center">
+            <VStack spacing={{ base: 6, md: 8 }} align={{ base: 'center', lg: 'start' }} textAlign={{ base: 'center', lg: 'left' }}>
               <Text
-                fontSize="lg"
+                fontSize={{ base: 'md', md: 'lg' }}
                 fontWeight="600"
                 letterSpacing="wider"
                 textTransform="uppercase"
@@ -131,77 +132,92 @@ const HomePage: React.FC = () => {
                 Welcome to {currentTheme.branding.companyName}
               </Text>
               <Heading
-                fontSize={{ base: '3xl', md: '5xl', lg: '6xl' }}
+                fontSize={{ base: '2xl', sm: '3xl', md: '4xl', lg: '5xl', xl: '6xl' }}
                 fontWeight="800"
                 lineHeight="1.1"
                 letterSpacing="-0.02em"
               >
                 {currentTheme.content.heroTitle}
               </Heading>
-              <Text fontSize={{ base: 'lg', md: 'xl' }} maxW="2xl" opacity={0.95} lineHeight="1.7">
+              <Text 
+                fontSize={{ base: 'md', md: 'lg', lg: 'xl' }} 
+                maxW={{ base: 'full', lg: '2xl' }} 
+                opacity={0.95} 
+                lineHeight="1.7"
+              >
                 {currentTheme.content.heroSubtitle}
               </Text>
-              <HStack spacing={4} pt={4}>
+              <Stack 
+                direction={{ base: 'column', sm: 'row' }} 
+                spacing={4} 
+                pt={4}
+                w={{ base: 'full', sm: 'auto' }}
+                align="center"
+              >
                 <Button
                   as={RouterLink}
                   to="/products"
-                  size="xl"
+                  size={{ base: 'lg', md: 'xl' }}
                   bg="white"
                   color="primary.600"
                   _hover={{
                     bg: 'gray.50',
                     transform: 'translateY(-2px)',
                   }}
-                  px={8}
-                  py={6}
+                  px={{ base: 6, md: 8 }}
+                  py={{ base: 4, md: 6 }}
                   borderRadius="xl"
                   fontWeight="700"
+                  w={{ base: 'full', sm: 'auto' }}
+                  minW={{ base: 'full', sm: '140px' }}
                 >
                   Shop Now
                 </Button>
                 <Button
                   variant="outline"
-                  size="xl"
+                  size={{ base: 'lg', md: 'xl' }}
                   borderColor="white"
                   color="white"
                   _hover={{
                     bg: 'whiteAlpha.200',
                     transform: 'translateY(-2px)',
                   }}
-                  px={8}
-                  py={6}
+                  px={{ base: 6, md: 8 }}
+                  py={{ base: 4, md: 6 }}
                   borderRadius="xl"
                   borderWidth="2px"
                   fontWeight="700"
+                  w={{ base: 'full', sm: 'auto' }}
+                  minW={{ base: 'full', sm: '140px' }}
                 >
                   Learn More
                 </Button>
-              </HStack>
+              </Stack>
             </VStack>
           </Grid>
         </Container>
       </Box>
 
       {/* Features Section */}
-      <Box py={16} bg="gray.50">
-        <Container maxW="7xl">
-          <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} spacing={8}>
+      <Box py={{ base: 12, md: 16 }} bg="gray.50">
+        <Container maxW="7xl" px={{ base: 4, md: 6 }}>
+          <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} spacing={{ base: 6, md: 8 }}>
             {features.map((feature, index) => (
               <VStack key={index} spacing={4} textAlign="center">
                 <Box
-                  p={4}
+                  p={{ base: 3, md: 4 }}
                   borderRadius="full"
                   bg="primary.100"
                   color="primary.600"
                 >
                   {/* @ts-ignore */}
-                  <feature.icon size="24px" />
+                  <feature.icon size={{ base: "20px", md: "24px" }} />
                 </Box>
                 <VStack spacing={2}>
-                  <Heading size="md" color="neutral.800">
+                  <Heading size={{ base: 'sm', md: 'md' }} color="neutral.800">
                     {feature.title}
                   </Heading>
-                  <Text color="neutral.600" fontSize="sm">
+                  <Text color="neutral.600" fontSize={{ base: 'xs', md: 'sm' }} textAlign="center">
                     {feature.description}
                   </Text>
                 </VStack>
@@ -212,18 +228,18 @@ const HomePage: React.FC = () => {
       </Box>
 
       {/* Trending Products Section */}
-      <Container maxW="7xl" py={20}>
-        <VStack spacing={12}>
+      <Container maxW="7xl" py={{ base: 16, md: 20 }} px={{ base: 4, md: 6 }}>
+        <VStack spacing={{ base: 8, md: 12 }}>
           <Box textAlign="center" maxW="3xl">
-            <Heading size="3xl" mb={4} color="neutral.800">
+            <Heading size={{ base: 'xl', md: '2xl', lg: '3xl' }} mb={4} color="neutral.800">
               Trending Products
             </Heading>
-            <Text fontSize="xl" color="neutral.600">
+            <Text fontSize={{ base: 'md', md: 'lg', lg: 'xl' }} color="neutral.600">
               Discover our most popular plants loved by garden enthusiasts worldwide
             </Text>
           </Box>
 
-          <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} spacing={8} w="full">
+          <SimpleGrid columns={{ base: 1, sm: 2, lg: 3, xl: 4 }} spacing={{ base: 6, md: 8 }} w="full">
             {featuredProducts.map((product) => (
               <Card
                 key={product.id}
@@ -367,24 +383,24 @@ const HomePage: React.FC = () => {
       </Box>
 
       {/* Categories Section */}
-      <Container maxW="7xl" py={20}>
-        <VStack spacing={12}>
+      <Container maxW="7xl" py={{ base: 16, md: 20 }} px={{ base: 4, md: 6 }}>
+        <VStack spacing={{ base: 8, md: 12 }}>
           <Box textAlign="center">
-            <Heading size="3xl" mb={4} color="neutral.800">
+            <Heading size={{ base: 'xl', md: '2xl', lg: '3xl' }} mb={4} color="neutral.800">
               Our Categories
             </Heading>
-            <Text fontSize="xl" color="neutral.600">
+            <Text fontSize={{ base: 'md', md: 'lg', lg: 'xl' }} color="neutral.600">
               Explore our diverse collection of plants for every space and style
             </Text>
           </Box>
 
-          <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} spacing={6} w="full">
+          <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} spacing={{ base: 4, md: 6 }} w="full">
             {categories.map((category, index) => (
               <Card
                 key={index}
                 cursor="pointer"
                 overflow="hidden"
-                borderRadius="2xl"
+                borderRadius={{ base: 'xl', md: '2xl' }}
                 _hover={{
                   transform: 'translateY(-8px)',
                   boxShadow: '2xl',
@@ -398,12 +414,12 @@ const HomePage: React.FC = () => {
                     objectFit="cover"
                   />
                 </AspectRatio>
-                <CardBody p={6} textAlign="center">
+                <CardBody p={{ base: 4, md: 6 }} textAlign="center">
                   <VStack spacing={2}>
-                    <Heading size="md" color="neutral.800">
+                    <Heading size={{ base: 'sm', md: 'md' }} color="neutral.800">
                       {category.name}
                     </Heading>
-                    <Text color="neutral.500" fontSize="sm">
+                    <Text color="neutral.500" fontSize={{ base: 'xs', md: 'sm' }}>
                       {category.count}
                     </Text>
                   </VStack>

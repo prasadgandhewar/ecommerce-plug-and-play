@@ -271,12 +271,12 @@ const ProductsPage: React.FC = () => {
   );
 
   return (
-    <Container maxW="7xl" py={8}>
-      <VStack spacing={8} align="stretch">
+    <Container maxW="7xl" py={{ base: 6, md: 8 }} px={{ base: 4, md: 6 }}>
+      <VStack spacing={{ base: 6, md: 8 }} align="stretch">
         {/* Header */}
-        <Box textAlign="center" mb={8}>
+        <Box textAlign="center" mb={{ base: 6, md: 8 }}>
           <Heading 
-            size="2xl" 
+            size={{ base: 'xl', md: '2xl' }} 
             mb={4}
             bgGradient="linear(to-r, primary.600, primary.400)"
             bgClip="text"
@@ -286,10 +286,11 @@ const ProductsPage: React.FC = () => {
           </Heading>
           <Text 
             color="neutral.600" 
-            fontSize="lg"
+            fontSize={{ base: 'md', md: 'lg' }}
             maxW="2xl"
             mx="auto"
             lineHeight="1.6"
+            px={{ base: 4, md: 0 }}
           >
             Transform your space with our carefully curated collection of premium plants. 
             From air-purifying houseplants to statement botanical pieces.
@@ -299,7 +300,7 @@ const ProductsPage: React.FC = () => {
         {/* Search and Controls */}
         <Flex
           direction={{ base: 'column', md: 'row' }}
-          gap={4}
+          gap={{ base: 3, md: 4 }}
           align={{ base: 'stretch', md: 'center' }}
           justify="space-between"
         >
@@ -359,12 +360,12 @@ const ProductsPage: React.FC = () => {
         </Flex>
 
         {/* Main Content */}
-        <Flex gap={8} align="start">
+        <Flex gap={{ base: 0, lg: 8 }} align="start" direction={{ base: 'column', lg: 'row' }}>
           {/* Desktop Filters */}
           {!isMobile && (
             <Box
               bg="white"
-              p={8}
+              p={{ base: 4, md: 8 }}
               borderRadius="2xl"
               shadow="sm"
               border="1px"
@@ -372,15 +373,16 @@ const ProductsPage: React.FC = () => {
               h="fit-content"
               position="sticky"
               top="6"
+              minW="280px"
             >
               <FilterPanel />
             </Box>
           )}
 
           {/* Products Grid */}
-          <Box flex="1">
+          <Box flex="1" w="full">
             {isLoading ? (
-              <Center py={20}>
+              <Center py={{ base: 16, md: 20 }}>
                 <VStack spacing={4}>
                   <Spinner size="xl" color="primary.500" thickness="4px" />
                   <Text color="neutral.600">Loading plants...</Text>
@@ -393,13 +395,13 @@ const ProductsPage: React.FC = () => {
               </Alert>
             ) : (
               <>
-                <Box mb={6}>
+                <Box mb={{ base: 4, md: 6 }}>
                   <Text color="neutral.600" fontSize="sm">
                     Showing {products.length} plants
                   </Text>
                 </Box>
                 
-                <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} spacing={8}>
+                <SimpleGrid columns={{ base: 1, sm: 2, md: 2, lg: 3, xl: 4 }} spacing={{ base: 4, md: 6, lg: 8 }}>
                   {products.map((product) => (
                     <Card
                       key={product.id}

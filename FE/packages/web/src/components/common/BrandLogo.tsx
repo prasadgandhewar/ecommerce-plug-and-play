@@ -4,7 +4,7 @@ import { FaLeaf, FaMicrochip } from 'react-icons/fa';
 import { useTheme } from '../../context/ThemeContext';
 
 interface BrandLogoProps {
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | { base: string; md?: string };
   showText?: boolean;
   iconOnly?: boolean;
 }
@@ -29,13 +29,27 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
 
   const IconComponent = getIconComponent();
 
-  const sizeConfig = {
-    sm: { iconSize: '16px', fontSize: 'md', taglineSize: '2xs' },
-    md: { iconSize: '20px', fontSize: 'xl', taglineSize: 'xs' },
-    lg: { iconSize: '24px', fontSize: '2xl', taglineSize: 'sm' },
+  // Handle responsive size or string size
+  const getResponsiveConfig = () => {
+    if (typeof size === 'object') {
+      return {
+        iconSize: { base: '16px', md: '20px' },
+        fontSize: { base: 'md', md: 'xl' },
+        taglineSize: { base: '2xs', md: 'xs' },
+        spacing: { base: 2, md: 3 }
+      };
+    }
+
+    const sizeConfig = {
+      sm: { iconSize: '16px', fontSize: 'md', taglineSize: '2xs', spacing: 2 },
+      md: { iconSize: '20px', fontSize: 'xl', taglineSize: 'xs', spacing: 3 },
+      lg: { iconSize: '24px', fontSize: '2xl', taglineSize: 'sm', spacing: 3 },
+    };
+
+    return sizeConfig[size];
   };
 
-  const config = sizeConfig[size];
+  const config = getResponsiveConfig();
 
   if (iconOnly) {
     return (
@@ -49,13 +63,13 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
         justifyContent="center"
       >
         {/* @ts-ignore */}
-        <IconComponent size={config.iconSize} />
+        <IconComponent size={typeof config.iconSize === 'object' ? config.iconSize.base : config.iconSize} />
       </Box>
     );
   }
 
   return (
-    <HStack spacing={3}>
+    <HStack spacing={config.spacing}>
       <Box 
         p={2} 
         borderRadius="xl" 
@@ -66,7 +80,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
         justifyContent="center"
       >
         {/* @ts-ignore */}
-        <IconComponent size={config.iconSize} />
+        <IconComponent size={typeof config.iconSize === 'object' ? config.iconSize.base : config.iconSize} />
       </Box>
       {showText && (
         <VStack spacing={0} align="start">
