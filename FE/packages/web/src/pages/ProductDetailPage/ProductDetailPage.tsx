@@ -55,9 +55,31 @@ const ProductDetailPage: React.FC = () => {
   
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const [selectedColor, setSelectedColor] = useState('Black');
-  const [selectedSize, setSelectedSize] = useState('M');
+  const [selectedVariation, setSelectedVariation] = useState<string>('');
   const [isWishlisted, setIsWishlisted] = useState(false);
+
+  // Extract unique colors and sizes from variations
+  const availableColors = product?.variations 
+    ? Array.from(new Set(product.variations.filter(v => v.isActive && v.color).map(v => v.color))).filter(Boolean) as string[]
+    : [];
+  const availableSizes = product?.variations 
+    ? Array.from(new Set(product.variations.filter(v => v.isActive && v.size).map(v => v.size))).filter(Boolean) as string[]
+    : [];
+
+  // Set default variation on product load
+  useEffect(() => {
+    if (product?.variations && product.variations.length > 0) {
+      const firstActiveVariation = product.variations.find(v => v.isActive);
+      if (firstActiveVariation) {
+        setSelectedVariation(firstActiveVariation.sku);
+      }
+    }
+  }, [product]);
+
+  // Get current selected variation details
+  const currentVariation = product?.variations?.find(v => v.sku === selectedVariation);
+  const currentPrice = currentVariation?.price || product?.price || 0;
+  const currentStock = currentVariation?.stockQuantity ?? product?.stockQuantity ?? 0;
 
   const bgColor = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
@@ -85,14 +107,25 @@ const ProductDetailPage: React.FC = () => {
     }
 
     try {
-      await dispatch(addToCartAsync({
+      const cartData: any = {
         productId: product.id,
         quantity: quantity,
-      })).unwrap();
+      };
+
+      // Add variation SKU if a variation is selected
+      if (selectedVariation) {
+        cartData.variationSku = selectedVariation;
+      }
+
+      await dispatch(addToCartAsync(cartData)).unwrap();
+
+      const variationText = currentVariation 
+        ? ` (${currentVariation.color || ''} ${currentVariation.size || ''})`.trim()
+        : '';
 
       toast({
         title: 'Added to cart!',
-        description: `${product.name} has been added to your cart.`,
+        description: `${product.name}${variationText} has been added to your cart.`,
         status: 'success',
         duration: 3000,
         isClosable: true,
@@ -139,30 +172,33 @@ const ProductDetailPage: React.FC = () => {
     );
   }
 
-  const productImages = [
-    product.imageUrl,
-    'https://images.unsplash.com/photo-1484704849700-f032a568e944?w=500',
-    'https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=500',
-    'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=500',
-  ];
+  // Use images from API response with fallback
+  const productImages = product.images && product.images.length > 0 
+    ? product.images 
+    : [product.imageUrl || product.mainImageUrl || 'https://via.placeholder.com/400x400?text=No+Image'];
 
-  const features = [
-    'Active Noise Cancellation',
-    '30-hour battery life',
-    'Premium leather finish',
-    'Wireless charging case',
-    'Voice assistant support',
-    'Water resistant IPX4',
-  ];
+  // Extract features from specifications if available
+  const features = product.specifications ? [
+    ...(product.specifications.noiseCancellation ? ['Active Noise Cancellation'] : []),
+    ...(product.specifications.batteryLifeHours ? [`${product.specifications.batteryLifeHours}-hour battery life`] : []),
+    ...(product.specifications.material ? [`Premium ${product.specifications.material} finish`] : []),
+    ...(product.specifications.connectivity === 'Wireless' ? ['Wireless charging case'] : []),
+    ...(product.specifications.warranty ? [`${product.specifications.warranty} warranty`] : []),
+    // Add any additional specs as features
+    ...Object.entries(product.specifications.additionalSpecs || {}).map(([key, value]) => `${key}: ${value}`)
+  ] : [];
 
-  const specifications = [
-    { label: 'Driver Size', value: '40mm' },
-    { label: 'Frequency Response', value: '20Hz - 20kHz' },
-    { label: 'Impedance', value: '32 Ohms' },
-    { label: 'Weight', value: '250g' },
-    { label: 'Bluetooth Version', value: '5.2' },
-    { label: 'Charging Time', value: '2 hours' },
-  ];
+  // Convert specifications object to display format
+  const specifications = product.specifications ? [
+    ...(product.specifications.connectivity ? [{ label: 'Connectivity', value: product.specifications.connectivity }] : []),
+    ...(product.specifications.batteryLifeHours ? [{ label: 'Battery Life', value: `${product.specifications.batteryLifeHours} hours` }] : []),
+    ...(product.specifications.weight ? [{ label: 'Weight', value: product.specifications.weight }] : []),
+    ...(product.specifications.dimensions ? [{ label: 'Dimensions', value: product.specifications.dimensions }] : []),
+    ...(product.specifications.warranty ? [{ label: 'Warranty', value: product.specifications.warranty }] : []),
+    ...(product.specifications.material ? [{ label: 'Material', value: product.specifications.material }] : []),
+    // Add any additional specs
+    ...Object.entries(product.specifications.additionalSpecs || {}).map(([key, value]) => ({ label: key, value: String(value) }))
+  ] : [];
 
   return (
     <Container maxW="7xl" py={8}>
@@ -243,7 +279,7 @@ const ProductDetailPage: React.FC = () => {
                   {[...Array(5)].map((_, i) => (
                     <Text
                       key={i}
-                      color={i < Math.floor(product.rating || 4.5) ? 'yellow.400' : 'gray.300'}
+                      color={i < Math.floor(product.averageRating || product.rating || 0) ? 'yellow.400' : 'gray.300'}
                       fontSize="md"
                     >
                       ★
@@ -251,12 +287,17 @@ const ProductDetailPage: React.FC = () => {
                   ))}
                 </HStack>
                 <Text color="gray.600">
-                  {product.rating || 4.5} ({product.reviewCount || 0} reviews)
+                  {(product.averageRating || product.rating || 0).toFixed(1)} ({product.totalReviews || product.reviewCount || 0} reviews)
                 </Text>
               </HStack>
 
               <Text fontSize="3xl" fontWeight="bold" color="primary.500">
-                ${product.price}
+                ${currentPrice.toFixed(2)}
+                {product.currency && product.currency !== 'USD' && (
+                  <Text as="span" fontSize="sm" color="gray.500" ml={2}>
+                    {product.currency}
+                  </Text>
+                )}
               </Text>
 
               <Text color="gray.600" lineHeight="tall">
@@ -266,35 +307,43 @@ const ProductDetailPage: React.FC = () => {
 
             <Divider />
 
-            {/* Options */}
+            {/* Variation Selection */}
             <VStack align="stretch" spacing={4}>
-              <HStack>
-                <Text fontWeight="semibold" minW="80px">Color:</Text>
-                <Select
-                  value={selectedColor}
-                  onChange={(e) => setSelectedColor(e.target.value)}
-                  maxW="150px"
-                >
-                  <option value="Black">Black</option>
-                  <option value="White">White</option>
-                  <option value="Silver">Silver</option>
-                  <option value="Blue">Blue</option>
-                </Select>
-              </HStack>
+              {product.variations && product.variations.length > 0 && (
+                <VStack align="stretch" spacing={3}>
+                  <Text fontWeight="semibold">Select Variation:</Text>
+                  <Select
+                    value={selectedVariation}
+                    onChange={(e) => setSelectedVariation(e.target.value)}
+                    placeholder="Choose a variation"
+                  >
+                    {product.variations
+                      .filter(v => v.isActive)
+                      .map((variation) => (
+                        <option key={variation.sku} value={variation.sku}>
+                          {variation.color && variation.size 
+                            ? `${variation.color} - ${variation.size}` 
+                            : variation.color || variation.size || variation.sku}
+                          {variation.price !== product.price && (
+                            ` - $${variation.price.toFixed(2)}`
+                          )}
+                        </option>
+                      ))}
+                  </Select>
+                </VStack>
+              )}
 
-              <HStack>
-                <Text fontWeight="semibold" minW="80px">Size:</Text>
-                <Select
-                  value={selectedSize}
-                  onChange={(e) => setSelectedSize(e.target.value)}
-                  maxW="150px"
-                >
-                  <option value="S">Small</option>
-                  <option value="M">Medium</option>
-                  <option value="L">Large</option>
-                  <option value="XL">Extra Large</option>
-                </Select>
-              </HStack>
+              {/* Legacy color/size selection if no variations but specifications have color options */}
+              {(!product.variations || product.variations.length === 0) && product.specifications?.colorOptions && (
+                <HStack>
+                  <Text fontWeight="semibold" minW="80px">Color:</Text>
+                  <Select maxW="150px" placeholder="Select color">
+                    {product.specifications.colorOptions.map((color) => (
+                      <option key={color} value={color}>{color}</option>
+                    ))}
+                  </Select>
+                </HStack>
+              )}
 
               <HStack>
                 <Text fontWeight="semibold" minW="80px">Quantity:</Text>
@@ -302,7 +351,7 @@ const ProductDetailPage: React.FC = () => {
                   value={quantity}
                   onChange={(_, value) => setQuantity(value)}
                   min={1}
-                  max={product.stockQuantity || 1}
+                  max={currentStock}
                   maxW="100px"
                 >
                   <NumberInputField />
@@ -322,10 +371,10 @@ const ProductDetailPage: React.FC = () => {
                 Stock Available:
               </Text>
               <Badge 
-                colorScheme={product.stockQuantity > 0 ? 'green' : 'red'}
+                colorScheme={currentStock > 0 ? 'green' : 'red'}
                 variant="solid"
               >
-                {product.stockQuantity > 0 ? `${product.stockQuantity} units` : 'Out of Stock'}
+                {currentStock > 0 ? `${currentStock} units` : 'Out of Stock'}
               </Badge>
             </HStack>
 
@@ -336,7 +385,7 @@ const ProductDetailPage: React.FC = () => {
                 colorScheme="primary"
                 w="full"
                 onClick={handleAddToCart}
-                isDisabled={product.stockQuantity === 0}
+                isDisabled={currentStock === 0}
                 isLoading={cartLoading}
                 loadingText="Adding to Cart..."
                 _hover={{
@@ -344,7 +393,7 @@ const ProductDetailPage: React.FC = () => {
                   shadow: 'lg',
                 }}
               >
-                Add to Cart - ${(product.price * quantity).toFixed(2)}
+                Add to Cart - ${(currentPrice * quantity).toFixed(2)}
               </Button>
 
               <HStack w="full" spacing={3}>
@@ -375,7 +424,9 @@ const ProductDetailPage: React.FC = () => {
               </HStack>
               <HStack>
                 <Text fontSize="lg">🛡️</Text>
-                <Text fontSize="sm">2-year manufacturer warranty</Text>
+                <Text fontSize="sm">
+                  {product.specifications?.warranty || '2-year manufacturer warranty'}
+                </Text>
               </HStack>
               <HStack>
                 <Text fontSize="lg">🔄</Text>
@@ -391,7 +442,7 @@ const ProductDetailPage: React.FC = () => {
         <TabList>
           <Tab>Description</Tab>
           <Tab>Specifications</Tab>
-          <Tab>Reviews ({product.reviewCount})</Tab>
+          <Tab>Reviews ({product.totalReviews || product.reviewCount || 0})</Tab>
           <Tab>Shipping & Returns</Tab>
         </TabList>
 
@@ -399,63 +450,93 @@ const ProductDetailPage: React.FC = () => {
           <TabPanel>
             <VStack align="stretch" spacing={4}>
               <Text lineHeight="tall">
-                Experience premium audio quality with our flagship wireless headphones. 
-                Featuring advanced active noise cancellation technology, these headphones 
-                deliver crystal-clear sound while blocking out ambient noise for an 
-                immersive listening experience.
+                {product.description || 'No detailed description available for this product.'}
               </Text>
               
-              <Heading size="md">Key Features</Heading>
-              <SimpleGrid columns={{ base: 1, md: 2 }} spacing={2}>
-                {features.map((feature, index) => (
-                  <HStack key={index}>
-                    <Box w={2} h={2} bg="primary.500" borderRadius="full" />
-                    <Text>{feature}</Text>
-                  </HStack>
-                ))}
-              </SimpleGrid>
+              {features.length > 0 && (
+                <>
+                  <Heading size="md">Key Features</Heading>
+                  <SimpleGrid columns={{ base: 1, md: 2 }} spacing={2}>
+                    {features.map((feature, index) => (
+                      <HStack key={index}>
+                        <Box w={2} h={2} bg="primary.500" borderRadius="full" />
+                        <Text>{feature}</Text>
+                      </HStack>
+                    ))}
+                  </SimpleGrid>
+                </>
+              )}
             </VStack>
           </TabPanel>
 
           <TabPanel>
-            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
-              {specifications.map((spec, index) => (
-                <HStack key={index} justify="space-between">
-                  <Text fontWeight="semibold">{spec.label}:</Text>
-                  <Text>{spec.value}</Text>
-                </HStack>
-              ))}
-            </SimpleGrid>
+            {specifications.length > 0 ? (
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+                {specifications.map((spec, index) => (
+                  <HStack key={index} justify="space-between">
+                    <Text fontWeight="semibold">{spec.label}:</Text>
+                    <Text>{spec.value}</Text>
+                  </HStack>
+                ))}
+              </SimpleGrid>
+            ) : (
+              <Text color="gray.500" textAlign="center" py={8}>
+                No detailed specifications available for this product.
+              </Text>
+            )}
           </TabPanel>
 
           <TabPanel>
             <VStack spacing={4} align="stretch">
-              {[1, 2, 3].map((review) => (
-                <Card key={review}>
-                  <CardBody>
-                    <VStack align="stretch" spacing={3}>
-                      <HStack justify="space-between">
-                        <Text fontWeight="semibold">Customer {review}</Text>
-                        <HStack>
-                          {[...Array(5)].map((_, i) => (
-                            <Text
-                              key={i}
-                              color={i < 5 ? 'yellow.400' : 'gray.300'}
-                              fontSize="sm"
-                            >
-                              ★
+              {product.reviews && product.reviews.length > 0 ? (
+                product.reviews
+                  .filter(review => review.isApproved)
+                  .map((review, index) => (
+                    <Card key={index}>
+                      <CardBody>
+                        <VStack align="stretch" spacing={3}>
+                          <HStack justify="space-between">
+                            <VStack align="start" spacing={1}>
+                              <Text fontWeight="semibold">
+                                {review.userId || `Customer ${index + 1}`}
+                              </Text>
+                              <HStack spacing={1}>
+                                <Text fontSize="xs" color="gray.500">
+                                  {new Date(review.date).toLocaleDateString()}
+                                </Text>
+                                {review.isVerifiedPurchase && (
+                                  <Badge size="sm" colorScheme="green">
+                                    Verified Purchase
+                                  </Badge>
+                                )}
+                              </HStack>
+                            </VStack>
+                            <HStack>
+                              {[...Array(5)].map((_, i) => (
+                                <Text
+                                  key={i}
+                                  color={i < review.rating ? 'yellow.400' : 'gray.300'}
+                                  fontSize="sm"
+                                >
+                                  ★
+                                </Text>
+                              ))}
+                            </HStack>
+                          </HStack>
+                          {review.comment && (
+                            <Text color="gray.600">
+                              {review.comment}
                             </Text>
-                          ))}
-                        </HStack>
-                      </HStack>
-                      <Text color="gray.600">
-                        Amazing quality and comfort. The noise cancellation works perfectly 
-                        and the battery life is excellent. Highly recommended!
-                      </Text>
-                    </VStack>
-                  </CardBody>
-                </Card>
-              ))}
+                          )}
+                        </VStack>
+                      </CardBody>
+                    </Card>
+                  ))
+              ) : (
+                <Text color="gray.500" textAlign="center" py={8}>
+                  No reviews yet. Be the first to review this product!
+                </Text>
+              )}
             </VStack>
           </TabPanel>
 
