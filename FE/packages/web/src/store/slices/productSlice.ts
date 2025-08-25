@@ -46,6 +46,19 @@ export const fetchProducts = createAsyncThunk(
   }
 );
 
+// New action for infinite scroll - appends products instead of replacing
+export const fetchMoreProducts = createAsyncThunk(
+  'products/fetchMoreProducts',
+  async (filters: ProductFilters = {}, { rejectWithValue }) => {
+    try {
+      const response = await productService.getProducts(filters);
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to fetch more products');
+    }
+  }
+);
+
 export const fetchProductById = createAsyncThunk(
   REDUX_ACTION_TYPES.PRODUCTS.FETCH_PRODUCT_BY_ID,
   async (id: string, { rejectWithValue }) => {
@@ -182,6 +195,27 @@ const productSlice = createSlice({
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      // Fetch more products (for infinite scroll)
+      .addCase(fetchMoreProducts.pending, (state) => {
+        // Don't set isLoading to true for infinite scroll to avoid hiding the grid
+        state.error = null;
+      })
+      .addCase(fetchMoreProducts.fulfilled, (state, action) => {
+        // Append new products to existing ones
+        state.products = [...state.products, ...action.payload.content];
+        state.pagination = {
+          totalElements: action.payload.totalElements,
+          totalPages: action.payload.totalPages,
+          size: action.payload.size,
+          number: action.payload.number,
+          first: action.payload.first,
+          last: action.payload.last,
+        };
+        state.error = null;
+      })
+      .addCase(fetchMoreProducts.rejected, (state, action) => {
         state.error = action.payload as string;
       })
       // Fetch product by ID

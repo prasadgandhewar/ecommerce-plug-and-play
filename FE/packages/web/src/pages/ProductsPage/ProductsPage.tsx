@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Box,
   Container,
@@ -49,6 +49,7 @@ import { SearchIcon, SettingsIcon } from '@chakra-ui/icons';
 import { RootState, AppDispatch } from '../../store';
 import { 
   fetchProducts, 
+  fetchMoreProducts,
   searchProducts, 
   fetchProductsByCategory, 
   fetchProductsByPriceRange,
@@ -81,6 +82,8 @@ const ProductsPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [currentPage, setCurrentPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isMobile = useBreakpointValue({ base: true, md: false });
@@ -94,6 +97,59 @@ const ProductsPage: React.FC = () => {
     dispatch(fetchProducts({ page: 0, size: 20, sortBy: 'averageRating', sortDir: 'desc' }));
     dispatch(fetchCategories());
   }, [dispatch]);
+
+  // Infinite scroll implementation
+  const loadMoreProducts = useCallback(async () => {
+    if (isLoadingMore || !hasMore || isLoading) return;
+
+    setIsLoadingMore(true);
+    const nextPage = currentPage + 1;
+
+    const newFilters = {
+      ...filters,
+      page: nextPage,
+      size: 20,
+      sortBy: sortBy,
+      sortDir: sortDir,
+      query: searchTerm.trim() || undefined,
+      category: selectedCategory || undefined
+    };
+
+    try {
+      const result = await dispatch(fetchMoreProducts(newFilters)).unwrap();
+      
+      setCurrentPage(nextPage);
+      
+      // Check if we have more pages
+      if (result.last || result.numberOfElements < 20) {
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error('Error loading more products:', error);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  }, [dispatch, currentPage, hasMore, isLoading, isLoadingMore, filters, sortBy, sortDir, searchTerm, selectedCategory]);
+
+  // Intersection Observer for infinite scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight;
+      const clientHeight = document.documentElement.clientHeight;
+      
+      // Calculate scroll percentage
+      const scrollPercentage = (scrollTop + clientHeight) / scrollHeight;
+      
+      // Load more when user reaches 80% of the page
+      if (scrollPercentage >= 0.8) {
+        loadMoreProducts();
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [loadMoreProducts]);
 
   // Handle sort change - updated to handle combined sort options
   const handleSortChange = (value: string) => {
@@ -132,6 +188,7 @@ const ProductsPage: React.FC = () => {
     setSortBy(newSortBy);
     setSortDir(newSortDir);
     setCurrentPage(0);
+    setHasMore(true);
 
     const newFilters = { 
       ...filters, 
@@ -149,6 +206,7 @@ const ProductsPage: React.FC = () => {
   // Handle search
   const handleSearch = () => {
     setCurrentPage(0);
+    setHasMore(true);
     const newFilters = {
       page: 0,
       size: 20,
@@ -178,6 +236,7 @@ const ProductsPage: React.FC = () => {
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
     setCurrentPage(0);
+    setHasMore(true);
     
     const newFilters = {
       page: 0,
@@ -200,6 +259,7 @@ const ProductsPage: React.FC = () => {
   // Handle price range filter
   const handlePriceRangeFilter = () => {
     setCurrentPage(0);
+    setHasMore(true);
     
     const newFilters = {
       page: 0,
@@ -217,24 +277,6 @@ const ProductsPage: React.FC = () => {
       minPrice: priceRange[0], 
       maxPrice: priceRange[1] 
     }));
-  };
-
-  // Handle load more
-  const handleLoadMore = () => {
-    const nextPage = currentPage + 1;
-    setCurrentPage(nextPage);
-    
-    const newFilters = {
-      ...filters,
-      page: nextPage,
-      sortBy: sortBy,
-      sortDir: sortDir,
-      query: searchTerm.trim() || undefined,
-      category: selectedCategory || undefined
-    };
-    
-    dispatch(setFilters(newFilters));
-    dispatch(fetchProducts(newFilters));
   };
 
   // Handle add to cart
@@ -666,30 +708,23 @@ const ProductsPage: React.FC = () => {
                   ))}
                 </SimpleGrid>
 
-                {/* Load More Button */}
-                {pagination && !pagination.last && (
-                  <Flex justify="center" mt={16}>
-                    <Button 
-                      size="lg" 
-                      variant="outline" 
-                      colorScheme="green"
-                      borderRadius="xl"
-                      px={12}
-                      py={6}
-                      fontSize="lg"
-                      fontWeight="600"
-                      borderWidth="2px"
-                      onClick={handleLoadMore}
-                      isLoading={isLoading}
-                      loadingText="Loading More..."
-                      _hover={{
-                        bg: 'primary.50',
-                        transform: 'translateY(-2px)',
-                      }}
-                    >
-                      Load More Plants
-                    </Button>
-                  </Flex>
+                {/* Infinite Scroll Loading Indicator */}
+                {isLoadingMore && (
+                  <Center py={8}>
+                    <VStack spacing={4}>
+                      <Spinner size="lg" color="primary.500" thickness="3px" />
+                      <Text color="neutral.600" fontSize="sm">Loading more products...</Text>
+                    </VStack>
+                  </Center>
+                )}
+
+                {/* End of results indicator */}
+                {!hasMore && products.length > 0 && (
+                  <Center py={8}>
+                    <Text color="neutral.500" fontSize="sm">
+                      You've reached the end of our collection!
+                    </Text>
+                  </Center>
                 )}
               </>
             )}
