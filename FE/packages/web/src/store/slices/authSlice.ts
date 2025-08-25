@@ -10,12 +10,34 @@ export interface AuthState {
   isAuthenticated: boolean;
 }
 
+// Safe initialization function
+const initializeAuthState = (): Pick<AuthState, 'user' | 'token' | 'isAuthenticated'> => {
+  try {
+    const user = authService.getCurrentUser();
+    const token = authService.getToken();
+    const isAuthenticated = authService.isAuthenticated();
+    
+    return {
+      user,
+      token,
+      isAuthenticated,
+    };
+  } catch (error) {
+    console.error('Error initializing auth state:', error);
+    // Clear corrupted data
+    authService.logout();
+    return {
+      user: null,
+      token: null,
+      isAuthenticated: false,
+    };
+  }
+};
+
 const initialState: AuthState = {
-  user: authService.getCurrentUser(),
-  token: authService.getToken(),
+  ...initializeAuthState(),
   isLoading: false,
   error: null,
-  isAuthenticated: authService.isAuthenticated(),
 };
 
 // Async thunks
@@ -24,8 +46,10 @@ export const loginUser = createAsyncThunk(
   async (credentials: LoginRequest, { rejectWithValue }) => {
     try {
       const response = await authService.login(credentials);
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('user', JSON.stringify(response.user));
+      if (response.token && response.user) {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('user', JSON.stringify(response.user));
+      }
       return response;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Login failed');
@@ -38,8 +62,10 @@ export const registerUser = createAsyncThunk(
   async (userData: RegisterRequest, { rejectWithValue }) => {
     try {
       const response = await authService.register(userData);
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('user', JSON.stringify(response.user));
+      if (response.token && response.user) {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('user', JSON.stringify(response.user));
+      }
       return response;
     } catch (error: any) {
       return rejectWithValue(error.response?.data || 'Registration failed');
@@ -51,6 +77,7 @@ export const logoutUser = createAsyncThunk(
   REDUX_ACTION_TYPES.AUTH.LOGOUT,
   async () => {
     authService.logout();
+    return null;
   }
 );
 
@@ -61,11 +88,28 @@ const authSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
-    setCredentials: (state, action: PayloadAction<AuthResponse>) => {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
-      state.isAuthenticated = true;
+    clearAuthData: (state) => {
+      state.user = null;
+      state.token = null;
+      state.isAuthenticated = false;
       state.error = null;
+      authService.logout();
+    },
+    setCredentials: (state, action: PayloadAction<AuthResponse>) => {
+      if (action.payload.user && action.payload.token) {
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.isAuthenticated = true;
+        state.error = null;
+        
+        // Safely store in localStorage
+        try {
+          localStorage.setItem('token', action.payload.token);
+          localStorage.setItem('user', JSON.stringify(action.payload.user));
+        } catch (error) {
+          console.error('Error storing credentials in localStorage:', error);
+        }
+      }
     },
   },
   extraReducers: (builder) => {
@@ -118,5 +162,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { clearError, setCredentials } = authSlice.actions;
+export const { clearError, clearAuthData, setCredentials } = authSlice.actions;
 export default authSlice.reducer;

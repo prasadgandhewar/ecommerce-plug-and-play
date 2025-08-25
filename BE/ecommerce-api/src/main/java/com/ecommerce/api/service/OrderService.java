@@ -5,6 +5,7 @@ import com.ecommerce.api.dto.OrderResponse;
 import com.ecommerce.api.dto.ProductResponse;
 import com.ecommerce.api.entity.Order;
 import com.ecommerce.api.entity.OrderItem;
+import com.ecommerce.api.entity.ProductVariation;
 import com.ecommerce.api.entity.User;
 import com.ecommerce.api.repository.OrderRepository;
 import com.ecommerce.api.repository.UserRepository;
@@ -74,6 +75,7 @@ public class OrderService {
             for (Map<String, Object> itemData : items) {
                 String productId = itemData.get("productId").toString();
                 Integer quantity = Integer.valueOf(itemData.get("quantity").toString());
+                String variationSku = itemData.get("variationSku") != null ? itemData.get("variationSku").toString() : null;
 
                 // Fetch product from MongoDB
                 Optional<ProductResponse> productOpt = productService.getProductById(productId);
@@ -83,12 +85,41 @@ public class OrderService {
                     OrderItem orderItem = new OrderItem();
                     orderItem.setOrder(savedOrder);
                     orderItem.setProductId(productId);
+                    orderItem.setVariationSku(variationSku);
                     orderItem.setProductName(product.getName());
-                    orderItem.setProductImageUrl(product.getImageUrl());
+                    orderItem.setProductImageUrl(product.getMainImageUrl());
                     orderItem.setQuantity(quantity);
-                    orderItem.setUnitPrice(product.getPrice());
 
-                    BigDecimal subtotal = product.getPrice().multiply(BigDecimal.valueOf(quantity));
+                    BigDecimal unitPrice = product.getPrice();
+                    String variationDescription = null;
+
+                    // If there's a variation, use variation price and create description
+                    if (variationSku != null && product.getVariations() != null) {
+                        Optional<ProductVariation> variationOpt = product.getVariations().stream()
+                                .filter(v -> v.getSku().equals(variationSku))
+                                .findFirst();
+                        
+                        if (variationOpt.isPresent()) {
+                            ProductVariation variation = variationOpt.get();
+                            unitPrice = variation.getPrice();
+                            
+                            // Build variation description
+                            StringBuilder desc = new StringBuilder();
+                            if (variation.getColor() != null) {
+                                desc.append("Color: ").append(variation.getColor());
+                            }
+                            if (variation.getSize() != null) {
+                                if (desc.length() > 0) desc.append(", ");
+                                desc.append("Size: ").append(variation.getSize());
+                            }
+                            variationDescription = desc.toString();
+                        }
+                    }
+
+                    orderItem.setUnitPrice(unitPrice);
+                    orderItem.setVariationDescription(variationDescription);
+
+                    BigDecimal subtotal = unitPrice.multiply(BigDecimal.valueOf(quantity));
                     orderItem.setSubtotal(subtotal);
                     totalAmount = totalAmount.add(subtotal);
 
@@ -129,11 +160,29 @@ public class OrderService {
         OrderItemResponse response = new OrderItemResponse();
         response.setId(orderItem.getId());
         response.setProductId(orderItem.getProductId());
+        response.setVariationSku(orderItem.getVariationSku());
         response.setProductName(orderItem.getProductName());
+        response.setVariationDescription(orderItem.getVariationDescription());
         response.setProductImageUrl(orderItem.getProductImageUrl());
         response.setQuantity(orderItem.getQuantity());
         response.setUnitPrice(orderItem.getUnitPrice());
         response.setSubtotal(orderItem.getSubtotal());
+        
+        // Optionally fetch current product details for reference
+        Optional<ProductResponse> productOpt = productService.getProductById(orderItem.getProductId());
+        if (productOpt.isPresent()) {
+            ProductResponse product = productOpt.get();
+            response.setProduct(product);
+            
+            // If there's a variation SKU, find and set the selected variation
+            if (orderItem.getVariationSku() != null && product.getVariations() != null) {
+                product.getVariations().stream()
+                    .filter(variation -> variation.getSku().equals(orderItem.getVariationSku()))
+                    .findFirst()
+                    .ifPresent(response::setSelectedVariation);
+            }
+        }
+        
         return response;
     }
 
@@ -193,5 +242,51 @@ public class OrderService {
             return true;
         }
         return false;
+    }
+
+    public Map<String, Object> getOrderStatistics() {
+        List<Order> allOrders = orderRepository.findAll();
+        
+        long totalOrders = allOrders.size();
+        long pendingOrders = allOrders.stream().filter(o -> o.getStatus() == Order.OrderStatus.PENDING).count();
+        long confirmedOrders = allOrders.stream().filter(o -> o.getStatus() == Order.OrderStatus.CONFIRMED).count();
+        long shippedOrders = allOrders.stream().filter(o -> o.getStatus() == Order.OrderStatus.SHIPPED).count();
+        long deliveredOrders = allOrders.stream().filter(o -> o.getStatus() == Order.OrderStatus.DELIVERED).count();
+        long cancelledOrders = allOrders.stream().filter(o -> o.getStatus() == Order.OrderStatus.CANCELLED).count();
+        
+        BigDecimal totalRevenue = allOrders.stream()
+                .filter(o -> o.getStatus() != Order.OrderStatus.CANCELLED)
+                .map(Order::getTotalAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        
+        return Map.of(
+            "totalOrders", totalOrders,
+            "pendingOrders", pendingOrders,
+            "confirmedOrders", confirmedOrders,
+            "shippedOrders", shippedOrders,
+            "deliveredOrders", deliveredOrders,
+            "cancelledOrders", cancelledOrders,
+            "totalRevenue", totalRevenue
+        );
+    }
+
+    public Optional<OrderResponse> confirmOrder(Long id) {
+        return updateOrderStatus(id, "CONFIRMED");
+    }
+
+    public Optional<OrderResponse> shipOrder(Long id) {
+        return updateOrderStatus(id, "SHIPPED");
+    }
+
+    public Optional<OrderResponse> deliverOrder(Long id) {
+        return updateOrderStatus(id, "DELIVERED");
+    }
+
+    public List<OrderResponse> getRecentOrders(int limit) {
+        List<Order> orders = orderRepository.findTop10ByOrderByCreatedAtDesc();
+        return orders.stream()
+                .limit(limit)
+                .map(this::convertToOrderResponse)
+                .collect(Collectors.toList());
     }
 }

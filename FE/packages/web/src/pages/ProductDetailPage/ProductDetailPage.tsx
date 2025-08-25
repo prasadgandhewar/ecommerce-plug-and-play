@@ -65,7 +65,7 @@ const ProductDetailPage: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      dispatch(fetchProductById(parseInt(id)));
+      dispatch(fetchProductById(id)); // Remove parseInt since id is now string
     }
   }, [dispatch, id]);
 

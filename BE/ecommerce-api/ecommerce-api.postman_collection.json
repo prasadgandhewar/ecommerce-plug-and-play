@@ -149,7 +149,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/products?page=0&size=10&sortBy=name&sortDir=asc",
+              "raw": "{{baseUrl}}/products?page=0&size=10&sortBy=name&sortDir=asc&category=Electronics",
               "host": ["{{baseUrl}}"],
               "path": ["products"],
               "query": [
@@ -168,10 +168,35 @@
                 {
                   "key": "sortDir",
                   "value": "asc"
+                },
+                {
+                  "key": "category",
+                  "value": "Electronics",
+                  "disabled": true
+                },
+                {
+                  "key": "subCategory",
+                  "value": "Headphones",
+                  "disabled": true
+                },
+                {
+                  "key": "brand",
+                  "value": "AudioTech",
+                  "disabled": true
+                },
+                {
+                  "key": "minPrice",
+                  "value": "50",
+                  "disabled": true
+                },
+                {
+                  "key": "maxPrice",
+                  "value": "500",
+                  "disabled": true
                 }
               ]
             },
-            "description": "Get all products with pagination and sorting"
+            "description": "Get all products with enhanced filtering options"
           },
           "response": []
         },
@@ -190,6 +215,20 @@
           "response": []
         },
         {
+          "name": "Get Product by SKU",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/sku/PROD-ABC-123",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "sku", "PROD-ABC-123"]
+            },
+            "description": "Get a specific product by SKU"
+          },
+          "response": []
+        },
+        {
           "name": "Create Product (Admin)",
           "request": {
             "method": "POST",
@@ -201,14 +240,14 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Wireless Headphones\",\n  \"description\": \"High-quality wireless headphones with noise cancellation\",\n  \"price\": 199.99,\n  \"stockQuantity\": 50,\n  \"category\": \"Electronics\",\n  \"imageUrl\": \"https://example.com/headphones.jpg\"\n}"
+              "raw": "{\n  \"sku\": \"PROD-ABC-123\",\n  \"name\": \"Premium Wireless Headphones\",\n  \"description\": \"Immersive sound, comfortable design, and long-lasting battery life for an unparalleled audio experience.\",\n  \"category\": \"Electronics\",\n  \"subCategory\": \"Headphones\",\n  \"brand\": \"AudioTech\",\n  \"price\": 199.99,\n  \"currency\": \"USD\",\n  \"stockQuantity\": 50,\n  \"images\": [\n    \"https://example.com/images/headphones_main.jpg\",\n    \"https://example.com/images/headphones_side.jpg\",\n    \"https://example.com/images/headphones_back.jpg\"\n  ],\n  \"specifications\": {\n    \"connectivity\": \"Bluetooth 5.0\",\n    \"batteryLifeHours\": 20,\n    \"noiseCancellation\": true,\n    \"colorOptions\": [\"Black\", \"Silver\", \"Blue\"]\n  },\n  \"variations\": [\n    {\n      \"sku\": \"PROD-ABC-123-BLK\",\n      \"color\": \"Black\",\n      \"price\": 199.99,\n      \"stockQuantity\": 25\n    },\n    {\n      \"sku\": \"PROD-ABC-123-SLV\",\n      \"color\": \"Silver\",\n      \"price\": 199.99,\n      \"stockQuantity\": 15\n    },\n    {\n      \"sku\": \"PROD-ABC-123-BLU\",\n      \"color\": \"Blue\",\n      \"price\": 209.99,\n      \"stockQuantity\": 10\n    }\n  ]\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/products",
               "host": ["{{baseUrl}}"],
               "path": ["products"]
             },
-            "description": "Create a new product (Admin only)"
+            "description": "Create a new product with enhanced schema (Admin only)"
           },
           "response": []
         },
@@ -224,7 +263,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Updated Wireless Headphones\",\n  \"description\": \"Updated high-quality wireless headphones with noise cancellation\",\n  \"price\": 179.99,\n  \"stockQuantity\": 45,\n  \"category\": \"Electronics\",\n  \"imageUrl\": \"https://example.com/updated-headphones.jpg\"\n}"
+              "raw": "{\n  \"sku\": \"PROD-ABC-123-UPD\",\n  \"name\": \"Updated Premium Wireless Headphones\",\n  \"description\": \"Updated immersive sound, comfortable design, and long-lasting battery life\",\n  \"category\": \"Electronics\",\n  \"subCategory\": \"Headphones\",\n  \"brand\": \"AudioTech\",\n  \"price\": 179.99,\n  \"currency\": \"USD\",\n  \"stockQuantity\": 45,\n  \"images\": [\n    \"https://example.com/images/updated-headphones.jpg\"\n  ]\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/products/{{productId}}",
@@ -264,22 +303,58 @@
           "response": []
         },
         {
+          "name": "Get Products by Subcategory",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/category/Electronics/subcategory/Headphones",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "category", "Electronics", "subcategory", "Headphones"]
+            },
+            "description": "Get all products in a specific subcategory"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Products by Brand",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/brand/AudioTech",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "brand", "AudioTech"]
+            },
+            "description": "Get all products from a specific brand"
+          },
+          "response": []
+        },
+        {
           "name": "Search Products",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/products/search?name=wireless",
+              "raw": "{{baseUrl}}/products/search?query=wireless headphones&page=0&size=10",
               "host": ["{{baseUrl}}"],
               "path": ["products", "search"],
               "query": [
                 {
-                  "key": "name",
-                  "value": "wireless"
+                  "key": "query",
+                  "value": "wireless headphones"
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
                 }
               ]
             },
-            "description": "Search products by name"
+            "description": "Search products by name, description, brand, or category"
           },
           "response": []
         },
@@ -304,6 +379,227 @@
               ]
             },
             "description": "Get products within a price range"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "categories"]
+            },
+            "description": "Get all distinct product categories"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Subcategories by Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/categories/Electronics/subcategories",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "categories", "Electronics", "subcategories"]
+            },
+            "description": "Get all subcategories for a specific category"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Brands",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/brands",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "brands"]
+            },
+            "description": "Get all distinct product brands"
+          },
+          "response": []
+        },
+        {
+          "name": "Add Product Review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"{{productId}}\",\n  \"userId\": \"{{userId}}\",\n  \"rating\": 5,\n  \"comment\": \"Amazing sound quality! Best headphones I've ever owned.\",\n  \"isVerifiedPurchase\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}/reviews",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{{productId}}", "reviews"]
+            },
+            "description": "Add a review for a product"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Product Reviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}/reviews?page=0&size=10&sortBy=date&sortDir=desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{{productId}}", "reviews"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "date"
+                },
+                {
+                  "key": "sortDir",
+                  "value": "desc"
+                }
+              ]
+            },
+            "description": "Get all reviews for a product"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Product Rating Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}/rating-summary",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{{productId}}", "rating-summary"]
+            },
+            "description": "Get rating statistics for a product"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Product Stock (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stockQuantity\": 75\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}/stock",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{{productId}}", "stock"]
+            },
+            "description": "Update product stock quantity (Admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Variation Stock (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stockQuantity\": 30\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}/variations/PROD-ABC-123-BLK/stock",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{{productId}}", "variations", "PROD-ABC-123-BLK", "stock"]
+            },
+            "description": "Update variation stock quantity (Admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Featured Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/featured?limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "featured"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Get featured products"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Low Stock Products (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/low-stock?threshold=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "low-stock"],
+              "query": [
+                {
+                  "key": "threshold",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Get products with low stock (Admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Top Rated Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/top-rated?limit=10&minRating=4.0",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "top-rated"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "minRating",
+                  "value": "4.0"
+                }
+              ]
+            },
+            "description": "Get top-rated products"
           },
           "response": []
         }

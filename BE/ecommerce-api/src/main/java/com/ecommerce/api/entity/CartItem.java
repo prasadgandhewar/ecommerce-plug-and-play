@@ -29,6 +29,9 @@ public class CartItem {
     @Column(name = "product_id", nullable = false)
     private String productId; // MongoDB Product ID reference
 
+    @Column(name = "variation_sku")
+    private String variationSku; // Optional variation SKU
+
     @NotNull(message = "Quantity is required")
     @Min(value = 1, message = "Quantity must be at least 1")
     @Column(name = "quantity", nullable = false)

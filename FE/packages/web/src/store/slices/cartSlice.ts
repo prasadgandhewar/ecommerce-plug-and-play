@@ -3,24 +3,26 @@ import { REDUX_ACTION_TYPES } from '../../config/apiConfig';
 import cartService, { CartItem as CartServiceItem, CartResponse } from '../../services/cartService';
 
 export interface CartItem {
-  id: number;
+  id: number; // Cart item ID (from backend)
   name: string;
   price: number;
   quantity: number;
   imageUrl?: string;
   stockQuantity: number;
-  productId: number;
+  productId: string; // MongoDB Product ID (string)
+  variationSku?: string; // Optional variation SKU
 }
 
 // Helper function to map service CartItem to slice CartItem
 const mapServiceItemToSliceItem = (serviceItem: CartServiceItem): CartItem => ({
   id: serviceItem.id,
   productId: serviceItem.productId,
+  variationSku: serviceItem.variationSku,
   quantity: serviceItem.quantity,
-  name: serviceItem.product.name,
-  price: serviceItem.product.price,
-  imageUrl: serviceItem.product.imageUrl,
-  stockQuantity: serviceItem.product.stockQuantity,
+  name: serviceItem.product?.name || 'Unknown Product',
+  price: serviceItem.selectedVariation?.price || serviceItem.product?.price || 0,
+  imageUrl: serviceItem.selectedVariation?.imageUrl || serviceItem.product?.imageUrl || serviceItem.product?.mainImageUrl || (serviceItem.product?.images && serviceItem.product.images.length > 0 ? serviceItem.product.images[0] : undefined),
+  stockQuantity: serviceItem.selectedVariation?.stockQuantity || serviceItem.product?.stockQuantity || 0,
 });
 
 export interface CartState {
@@ -44,9 +46,9 @@ const initialState: CartState = {
 // Async thunks for cart operations
 export const addToCartAsync = createAsyncThunk(
   REDUX_ACTION_TYPES.CART.ADD_TO_CART,
-  async ({ productId, quantity }: { productId: number; quantity: number }, { rejectWithValue }) => {
+  async ({ productId, quantity, variationSku }: { productId: string; quantity: number; variationSku?: string }, { rejectWithValue }) => {
     try {
-      const response = await cartService.addToCart({ productId, quantity });
+      const response = await cartService.addToCart({ productId, quantity, variationSku });
       return response;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to add to cart');

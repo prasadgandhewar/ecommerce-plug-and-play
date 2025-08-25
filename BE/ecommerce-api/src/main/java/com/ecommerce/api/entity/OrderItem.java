@@ -30,10 +30,16 @@ public class OrderItem {
     @Column(name = "product_id", nullable = false)
     private String productId; // MongoDB Product ID reference
 
+    @Column(name = "variation_sku")
+    private String variationSku; // Optional variation SKU
+
     // Product details stored for performance and data consistency
     @NotNull(message = "Product name is required")
     @Column(name = "product_name", nullable = false)
     private String productName;
+
+    @Column(name = "variation_description")
+    private String variationDescription; // e.g., "Color: Red, Size: Large"
 
     @Column(name = "product_image_url")
     private String productImageUrl;

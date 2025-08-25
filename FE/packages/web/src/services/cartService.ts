@@ -1,17 +1,15 @@
 import api from './api';
 import { API_CONFIG, createApiMethod } from '../config/apiConfig';
+import { Product, ProductVariation } from '../types';
 
 export interface CartItem {
-  id: number;
-  productId: number;
+  id: number; // Cart item ID from backend
+  productId: string; // MongoDB Product ID
+  variationSku?: string; // Optional variation SKU
   quantity: number;
-  product: {
-    id: number;
-    name: string;
-    price: number;
-    imageUrl?: string;
-    stockQuantity: number;
-  };
+  createdAt: string;
+  product?: Product; // Product details populated by backend
+  selectedVariation?: ProductVariation; // Selected variation details
 }
 
 export interface CartResponse {
@@ -21,8 +19,9 @@ export interface CartResponse {
 }
 
 export interface AddToCartRequest {
-  productId: number;
+  productId: string; // Updated to string
   quantity: number;
+  variationSku?: string; // Optional variation SKU
 }
 
 export interface UpdateCartRequest {

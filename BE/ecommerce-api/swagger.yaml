@@ -256,8 +256,8 @@ paths:
           required: false
           schema:
             type: string
-            default: "id"
-            enum: ["id", "name", "price", "category", "createdAt"]
+            default: "name"
+            enum: ["name", "price", "category", "brand", "averageRating", "createdAt"]
         - name: sortDir
           in: query
           description: Sort direction
@@ -266,6 +266,38 @@ paths:
             type: string
             default: "asc"
             enum: ["asc", "desc"]
+        - name: category
+          in: query
+          description: Filter by category
+          required: false
+          schema:
+            type: string
+        - name: subCategory
+          in: query
+          description: Filter by subcategory
+          required: false
+          schema:
+            type: string
+        - name: brand
+          in: query
+          description: Filter by brand
+          required: false
+          schema:
+            type: string
+        - name: minPrice
+          in: query
+          description: Minimum price filter
+          required: false
+          schema:
+            type: number
+            format: decimal
+        - name: maxPrice
+          in: query
+          description: Maximum price filter
+          required: false
+          schema:
+            type: number
+            format: decimal
       responses:
         '200':
           description: Products retrieved successfully
@@ -307,12 +339,28 @@ paths:
               new_product:
                 summary: New product creation
                 value:
-                  name: "Wireless Headphones"
-                  description: "High-quality wireless headphones with noise cancellation"
-                  price: 199.99
-                  stockQuantity: 50
+                  sku: "PROD-ABC-123"
+                  name: "Premium Wireless Headphones"
+                  description: "Immersive sound, comfortable design, and long-lasting battery life"
                   category: "Electronics"
-                  imageUrl: "https://example.com/headphones.jpg"
+                  subCategory: "Headphones"
+                  brand: "AudioTech"
+                  price: 199.99
+                  currency: "USD"
+                  stockQuantity: 50
+                  images: 
+                    - "https://example.com/images/headphones_main.jpg"
+                    - "https://example.com/images/headphones_side.jpg"
+                  specifications:
+                    connectivity: "Bluetooth 5.0"
+                    batteryLifeHours: 20
+                    noiseCancellation: true
+                    colorOptions: ["Black", "Silver", "Blue"]
+                  variations:
+                    - sku: "PROD-ABC-123-BLK"
+                      color: "Black"
+                      price: 199.99
+                      stockQuantity: 25
       responses:
         '201':
           description: Product created successfully
@@ -338,7 +386,7 @@ paths:
           required: true
           schema:
             type: string
-          example: "prod_123"
+          example: "654321abcdef01234567890"
       responses:
         '200':
           description: Product found
@@ -363,7 +411,7 @@ paths:
           required: true
           schema:
             type: string
-          example: "prod_123"
+          example: "654321abcdef01234567890"
       requestBody:
         required: true
         content:
@@ -396,7 +444,7 @@ paths:
           required: true
           schema:
             type: string
-          example: "prod_123"
+          example: "654321abcdef01234567890"
       responses:
         '200':
           description: Product deleted successfully
@@ -404,6 +452,30 @@ paths:
           description: Product not found
         '401':
           description: Unauthorized
+
+  /products/sku/{sku}:
+    get:
+      tags:
+        - Products
+      summary: Get product by SKU
+      description: Retrieve a specific product by its SKU
+      operationId: getProductBySku
+      parameters:
+        - name: sku
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "PROD-ABC-123"
+      responses:
+        '200':
+          description: Product found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+        '404':
+          description: Product not found
 
   /products/category/{category}:
     get:
@@ -429,29 +501,114 @@ paths:
                 items:
                   $ref: '#/components/schemas/ProductResponse'
 
-  /products/search:
+  /products/category/{category}/subcategory/{subCategory}:
     get:
       tags:
         - Products
-      summary: Search products
-      description: Search products by name
-      operationId: searchProducts
+      summary: Get products by subcategory
+      description: Retrieve all products in a specific category and subcategory
+      operationId: getProductsBySubCategory
       parameters:
-        - name: name
-          in: query
+        - name: category
+          in: path
           required: true
           schema:
             type: string
-          example: "wireless"
+          example: "Electronics"
+        - name: subCategory
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "Headphones"
       responses:
         '200':
-          description: Search results
+          description: Products in subcategory retrieved successfully
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/ProductResponse'
+
+  /products/brand/{brand}:
+    get:
+      tags:
+        - Products
+      summary: Get products by brand
+      description: Retrieve all products from a specific brand
+      operationId: getProductsByBrand
+      parameters:
+        - name: brand
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "AudioTech"
+      responses:
+        '200':
+          description: Products from brand retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductResponse'
+
+  /products/search:
+    get:
+      tags:
+        - Products
+      summary: Search products
+      description: Search products by name, description, brand, or category
+      operationId: searchProducts
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "wireless headphones"
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+        - name: sortBy
+          in: query
+          required: false
+          schema:
+            type: string
+            default: "name"
+        - name: sortDir
+          in: query
+          required: false
+          schema:
+            type: string
+            default: "asc"
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProductResponse'
+                  totalElements:
+                    type: integer
+                  totalPages:
+                    type: integer
 
   /products/price-range:
     get:
@@ -478,6 +635,392 @@ paths:
       responses:
         '200':
           description: Products in price range retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductResponse'
+
+  /products/categories:
+    get:
+      tags:
+        - Products
+      summary: Get all categories
+      description: Retrieve all distinct product categories
+      operationId: getAllCategories
+      responses:
+        '200':
+          description: Categories retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example: ["Electronics", "Clothing", "Books", "Home & Garden"]
+
+  /products/categories/{category}/subcategories:
+    get:
+      tags:
+        - Products
+      summary: Get subcategories by category
+      description: Retrieve all subcategories for a specific category
+      operationId: getSubCategoriesByCategory
+      parameters:
+        - name: category
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "Electronics"
+      responses:
+        '200':
+          description: Subcategories retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example: ["Headphones", "Smartphones", "Laptops", "Speakers"]
+
+  /products/brands:
+    get:
+      tags:
+        - Products
+      summary: Get all brands
+      description: Retrieve all distinct product brands
+      operationId: getAllBrands
+      responses:
+        '200':
+          description: Brands retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example: ["AudioTech", "Apple", "Samsung", "Sony", "TechFlow"]
+
+  /products/{id}/reviews:
+    get:
+      tags:
+        - Products
+      summary: Get product reviews
+      description: Retrieve all reviews for a specific product
+      operationId: getProductReviews
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "654321abcdef01234567890"
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+        - name: sortBy
+          in: query
+          required: false
+          schema:
+            type: string
+            default: "date"
+        - name: sortDir
+          in: query
+          required: false
+          schema:
+            type: string
+            default: "desc"
+      responses:
+        '200':
+          description: Product reviews retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProductReviewResponse'
+                  totalElements:
+                    type: integer
+                  totalPages:
+                    type: integer
+
+    post:
+      tags:
+        - Products
+      summary: Add product review
+      description: Add a review for a specific product
+      operationId: addProductReview
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "654321abcdef01234567890"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductReviewRequest'
+            examples:
+              new_review:
+                summary: New product review
+                value:
+                  productId: "654321abcdef01234567890"
+                  userId: "987654fedcba01234567890"
+                  rating: 5
+                  comment: "Amazing sound quality!"
+                  isVerifiedPurchase: true
+      responses:
+        '201':
+          description: Review added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductReviewResponse'
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthorized
+
+  /products/{id}/rating-summary:
+    get:
+      tags:
+        - Products
+      summary: Get product rating summary
+      description: Get rating statistics for a specific product
+      operationId: getProductRatingSummary
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "654321abcdef01234567890"
+      responses:
+        '200':
+          description: Rating summary retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  averageRating:
+                    type: number
+                    format: double
+                    example: 4.5
+                  totalReviews:
+                    type: integer
+                    example: 25
+                  ratingDistribution:
+                    type: object
+                    properties:
+                      "1":
+                        type: integer
+                        example: 1
+                      "2":
+                        type: integer
+                        example: 2
+                      "3":
+                        type: integer
+                        example: 3
+                      "4":
+                        type: integer
+                        example: 7
+                      "5":
+                        type: integer
+                        example: 12
+
+  /products/{id}/stock:
+    put:
+      tags:
+        - Products
+      summary: Update product stock
+      description: Update the stock quantity for a product (Admin only)
+      operationId: updateProductStock
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "654321abcdef01234567890"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - stockQuantity
+              properties:
+                stockQuantity:
+                  type: integer
+                  minimum: 0
+            example:
+              stockQuantity: 75
+      responses:
+        '200':
+          description: Stock updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+        '404':
+          description: Product not found
+        '401':
+          description: Unauthorized
+
+  /products/{id}/variations/{variationSku}/stock:
+    put:
+      tags:
+        - Products
+      summary: Update variation stock
+      description: Update the stock quantity for a product variation (Admin only)
+      operationId: updateVariationStock
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "654321abcdef01234567890"
+        - name: variationSku
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "PROD-ABC-123-BLK"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - stockQuantity
+              properties:
+                stockQuantity:
+                  type: integer
+                  minimum: 0
+            example:
+              stockQuantity: 30
+      responses:
+        '200':
+          description: Variation stock updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+        '404':
+          description: Product or variation not found
+        '401':
+          description: Unauthorized
+
+  /products/featured:
+    get:
+      tags:
+        - Products
+      summary: Get featured products
+      description: Retrieve featured products (high-rated and popular items)
+      operationId: getFeaturedProducts
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+            maximum: 50
+      responses:
+        '200':
+          description: Featured products retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductResponse'
+
+  /products/low-stock:
+    get:
+      tags:
+        - Products
+      summary: Get low stock products
+      description: Retrieve products with low stock quantities (Admin only)
+      operationId: getLowStockProducts
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: threshold
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+      responses:
+        '200':
+          description: Low stock products retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductResponse'
+        '401':
+          description: Unauthorized
+
+  /products/top-rated:
+    get:
+      tags:
+        - Products
+      summary: Get top-rated products
+      description: Retrieve products with highest ratings
+      operationId: getTopRatedProducts
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+            maximum: 50
+        - name: minRating
+          in: query
+          required: false
+          schema:
+            type: number
+            format: double
+            default: 4.0
+            minimum: 1.0
+            maximum: 5.0
+      responses:
+        '200':
+          description: Top-rated products retrieved successfully
           content:
             application/json:
               schema:
@@ -1400,41 +1943,76 @@ components:
     ProductRequest:
       type: object
       required:
+        - sku
         - name
         - price
         - stockQuantity
       properties:
+        sku:
+          type: string
+          maxLength: 50
+          description: Product SKU (Stock Keeping Unit)
+          example: "PROD-ABC-123"
         name:
           type: string
           maxLength: 100
           description: Product name
-          example: "Wireless Headphones"
+          example: "Premium Wireless Headphones"
         description:
           type: string
-          maxLength: 500
+          maxLength: 1000
           description: Product description
-          example: "High-quality wireless headphones with noise cancellation"
+          example: "Immersive sound, comfortable design, and long-lasting battery life"
+        category:
+          type: string
+          maxLength: 50
+          description: Product category
+          example: "Electronics"
+        subCategory:
+          type: string
+          maxLength: 50
+          description: Product subcategory
+          example: "Headphones"
+        brand:
+          type: string
+          maxLength: 50
+          description: Product brand
+          example: "AudioTech"
         price:
           type: number
           format: decimal
           minimum: 0.01
           description: Product price
           example: 199.99
+        currency:
+          type: string
+          maxLength: 3
+          description: Currency code
+          example: "USD"
         stockQuantity:
           type: integer
           minimum: 0
           description: Available stock quantity
           example: 50
-        category:
-          type: string
-          maxLength: 50
-          description: Product category
-          example: "Electronics"
-        imageUrl:
-          type: string
-          format: uri
-          description: Product image URL
-          example: "https://example.com/images/headphones.jpg"
+        images:
+          type: array
+          items:
+            type: string
+            format: uri
+          description: Product image URLs
+          example: 
+            - "https://example.com/images/headphones_main.jpg"
+            - "https://example.com/images/headphones_side.jpg"
+        specifications:
+          $ref: '#/components/schemas/ProductSpecifications'
+        variations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductVariation'
+        isActive:
+          type: boolean
+          description: Whether the product is active
+          example: true
 
     ProductResponse:
       type: object
@@ -1442,37 +2020,85 @@ components:
         id:
           type: string
           description: Product unique identifier
-          example: "prod_123"
+          example: "654321abcdef01234567890"
+        sku:
+          type: string
+          description: Product SKU
+          example: "PROD-ABC-123"
         name:
           type: string
           description: Product name
-          example: "Wireless Headphones"
+          example: "Premium Wireless Headphones"
         description:
           type: string
           description: Product description
-          example: "High-quality wireless headphones with noise cancellation"
+          example: "Immersive sound, comfortable design, and long-lasting battery life"
+        category:
+          type: string
+          description: Product category
+          example: "Electronics"
+        subCategory:
+          type: string
+          description: Product subcategory
+          example: "Headphones"
+        brand:
+          type: string
+          description: Product brand
+          example: "AudioTech"
         price:
           type: number
           format: decimal
           description: Product price
           example: 199.99
+        currency:
+          type: string
+          description: Currency code
+          example: "USD"
         stockQuantity:
           type: integer
           description: Available stock quantity
           example: 50
-        category:
-          type: string
-          description: Product category
-          example: "Electronics"
-        imageUrl:
-          type: string
-          format: uri
-          description: Product image URL
-          example: "https://example.com/images/headphones.jpg"
+        images:
+          type: array
+          items:
+            type: string
+            format: uri
+          description: Product image URLs
+          example: 
+            - "https://example.com/images/headphones_main.jpg"
+            - "https://example.com/images/headphones_side.jpg"
+        specifications:
+          $ref: '#/components/schemas/ProductSpecifications'
+        variations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductVariation'
+        reviews:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductReviewResponse'
         isActive:
           type: boolean
           description: Whether the product is active
           example: true
+        averageRating:
+          type: number
+          format: double
+          description: Average customer rating
+          example: 4.5
+        totalReviews:
+          type: integer
+          description: Total number of reviews
+          example: 25
+        totalStock:
+          type: integer
+          description: Total stock including variations
+          example: 100
+        mainImageUrl:
+          type: string
+          format: uri
+          description: Main product image URL
+          example: "https://example.com/images/headphones_main.jpg"
         createdAt:
           type: string
           format: date-time
@@ -1481,6 +2107,154 @@ components:
           type: string
           format: date-time
           description: Last update timestamp
+
+    ProductSpecifications:
+      type: object
+      properties:
+        connectivity:
+          type: string
+          description: Connectivity type
+          example: "Bluetooth 5.0"
+        batteryLifeHours:
+          type: integer
+          description: Battery life in hours
+          example: 20
+        noiseCancellation:
+          type: boolean
+          description: Has noise cancellation
+          example: true
+        colorOptions:
+          type: array
+          items:
+            type: string
+          description: Available color options
+          example: ["Black", "Silver", "Blue"]
+        weight:
+          type: string
+          description: Product weight
+          example: "250g"
+        dimensions:
+          type: string
+          description: Product dimensions
+          example: "180 x 150 x 70 mm"
+        warranty:
+          type: string
+          description: Warranty information
+          example: "2 years"
+        material:
+          type: string
+          description: Material composition
+          example: "Premium plastic and metal"
+        additionalSpecs:
+          type: object
+          additionalProperties: true
+          description: Additional specifications as key-value pairs
+
+    ProductVariation:
+      type: object
+      required:
+        - sku
+        - price
+        - stockQuantity
+      properties:
+        sku:
+          type: string
+          maxLength: 50
+          description: Variation SKU
+          example: "PROD-ABC-123-BLK"
+        color:
+          type: string
+          maxLength: 30
+          description: Color variant
+          example: "Black"
+        size:
+          type: string
+          maxLength: 30
+          description: Size variant
+          example: "Large"
+        price:
+          type: number
+          format: decimal
+          minimum: 0.01
+          description: Variation price
+          example: 199.99
+        stockQuantity:
+          type: integer
+          minimum: 0
+          description: Variation stock quantity
+          example: 25
+        imageUrl:
+          type: string
+          format: uri
+          description: Variation-specific image URL
+          example: "https://example.com/images/headphones_black.jpg"
+        isActive:
+          type: boolean
+          description: Whether the variation is active
+          example: true
+
+    ProductReviewRequest:
+      type: object
+      required:
+        - productId
+        - userId
+        - rating
+      properties:
+        productId:
+          type: string
+          description: Product ID to review
+          example: "654321abcdef01234567890"
+        userId:
+          type: string
+          description: User ID leaving the review
+          example: "987654fedcba01234567890"
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Rating from 1 to 5 stars
+          example: 5
+        comment:
+          type: string
+          maxLength: 1000
+          description: Review comment
+          example: "Amazing sound quality!"
+        isVerifiedPurchase:
+          type: boolean
+          description: Whether this is from a verified purchase
+          example: true
+
+    ProductReviewResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: User ID who left the review
+          example: "987654fedcba01234567890"
+        userName:
+          type: string
+          description: User name (populated from User service)
+          example: "John Doe"
+        rating:
+          type: integer
+          description: Rating from 1 to 5 stars
+          example: 5
+        comment:
+          type: string
+          description: Review comment
+          example: "Amazing sound quality!"
+        date:
+          type: string
+          format: date-time
+          description: Review date
+        isVerifiedPurchase:
+          type: boolean
+          description: Whether this is from a verified purchase
+          example: true
+        isApproved:
+          type: boolean
+          description: Whether the review is approved
+          example: true
 
     CartItemResponse:
       type: object

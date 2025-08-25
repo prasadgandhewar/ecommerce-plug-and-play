@@ -89,6 +89,42 @@ public class UserService {
         return userRepository.findByEmail(email).isPresent();
     }
 
+    public boolean isUserVerifiedPurchaser(Long userId, String productId) {
+        // Check if user has any completed orders containing this product
+        // This would require integration with OrderService
+        // For now, return true as a placeholder
+        return true;
+    }
+
+    public Optional<UserResponse> activateUser(Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setIsActive(true);
+            User updatedUser = userRepository.save(user);
+            return Optional.of(convertToResponse(updatedUser));
+        }
+        return Optional.empty();
+    }
+
+    public Optional<UserResponse> deactivateUser(Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setIsActive(false);
+            User updatedUser = userRepository.save(user);
+            return Optional.of(convertToResponse(updatedUser));
+        }
+        return Optional.empty();
+    }
+
+    public List<UserResponse> getActiveUsers() {
+        List<User> users = userRepository.findByIsActiveTrue();
+        return users.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+    }
+
     private UserResponse convertToResponse(User user) {
         UserResponse response = new UserResponse();
         response.setId(user.getId());

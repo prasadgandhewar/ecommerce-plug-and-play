@@ -55,22 +55,46 @@ class AuthService {
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    // Also clear any other auth-related data that might be stored
+    localStorage.removeItem('refreshToken');
   }
 
   getCurrentUser(): User | null {
     const userStr = localStorage.getItem('user');
-    if (userStr) {
-      return JSON.parse(userStr);
+    if (userStr && userStr !== 'undefined' && userStr !== 'null') {
+      try {
+        return JSON.parse(userStr);
+      } catch (error) {
+        console.error('Error parsing user data from localStorage:', error);
+        localStorage.removeItem('user');
+        return null;
+      }
     }
     return null;
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    if (token && token !== 'undefined' && token !== 'null') {
+      return token;
+    }
+    return null;
   }
 
   isAuthenticated(): boolean {
     return this.getToken() !== null;
+  }
+
+  // Emergency cleanup method for corrupted localStorage
+  emergencyCleanup(): void {
+    try {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      localStorage.removeItem('refreshToken');
+      console.log('Emergency cleanup completed');
+    } catch (error) {
+      console.error('Error during emergency cleanup:', error);
+    }
   }
 }
 

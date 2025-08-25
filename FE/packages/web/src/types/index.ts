@@ -1,29 +1,80 @@
-// Product types - Updated to match backend DTOs
-export interface Product {
-  id: number; // Changed from string to number to match backend
-  name: string;
+// Product types - Updated to match new backend DTOs
+export interface ProductSpecifications {
+  connectivity?: string;
+  batteryLifeHours?: number;
+  noiseCancellation?: boolean;
+  colorOptions?: string[];
+  weight?: string;
+  dimensions?: string;
+  warranty?: string;
+  material?: string;
+  additionalSpecs?: Record<string, any>;
+}
+
+export interface ProductVariation {
+  sku: string;
+  color?: string;
+  size?: string;
   price: number;
-  category: string;
-  description: string;
-  imageUrl: string;
-  stockQuantity: number; // Added to match backend
-  isActive: boolean; // Added to match backend
-  createdAt: string; // Added to match backend
-  updatedAt: string; // Added to match backend
-  // Optional fields for frontend compatibility
+  stockQuantity: number;
+  imageUrl?: string;
+  isActive: boolean;
+}
+
+export interface ProductReview {
+  userId: string;
+  rating: number;
+  comment?: string;
+  date: string;
+  isVerifiedPurchase: boolean;
+  isApproved: boolean;
+}
+
+export interface Product {
+  id: string; // MongoDB ObjectId
+  sku: string;
+  name: string;
+  description?: string;
+  category?: string;
+  subCategory?: string;
+  brand?: string;
+  price: number;
+  currency: string;
+  stockQuantity: number;
+  images: string[]; // Array of image URLs
+  specifications?: ProductSpecifications;
+  variations?: ProductVariation[];
+  reviews?: ProductReview[];
+  isActive: boolean;
+  averageRating?: number;
+  totalReviews?: number;
+  totalStock?: number;
+  mainImageUrl?: string; // Computed field from backend
+  createdAt: string;
+  updatedAt: string;
+  
+  // Computed frontend properties for backward compatibility
+  imageUrl?: string; // Will be set to mainImageUrl or first image
   inStock?: boolean; // Computed from stockQuantity > 0
-  rating?: number;
-  reviewCount?: number;
+  rating?: number; // Alias for averageRating
+  reviewCount?: number; // Alias for totalReviews
 }
 
 // Product request for creating/updating products
 export interface ProductRequest {
+  sku: string;
   name: string;
-  description: string;
+  description?: string;
+  category?: string;
+  subCategory?: string;
+  brand?: string;
   price: number;
+  currency?: string;
   stockQuantity: number;
-  category: string;
-  imageUrl?: string;
+  images?: string[];
+  specifications?: ProductSpecifications;
+  variations?: ProductVariation[];
+  isActive?: boolean;
 }
 
 // Paginated response from backend
@@ -56,13 +107,20 @@ export interface PaginatedProductResponse {
   empty: boolean;
 }
 
-// Cart types
+// Cart types - Updated to support variations
 export interface CartItem {
-  id: string;
-  name: string;
-  price: number;
+  id: number; // Cart item ID from backend
+  productId: string; // MongoDB Product ID
+  variationSku?: string; // Optional variation SKU
   quantity: number;
-  imageUrl: string;
+  createdAt: string;
+  product?: Product; // Product details populated by backend
+  selectedVariation?: ProductVariation; // Selected variation details
+  
+  // Computed properties for UI
+  name?: string; // From product.name
+  price?: number; // From product.price or variation.price
+  imageUrl?: string; // From product.mainImageUrl or variation.imageUrl
 }
 
 // User types
@@ -111,14 +169,16 @@ export interface RegisterForm {
   confirmPassword: string;
 }
 
-// Filter types - Updated to match backend API
+// Filter types - Updated to match new backend API
 export interface ProductFilters {
   category?: string;
+  subCategory?: string;
+  brand?: string;
   page?: number;
   size?: number;
   sortBy?: string;
   sortDir?: 'asc' | 'desc';
-  name?: string; // For search
+  query?: string; // For search
   minPrice?: number;
   maxPrice?: number;
 }

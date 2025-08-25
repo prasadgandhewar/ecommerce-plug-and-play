@@ -197,8 +197,8 @@ const ProductsPage: React.FC = () => {
     }
   };
 
-  // Handle product click
-  const handleProductClick = (productId: number) => {
+  // Handle product click - updated for string ID
+  const handleProductClick = (productId: string) => {
     navigate(`/products/${productId}`);
   };
   const cardBgColor = useColorModeValue('white', 'gray.800');
@@ -420,7 +420,7 @@ const ProductsPage: React.FC = () => {
                     >
                       <Box position="relative">
                         <Image
-                          src={product.imageUrl || "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400"}
+                          src={product.imageUrl || product.images?.[0] || product.mainImageUrl || "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400"}
                           alt={product.name}
                           h="280px"
                           w="full"
@@ -442,6 +442,24 @@ const ProductsPage: React.FC = () => {
                             shadow="sm"
                           >
                             {product.category}
+                          </Badge>
+                        )}
+                        {product.brand && (
+                          <Badge
+                            position="absolute"
+                            top={4}
+                            right={product.category ? 20 : 4}
+                            bg="accent.500"
+                            color="white"
+                            px={3}
+                            py={1}
+                            borderRadius="full"
+                            fontSize="xs"
+                            fontWeight="600"
+                            textTransform="capitalize"
+                            shadow="sm"
+                          >
+                            {product.brand}
                           </Badge>
                         )}
                         <HStack
@@ -496,17 +514,29 @@ const ProductsPage: React.FC = () => {
                               color="neutral.500"
                               noOfLines={2}
                             >
-                              Perfect for brightening any indoor space with natural beauty
+                              {product.description || "Perfect for brightening any indoor space with natural beauty"}
                             </Text>
                           </Box>
                           
-                          {product.rating && (
+                          {/* Stock status */}
+                          <HStack spacing={2}>
+                            <Badge colorScheme={product.inStock ? "green" : "red"} variant="subtle">
+                              {product.inStock ? "In Stock" : "Out of Stock"}
+                            </Badge>
+                            {product.totalStock && (
+                              <Text fontSize="xs" color="neutral.500">
+                                {product.totalStock} available
+                              </Text>
+                            )}
+                          </HStack>
+                          
+                          {(product.rating || product.averageRating) && (
                             <HStack spacing={2}>
                               <HStack spacing={1}>
                                 {[...Array(5)].map((_, i) => (
                                   <Text
                                     key={i}
-                                    color={i < Math.floor(product.rating || 0) ? 'accent.400' : 'neutral.300'}
+                                    color={i < Math.floor(product.rating || product.averageRating || 0) ? 'accent.400' : 'neutral.300'}
                                     fontSize="sm"
                                   >
                                     ★
@@ -514,7 +544,7 @@ const ProductsPage: React.FC = () => {
                                 ))}
                               </HStack>
                               <Text fontSize="sm" color="neutral.500" fontWeight="500">
-                                ({product.reviewCount || Math.floor(Math.random() * 50) + 10})
+                                ({product.reviewCount || product.totalReviews || 0})
                               </Text>
                             </HStack>
                           )}
@@ -535,8 +565,9 @@ const ProductsPage: React.FC = () => {
                               handleAddToCart(product);
                             }}
                             isLoading={cartLoading}
+                            isDisabled={!product.inStock}
                           >
-                            Add to Cart
+                            {product.inStock ? "Add to Cart" : "Out of Stock"}
                           </Button>
                         </VStack>
                       </CardBody>

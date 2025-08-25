@@ -48,7 +48,7 @@ export const fetchProducts = createAsyncThunk(
 
 export const fetchProductById = createAsyncThunk(
   REDUX_ACTION_TYPES.PRODUCTS.FETCH_PRODUCT_BY_ID,
-  async (id: number, { rejectWithValue }) => {
+  async (id: string, { rejectWithValue }) => {
     try {
       const response = await productService.getProductById(id);
       return response;
@@ -60,9 +60,9 @@ export const fetchProductById = createAsyncThunk(
 
 export const searchProducts = createAsyncThunk(
   REDUX_ACTION_TYPES.PRODUCTS.SEARCH_PRODUCTS,
-  async (name: string, { rejectWithValue }) => {
+  async (query: string, { rejectWithValue }) => {
     try {
-      const response = await productService.searchProducts(name);
+      const response = await productService.searchProducts(query);
       return response;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to search products');
@@ -108,7 +108,7 @@ export const createProduct = createAsyncThunk(
 
 export const updateProduct = createAsyncThunk(
   REDUX_ACTION_TYPES.PRODUCTS.UPDATE_PRODUCT,
-  async ({ id, productData }: { id: number; productData: ProductRequest }, { rejectWithValue }) => {
+  async ({ id, productData }: { id: string; productData: ProductRequest }, { rejectWithValue }) => {
     try {
       const response = await productService.updateProduct(id, productData);
       return response;
@@ -120,7 +120,7 @@ export const updateProduct = createAsyncThunk(
 
 export const deleteProduct = createAsyncThunk(
   REDUX_ACTION_TYPES.PRODUCTS.DELETE_PRODUCT,
-  async (id: number, { rejectWithValue }) => {
+  async (id: string, { rejectWithValue }) => {
     try {
       await productService.deleteProduct(id);
       return id;
@@ -205,8 +205,15 @@ const productSlice = createSlice({
       })
       .addCase(searchProducts.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.products = action.payload;
-        state.pagination = null; // Search doesn't return paginated data
+        state.products = action.payload.content;
+        state.pagination = {
+          totalElements: action.payload.totalElements,
+          totalPages: action.payload.totalPages,
+          size: action.payload.size,
+          number: action.payload.number,
+          first: action.payload.first,
+          last: action.payload.last,
+        };
         state.error = null;
       })
       .addCase(searchProducts.rejected, (state, action) => {
@@ -220,8 +227,15 @@ const productSlice = createSlice({
       })
       .addCase(fetchProductsByCategory.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.products = action.payload;
-        state.pagination = null; // Category search doesn't return paginated data
+        state.products = action.payload.content;
+        state.pagination = {
+          totalElements: action.payload.totalElements,
+          totalPages: action.payload.totalPages,
+          size: action.payload.size,
+          number: action.payload.number,
+          first: action.payload.first,
+          last: action.payload.last,
+        };
         state.error = null;
       })
       .addCase(fetchProductsByCategory.rejected, (state, action) => {
@@ -235,8 +249,15 @@ const productSlice = createSlice({
       })
       .addCase(fetchProductsByPriceRange.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.products = action.payload;
-        state.pagination = null; // Price range search doesn't return paginated data
+        state.products = action.payload.content;
+        state.pagination = {
+          totalElements: action.payload.totalElements,
+          totalPages: action.payload.totalPages,
+          size: action.payload.size,
+          number: action.payload.number,
+          first: action.payload.first,
+          last: action.payload.last,
+        };
         state.error = null;
       })
       .addCase(fetchProductsByPriceRange.rejected, (state, action) => {

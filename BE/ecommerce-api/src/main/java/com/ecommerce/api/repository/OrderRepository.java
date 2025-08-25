@@ -34,4 +34,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     long countOrdersByUserId(@Param("userId") Long userId);
 
     List<Order> findByUserId(Long userId);
+
+    List<Order> findTop10ByOrderByCreatedAtDesc();
 }

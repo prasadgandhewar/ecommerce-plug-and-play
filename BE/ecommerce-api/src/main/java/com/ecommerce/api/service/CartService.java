@@ -64,9 +64,30 @@ public class CartService {
             throw new RuntimeException("Product not found");
         }
 
-        // Check if item already exists in cart
+        ProductResponse product = productOpt.get();
+        
+        // Validate stock availability
+        if (request.getVariationSku() != null) {
+            // Check variation stock
+            boolean variationExists = product.getVariations() != null && 
+                product.getVariations().stream()
+                    .anyMatch(v -> v.getSku().equals(request.getVariationSku()) && 
+                                 v.getIsActive() && 
+                                 v.getStockQuantity() >= request.getQuantity());
+            
+            if (!variationExists) {
+                throw new RuntimeException("Product variation not available or insufficient stock");
+            }
+        } else {
+            // Check main product stock
+            if (product.getStockQuantity() < request.getQuantity()) {
+                throw new RuntimeException("Insufficient stock for the requested quantity");
+            }
+        }
+
+        // Check if item already exists in cart (including variation)
         Optional<CartItem> existingCartItem = cartItemRepository
-                .findByUserIdAndProductId(userId, request.getProductId());
+                .findByUserIdAndProductIdAndVariationSku(userId, request.getProductId(), request.getVariationSku());
 
         CartItem cartItem;
         if (existingCartItem.isPresent()) {
@@ -78,6 +99,7 @@ public class CartService {
             cartItem = new CartItem();
             cartItem.setUser(user);
             cartItem.setProductId(request.getProductId());
+            cartItem.setVariationSku(request.getVariationSku());
             cartItem.setQuantity(request.getQuantity());
         }
 
@@ -90,6 +112,7 @@ public class CartService {
             Long userId = Long.valueOf(request.get("userId").toString());
             String productId = request.get("productId").toString();
             Integer quantity = Integer.valueOf(request.get("quantity").toString());
+            String variationSku = request.get("variationSku") != null ? request.get("variationSku").toString() : null;
 
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new RuntimeException("User not found"));
@@ -100,8 +123,29 @@ public class CartService {
                 return Optional.empty();
             }
 
-            // Check if item already exists in cart
-            Optional<CartItem> existingCartItem = cartItemRepository.findByUserIdAndProductId(userId, productId);
+            ProductResponse product = productOpt.get();
+            
+            // Validate stock availability
+            if (variationSku != null) {
+                // Check variation stock
+                boolean variationExists = product.getVariations() != null && 
+                    product.getVariations().stream()
+                        .anyMatch(v -> v.getSku().equals(variationSku) && 
+                                     v.getIsActive() && 
+                                     v.getStockQuantity() >= quantity);
+                
+                if (!variationExists) {
+                    return Optional.empty();
+                }
+            } else {
+                // Check main product stock
+                if (product.getStockQuantity() < quantity) {
+                    return Optional.empty();
+                }
+            }
+
+            // Check if item already exists in cart (including variation)
+            Optional<CartItem> existingCartItem = cartItemRepository.findByUserIdAndProductIdAndVariationSku(userId, productId, variationSku);
 
             CartItem cartItem;
             if (existingCartItem.isPresent()) {
@@ -113,6 +157,7 @@ public class CartService {
                 cartItem = new CartItem();
                 cartItem.setUser(user);
                 cartItem.setProductId(productId);
+                cartItem.setVariationSku(variationSku);
                 cartItem.setQuantity(quantity);
             }
 
@@ -181,16 +226,114 @@ public class CartService {
         );
     }
 
+    public boolean validateCartStock(Long userId) {
+        List<CartItem> cartItems = cartItemRepository.findByUserId(userId);
+        
+        for (CartItem cartItem : cartItems) {
+            Optional<ProductResponse> productOpt = productService.getProductById(cartItem.getProductId());
+            if (productOpt.isEmpty()) {
+                return false; // Product not found
+            }
+            
+            ProductResponse product = productOpt.get();
+            
+            if (cartItem.getVariationSku() != null) {
+                // Check variation stock
+                boolean hasStock = product.getVariations() != null && 
+                    product.getVariations().stream()
+                        .anyMatch(v -> v.getSku().equals(cartItem.getVariationSku()) && 
+                                     v.getIsActive() && 
+                                     v.getStockQuantity() >= cartItem.getQuantity());
+                if (!hasStock) {
+                    return false;
+                }
+            } else {
+                // Check main product stock
+                if (product.getStockQuantity() < cartItem.getQuantity()) {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+
+    public List<CartItemResponse> getOutOfStockItems(Long userId) {
+        List<CartItem> cartItems = cartItemRepository.findByUserId(userId);
+        
+        return cartItems.stream()
+                .filter(cartItem -> {
+                    Optional<ProductResponse> productOpt = productService.getProductById(cartItem.getProductId());
+                    if (productOpt.isEmpty()) {
+                        return true; // Consider missing products as out of stock
+                    }
+                    
+                    ProductResponse product = productOpt.get();
+                    
+                    if (cartItem.getVariationSku() != null) {
+                        // Check variation stock
+                        return product.getVariations() == null || 
+                            product.getVariations().stream()
+                                .noneMatch(v -> v.getSku().equals(cartItem.getVariationSku()) && 
+                                             v.getIsActive() && 
+                                             v.getStockQuantity() >= cartItem.getQuantity());
+                    } else {
+                        // Check main product stock
+                        return product.getStockQuantity() < cartItem.getQuantity();
+                    }
+                })
+                .map(this::convertToCartItemResponse)
+                .collect(Collectors.toList());
+    }
+
+    public CartResponse removeOutOfStockItems(Long userId) {
+        List<CartItem> outOfStockItems = cartItemRepository.findByUserId(userId).stream()
+                .filter(cartItem -> {
+                    Optional<ProductResponse> productOpt = productService.getProductById(cartItem.getProductId());
+                    if (productOpt.isEmpty()) {
+                        return true;
+                    }
+                    
+                    ProductResponse product = productOpt.get();
+                    
+                    if (cartItem.getVariationSku() != null) {
+                        return product.getVariations() == null || 
+                            product.getVariations().stream()
+                                .noneMatch(v -> v.getSku().equals(cartItem.getVariationSku()) && 
+                                             v.getIsActive() && 
+                                             v.getStockQuantity() >= cartItem.getQuantity());
+                    } else {
+                        return product.getStockQuantity() < cartItem.getQuantity();
+                    }
+                })
+                .collect(Collectors.toList());
+        
+        cartItemRepository.deleteAll(outOfStockItems);
+        return getCartByUserId(userId);
+    }
+
     private CartItemResponse convertToCartItemResponse(CartItem cartItem) {
         CartItemResponse response = new CartItemResponse();
         response.setId(cartItem.getId());
         response.setProductId(cartItem.getProductId());
+        response.setVariationSku(cartItem.getVariationSku());
         response.setQuantity(cartItem.getQuantity());
         response.setCreatedAt(cartItem.getCreatedAt());
 
         // Fetch product details from MongoDB
         Optional<ProductResponse> productOpt = productService.getProductById(cartItem.getProductId());
-        productOpt.ifPresent(response::setProduct);
+        if (productOpt.isPresent()) {
+            ProductResponse product = productOpt.get();
+            response.setProduct(product);
+            
+            // If there's a variation SKU, find and set the selected variation
+            if (cartItem.getVariationSku() != null && product.getVariations() != null) {
+                product.getVariations().stream()
+                    .filter(variation -> variation.getSku().equals(cartItem.getVariationSku()))
+                    .findFirst()
+                    .ifPresent(response::setSelectedVariation);
+            }
+        }
 
         return response;
     }

@@ -69,4 +69,71 @@ public class AuthService {
     public boolean checkEmailExists(String email) {
         return userRepository.findByEmail(email).isPresent();
     }
+
+    public Optional<Map<String, Object>> refreshToken(String refreshToken) {
+        // Placeholder for JWT refresh token implementation
+        // In a real application, you would validate the refresh token
+        // and generate new access token
+        return Optional.empty();
+    }
+
+    public boolean validateToken(String token) {
+        // Placeholder for JWT token validation
+        // In a real application, you would validate the JWT token
+        return token != null && !token.isEmpty();
+    }
+
+    public Optional<Map<String, Object>> getUserProfile(String email) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (user.getIsActive()) {
+                Map<String, Object> profile = new HashMap<>();
+                profile.put("userId", user.getId());
+                profile.put("email", user.getEmail());
+                profile.put("firstName", user.getFirstName());
+                profile.put("lastName", user.getLastName());
+                profile.put("phone", user.getPhone());
+                profile.put("role", user.getRole().name());
+                profile.put("createdAt", user.getCreatedAt());
+                profile.put("updatedAt", user.getUpdatedAt());
+                
+                return Optional.of(profile);
+            }
+        }
+        
+        return Optional.empty();
+    }
+
+    public boolean changePassword(String email, String oldPassword, String newPassword) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            // In a real application, you would hash and verify passwords
+            if (user.getPassword().equals(oldPassword) && user.getIsActive()) {
+                user.setPassword(newPassword); // In real app, hash this
+                userRepository.save(user);
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    public boolean resetPassword(String email, String newPassword) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (user.getIsActive()) {
+                user.setPassword(newPassword); // In real app, hash this
+                userRepository.save(user);
+                return true;
+            }
+        }
+        
+        return false;
+    }
 }
