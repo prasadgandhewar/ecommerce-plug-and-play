@@ -74,8 +74,9 @@ const ProductsPage: React.FC = () => {
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
   const { isLoading: cartLoading } = useSelector((state: RootState) => state.cart);
 
-  const [sortBy, setSortBy] = useState('id');
+  const [sortBy, setSortBy] = useState('name');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
+  const [sortOption, setSortOption] = useState('featured'); // Track the dropdown selection
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [priceRange, setPriceRange] = useState([0, 1000]);
@@ -90,42 +91,86 @@ const ProductsPage: React.FC = () => {
 
   // Load initial data
   useEffect(() => {
-    dispatch(fetchProducts({ page: 0, size: 20 }));
+    dispatch(fetchProducts({ page: 0, size: 20, sortBy: 'averageRating', sortDir: 'desc' }));
     dispatch(fetchCategories());
   }, [dispatch]);
 
-  // Handle sort change
+  // Handle sort change - updated to handle combined sort options
   const handleSortChange = (value: string) => {
-    setSortBy(value);
-    const newFilters = { 
-      ...filters, 
-      page: 0, 
-      sortBy: value, 
-      sortDir: sortDir 
-    };
-    dispatch(setFilters(newFilters));
-    dispatch(fetchProducts(newFilters));
-  };
+    let newSortBy = 'name';
+    let newSortDir: 'asc' | 'desc' = 'asc';
 
-  // Handle sort direction change
-  const handleSortDirChange = (direction: 'asc' | 'desc') => {
-    setSortDir(direction);
+    switch (value) {
+      case 'price-low':
+        newSortBy = 'price';
+        newSortDir = 'asc';
+        break;
+      case 'price-high':
+        newSortBy = 'price';
+        newSortDir = 'desc';
+        break;
+      case 'rating':
+        newSortBy = 'averageRating';
+        newSortDir = 'desc';
+        break;
+      case 'newest':
+        newSortBy = 'createdAt';
+        newSortDir = 'desc';
+        break;
+      case 'alphabetical':
+        newSortBy = 'name';
+        newSortDir = 'asc';
+        break;
+      case 'featured':
+      default:
+        newSortBy = 'averageRating';
+        newSortDir = 'desc';
+        break;
+    }
+
+    setSortOption(value);
+    setSortBy(newSortBy);
+    setSortDir(newSortDir);
+    setCurrentPage(0);
+
     const newFilters = { 
       ...filters, 
       page: 0, 
-      sortBy: sortBy, 
-      sortDir: direction 
+      sortBy: newSortBy, 
+      sortDir: newSortDir,
+      query: searchTerm || undefined,
+      category: selectedCategory || undefined
     };
+    
     dispatch(setFilters(newFilters));
     dispatch(fetchProducts(newFilters));
   };
 
   // Handle search
   const handleSearch = () => {
+    setCurrentPage(0);
+    const newFilters = {
+      page: 0,
+      size: 20,
+      sortBy: sortBy,
+      sortDir: sortDir,
+      query: searchTerm.trim() || undefined,
+      category: selectedCategory || undefined
+    };
+    
+    dispatch(setFilters(newFilters));
+    
     if (searchTerm.trim()) {
       dispatch(searchProducts(searchTerm.trim()));
     } else {
-      dispatch(fetchProducts({ page: 0, size: 20 }));
+      dispatch(fetchProducts(newFilters));
+    }
+  };
+
+  // Handle search on Enter key
+  const handleSearchKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSearch();
     }
   };
 
@@ -133,28 +178,61 @@ const ProductsPage: React.FC = () => {
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
     setCurrentPage(0);
+    
+    const newFilters = {
+      page: 0,
+      size: 20,
+      sortBy: sortBy,
+      sortDir: sortDir,
+      query: searchTerm.trim() || undefined,
+      category: category || undefined
+    };
+    
+    dispatch(setFilters(newFilters));
+    
     if (category) {
       dispatch(fetchProductsByCategory(category));
     } else {
-      dispatch(fetchProducts({ page: 0, size: 20 }));
+      dispatch(fetchProducts(newFilters));
     }
   };
 
   // Handle price range filter
   const handlePriceRangeFilter = () => {
+    setCurrentPage(0);
+    
+    const newFilters = {
+      page: 0,
+      size: 20,
+      sortBy: sortBy,
+      sortDir: sortDir,
+      query: searchTerm.trim() || undefined,
+      category: selectedCategory || undefined,
+      minPrice: priceRange[0],
+      maxPrice: priceRange[1]
+    };
+    
+    dispatch(setFilters(newFilters));
     dispatch(fetchProductsByPriceRange({ 
       minPrice: priceRange[0], 
       maxPrice: priceRange[1] 
     }));
   };
 
-  // Handle page change
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    const newFilters = { 
-      ...filters, 
-      page: page 
+  // Handle load more
+  const handleLoadMore = () => {
+    const nextPage = currentPage + 1;
+    setCurrentPage(nextPage);
+    
+    const newFilters = {
+      ...filters,
+      page: nextPage,
+      sortBy: sortBy,
+      sortDir: sortDir,
+      query: searchTerm.trim() || undefined,
+      category: selectedCategory || undefined
     };
+    
     dispatch(setFilters(newFilters));
     dispatch(fetchProducts(newFilters));
   };
@@ -241,6 +319,17 @@ const ProductsPage: React.FC = () => {
             <Text fontSize="sm" fontWeight="600" color="neutral.600">${priceRange[0]}</Text>
             <Text fontSize="sm" fontWeight="600" color="neutral.600">${priceRange[1]}</Text>
           </HStack>
+          <Button
+            size="sm"
+            colorScheme="green"
+            variant="outline"
+            w="full"
+            onClick={handlePriceRangeFilter}
+            borderRadius="lg"
+            fontWeight="600"
+          >
+            Apply Price Filter
+          </Button>
         </VStack>
       </Box>
 
@@ -312,6 +401,8 @@ const ProductsPage: React.FC = () => {
               placeholder="Search for plants..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyPress={handleSearchKeyPress}
+              onBlur={handleSearch}
               bg="white"
               borderColor="neutral.200"
               borderRadius="xl"
@@ -338,8 +429,8 @@ const ProductsPage: React.FC = () => {
             )}
             
             <Select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
+              value={sortOption}
+              onChange={(e) => handleSortChange(e.target.value)}
               w="200px"
               bg="white"
               borderRadius="xl"
@@ -576,25 +667,30 @@ const ProductsPage: React.FC = () => {
                 </SimpleGrid>
 
                 {/* Load More Button */}
-                <Flex justify="center" mt={16}>
-                  <Button 
-                    size="lg" 
-                    variant="outline" 
-                    colorScheme="green"
-                    borderRadius="xl"
-                    px={12}
-                    py={6}
-                    fontSize="lg"
-                    fontWeight="600"
-                    borderWidth="2px"
-                    _hover={{
-                      bg: 'primary.50',
-                      transform: 'translateY(-2px)',
-                    }}
-                  >
-                    Load More Plants
-                  </Button>
-                </Flex>
+                {pagination && !pagination.last && (
+                  <Flex justify="center" mt={16}>
+                    <Button 
+                      size="lg" 
+                      variant="outline" 
+                      colorScheme="green"
+                      borderRadius="xl"
+                      px={12}
+                      py={6}
+                      fontSize="lg"
+                      fontWeight="600"
+                      borderWidth="2px"
+                      onClick={handleLoadMore}
+                      isLoading={isLoading}
+                      loadingText="Loading More..."
+                      _hover={{
+                        bg: 'primary.50',
+                        transform: 'translateY(-2px)',
+                      }}
+                    >
+                      Load More Plants
+                    </Button>
+                  </Flex>
+                )}
               </>
             )}
           </Box>
