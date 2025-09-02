@@ -293,11 +293,53 @@ const ProductsPage: React.FC = () => {
     const filterParams: any = {};
     
     filters.forEach(filter => {
+      const filterName = filter.name.toLowerCase();
+      
+      // Map common filter names to backend parameters
       if (filter.type === 'string' && filter.selectedValues && filter.selectedValues.length > 0) {
-        filterParams[filter.name] = filter.selectedValues;
+        switch (filterName) {
+          case 'subcategory':
+          case 'sub-category':
+          case 'sub category':
+            filterParams.subCategory = filter.selectedValues[0]; // Take first value for single-select
+            break;
+          case 'brand':
+          case 'brands':
+            filterParams.brand = filter.selectedValues[0]; // Take first value for single-select
+            break;
+          case 'size':
+          case 'sizes':
+            // For now, pass as generic parameter (could be expanded later)
+            filterParams[filter.name] = filter.selectedValues.join(',');
+            break;
+          case 'color':
+          case 'colors':
+            // For now, pass as generic parameter (could be expanded later)
+            filterParams[filter.name] = filter.selectedValues.join(',');
+            break;
+          default:
+            // Pass other string filters as comma-separated values
+            filterParams[filter.name] = filter.selectedValues.join(',');
+            break;
+        }
       } else if (filter.type === 'range' && filter.selectedRange) {
-        filterParams[`${filter.name}Min`] = filter.selectedRange[0];
-        filterParams[`${filter.name}Max`] = filter.selectedRange[1];
+        switch (filterName) {
+          case 'price':
+          case 'pricerange':
+          case 'price range':
+            filterParams.minPrice = filter.selectedRange[0];
+            filterParams.maxPrice = filter.selectedRange[1];
+            break;
+          case 'weight':
+            filterParams.minWeight = filter.selectedRange[0];
+            filterParams.maxWeight = filter.selectedRange[1];
+            break;
+          default:
+            // Pass other range filters with Min/Max suffix
+            filterParams[`${filter.name}Min`] = filter.selectedRange[0];
+            filterParams[`${filter.name}Max`] = filter.selectedRange[1];
+            break;
+        }
       }
     });
 
@@ -310,6 +352,8 @@ const ProductsPage: React.FC = () => {
       category: selectedCategory || undefined,
       ...filterParams
     };
+    
+    console.log('Applying filters:', newFilters); // Debug log
     
     dispatch(setFilters(newFilters));
     dispatch(fetchProducts(newFilters));
@@ -389,59 +433,90 @@ const ProductsPage: React.FC = () => {
 
   const FilterPanel = () => (
     <VStack spacing={8} align="stretch" w="280px">
-      {/* Category Selection */}
-      <Box>
-        <Heading size="md" mb={4} color="neutral.800">Categories</Heading>
-        <VStack align="start" spacing={3}>
-          <Button
-            variant={!selectedCategory ? "solid" : "ghost"}
-            colorScheme={!selectedCategory ? "green" : undefined}
-            size="sm"
-            justifyContent="flex-start"
-            w="full"
-            onClick={() => handleCategoryChange('')}
-            fontWeight="500"
-          >
-            All Categories
-          </Button>
-          {categories.map((category) => (
-            <Button
-              key={category}
-              variant={selectedCategory === category ? "solid" : "ghost"}
-              colorScheme={selectedCategory === category ? "green" : undefined}
-              size="sm"
-              justifyContent="flex-start"
-              w="full"
-              onClick={() => handleCategoryChange(category)}
-              fontWeight="500"
-              textTransform="capitalize"
-            >
-              {category.replace(/([A-Z])/g, ' $1').trim()}
-            </Button>
-          ))}
-        </VStack>
-      </Box>
-
-      {selectedCategory && (
-        <>
-          <Divider borderColor="neutral.200" />
-          
-          {/* Dynamic Filters for Selected Category */}
-          <DynamicFilters
-            filters={currentCategoryFilters}
-            selectedFilters={selectedFilters}
-            onFiltersChange={handleDynamicFiltersChange}
-            isLoading={filtersLoading}
-            error={filtersError}
-            title={`${selectedCategory} Filters`}
-          />
-        </>
+      {/* Category Selection - Only show when no category is selected */}
+      {!selectedCategory && (
+        <Box>
+          <Heading size="md" mb={4} color="neutral.800">Categories</Heading>
+          <VStack align="start" spacing={3}>
+            {categories.map((category) => (
+              <Button
+                key={category}
+                variant="ghost"
+                colorScheme="green"
+                size="sm"
+                justifyContent="flex-start"
+                w="full"
+                onClick={() => handleCategoryChange(category)}
+                fontWeight="500"
+                textTransform="capitalize"
+                _hover={{ bg: 'green.50' }}
+              >
+                {category.replace(/([A-Z])/g, ' $1').trim()}
+              </Button>
+            ))}
+          </VStack>
+        </Box>
       )}
 
-      {/* Fallback Price Range Filter (always available) */}
-      {(!selectedCategory || currentCategoryFilters.length === 0) && (
+      {/* Selected Category Header with Back Button */}
+      {selectedCategory && (
+        <Box>
+          <HStack justify="space-between" align="center" mb={4}>
+            <Heading size="md" color="neutral.800" textTransform="capitalize">
+              {selectedCategory.replace(/([A-Z])/g, ' $1').trim()}
+            </Heading>
+            <Button
+              size="sm"
+              variant="ghost"
+              colorScheme="blue"
+              onClick={() => handleCategoryChange('')}
+              fontWeight="600"
+            >
+              ← All Categories
+            </Button>
+          </HStack>
+          
+          {/* Loading state for filters */}
+          {filtersLoading && (
+            <VStack spacing={4}>
+              <Spinner size="md" color="primary.500" />
+              <Text fontSize="sm" color="neutral.600">Loading filters...</Text>
+            </VStack>
+          )}
+
+          {/* Error state for filters */}
+          {filtersError && !filtersLoading && (
+            <Alert status="warning" borderRadius="md" size="sm">
+              <AlertIcon />
+              <Text fontSize="sm">Could not load filters for this category</Text>
+            </Alert>
+          )}
+
+          {/* Dynamic Filters for Selected Category */}
+          {!filtersLoading && !filtersError && currentCategoryFilters.length > 0 && (
+            <DynamicFilters
+              filters={currentCategoryFilters}
+              selectedFilters={selectedFilters}
+              onFiltersChange={handleDynamicFiltersChange}
+              isLoading={filtersLoading}
+              error={filtersError}
+              title="Filters"
+            />
+          )}
+
+          {/* No filters message */}
+          {!filtersLoading && !filtersError && currentCategoryFilters.length === 0 && (
+            <Text fontSize="sm" color="neutral.500" textAlign="center" py={4}>
+              No specific filters available for this category
+            </Text>
+          )}
+        </Box>
+      )}
+
+      {/* Fallback Price Range Filter - Show when no category is selected or when category has no specific filters */}
+      {(!selectedCategory || (!filtersLoading && currentCategoryFilters.length === 0)) && (
         <>
-          <Divider borderColor="neutral.200" />
+          {selectedCategory && <Divider borderColor="neutral.200" />}
           
           <Box>
             <Heading size="md" mb={4} color="neutral.800">Price Range</Heading>

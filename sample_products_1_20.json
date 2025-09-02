@@ -1,0 +1,746 @@
+[
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0d1"},
+    "sku": "MOB-SAM-001",
+    "name": "Samsung Galaxy S23 Ultra",
+    "description": "Premium flagship smartphone with S Pen, advanced camera system, and powerful performance.",
+    "category": "Mobile",
+    "subCategory": "Smartphones",
+    "brand": "Samsung",
+    "price": 1199.99,
+    "currency": "USD",
+    "stockQuantity": 50,
+    "images": [
+      "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=600",
+      "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600",
+      "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=600"
+    ],
+    "specifications": {
+      "screenSize": "6.8 inches",
+      "ram": "12GB",
+      "storage": "256GB",
+      "battery": "5000mAh",
+      "camera": "200MP + 12MP + 10MP + 10MP"
+    },
+    "attributes": {
+      "ram": "12GB",
+      "storage": "256GB",
+      "battery": "5000mAh",
+      "brand": "Samsung"
+    },
+    "variations": [
+      {"sku": "MOB-SAM-001-BLK", "color": "Black", "price": 1199.99, "stockQuantity": 20},
+      {"sku": "MOB-SAM-001-GRN", "color": "Green", "price": 1199.99, "stockQuantity": 15},
+      {"sku": "MOB-SAM-001-CRM", "color": "Cream", "price": 1199.99, "stockQuantity": 15}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-01-15T09:00:00.000Z"},
+    "updatedAt": {"$date": "2024-08-20T14:30:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0d2"},
+    "sku": "MOB-APL-001",
+    "name": "iPhone 15 Pro Max",
+    "description": "Latest iPhone with titanium design, A17 Pro chip, and advanced camera capabilities.",
+    "category": "Mobile",
+    "subCategory": "Smartphones",
+    "brand": "Apple",
+    "price": 1399.99,
+    "currency": "USD",
+    "stockQuantity": 30,
+    "images": [
+      "https://images.unsplash.com/photo-1556656793-08538906a9f8?w=600",
+      "https://images.unsplash.com/photo-1512499617640-c2f999098c01?w=600",
+      "https://images.unsplash.com/photo-1580910051074-3eb694886505?w=600"
+    ],
+    "specifications": {
+      "screenSize": "6.7 inches",
+      "ram": "8GB",
+      "storage": "256GB",
+      "battery": "4400mAh",
+      "camera": "48MP + 12MP + 12MP"
+    },
+    "attributes": {
+      "ram": "8GB",
+      "storage": "256GB",
+      "battery": "4000mAh",
+      "brand": "Apple"
+    },
+    "variations": [
+      {"sku": "MOB-APL-001-TIT", "color": "Natural Titanium", "price": 1399.99, "stockQuantity": 10},
+      {"sku": "MOB-APL-001-BLU", "color": "Blue Titanium", "price": 1399.99, "stockQuantity": 10},
+      {"sku": "MOB-APL-001-WHT", "color": "White Titanium", "price": 1399.99, "stockQuantity": 10}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-02-01T10:00:00.000Z"},
+    "updatedAt": {"$date": "2024-08-25T16:45:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0d3"},
+    "sku": "MOB-ONE-001",
+    "name": "OnePlus 11 5G",
+    "description": "High-performance Android flagship with Snapdragon 8 Gen 2 and fast charging.",
+    "category": "Mobile",
+    "subCategory": "Smartphones",
+    "brand": "OnePlus",
+    "price": 799.99,
+    "currency": "USD",
+    "stockQuantity": 75,
+    "images": [
+      "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=600",
+      "https://images.unsplash.com/photo-1567581935884-3349723552ca?w=600",
+      "https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=600"
+    ],
+    "specifications": {
+      "screenSize": "6.7 inches",
+      "ram": "8GB",
+      "storage": "128GB",
+      "battery": "5000mAh",
+      "camera": "50MP + 32MP + 48MP"
+    },
+    "attributes": {
+      "ram": "8GB",
+      "storage": "128GB",
+      "battery": "5000mAh",
+      "brand": "OnePlus"
+    },
+    "variations": [
+      {"sku": "MOB-ONE-001-GRN", "color": "Eternal Green", "price": 799.99, "stockQuantity": 25},
+      {"sku": "MOB-ONE-001-BLK", "color": "Titan Black", "price": 799.99, "stockQuantity": 25},
+      {"sku": "MOB-ONE-001-WHT", "color": "Marble White", "price": 799.99, "stockQuantity": 25}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-03-10T11:30:00.000Z"},
+    "updatedAt": {"$date": "2024-08-30T09:15:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0d4"},
+    "sku": "MOB-XIA-001",
+    "name": "Xiaomi Mi 13 Pro",
+    "description": "Premium Android smartphone with Leica camera system and fast wireless charging.",
+    "category": "Mobile",
+    "subCategory": "Smartphones",
+    "brand": "Xiaomi",
+    "price": 699.99,
+    "currency": "USD",
+    "stockQuantity": 60,
+    "images": [
+      "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600",
+      "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=600",
+      "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=600"
+    ],
+    "specifications": {
+      "screenSize": "6.73 inches",
+      "ram": "8GB",
+      "storage": "256GB",
+      "battery": "4820mAh",
+      "camera": "50MP + 50MP + 50MP"
+    },
+    "attributes": {
+      "ram": "8GB",
+      "storage": "256GB",
+      "battery": "4000mAh",
+      "brand": "Xiaomi"
+    },
+    "variations": [
+      {"sku": "MOB-XIA-001-BLK", "color": "Ceramic Black", "price": 699.99, "stockQuantity": 20},
+      {"sku": "MOB-XIA-001-WHT", "color": "Ceramic White", "price": 699.99, "stockQuantity": 20},
+      {"sku": "MOB-XIA-001-BLU", "color": "Flora Green", "price": 699.99, "stockQuantity": 20}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-01-25T08:45:00.000Z"},
+    "updatedAt": {"$date": "2024-08-15T13:20:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0d5"},
+    "sku": "LAP-DEL-001",
+    "name": "Dell XPS 13 Plus",
+    "description": "Ultra-portable laptop with stunning InfinityEdge display and premium build quality.",
+    "category": "Laptop",
+    "subCategory": "Ultrabooks",
+    "brand": "Dell",
+    "price": 1299.99,
+    "currency": "USD",
+    "stockQuantity": 40,
+    "images": [
+      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600",
+      "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=600",
+      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600"
+    ],
+    "specifications": {
+      "screenSize": "13.4 inches",
+      "processor": "Intel Core i7-1280P",
+      "ram": "16GB",
+      "storage": "512GB SSD",
+      "graphics": "Intel Iris Xe"
+    },
+    "attributes": {
+      "ram": "16GB",
+      "storage": "512GB SSD",
+      "processor": "i7",
+      "brand": "Dell"
+    },
+    "variations": [
+      {"sku": "LAP-DEL-001-SLV", "color": "Platinum Silver", "price": 1299.99, "stockQuantity": 20},
+      {"sku": "LAP-DEL-001-GRY", "color": "Graphite", "price": 1299.99, "stockQuantity": 20}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-02-14T12:00:00.000Z"},
+    "updatedAt": {"$date": "2024-09-01T10:30:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0d6"},
+    "sku": "LAP-HP-001",
+    "name": "HP Spectre x360 14",
+    "description": "2-in-1 convertible laptop with 3K OLED display and all-day battery life.",
+    "category": "Laptop",
+    "subCategory": "2-in-1",
+    "brand": "HP",
+    "price": 1199.99,
+    "currency": "USD",
+    "stockQuantity": 35,
+    "images": [
+      "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=600",
+      "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=600",
+      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=600"
+    ],
+    "specifications": {
+      "screenSize": "13.5 inches",
+      "processor": "Intel Core i7-1255U",
+      "ram": "16GB",
+      "storage": "512GB SSD",
+      "graphics": "Intel Iris Xe"
+    },
+    "attributes": {
+      "ram": "16GB",
+      "storage": "512GB SSD",
+      "processor": "i7",
+      "brand": "HP"
+    },
+    "variations": [
+      {"sku": "LAP-HP-001-BLK", "color": "Nightfall Black", "price": 1199.99, "stockQuantity": 15},
+      {"sku": "LAP-HP-001-SLV", "color": "Natural Silver", "price": 1199.99, "stockQuantity": 20}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-03-05T14:15:00.000Z"},
+    "updatedAt": {"$date": "2024-08-28T11:45:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0d7"},
+    "sku": "LAP-LEN-001",
+    "name": "Lenovo ThinkPad X1 Carbon",
+    "description": "Business ultrabook with military-grade durability and exceptional keyboard.",
+    "category": "Laptop",
+    "subCategory": "Business",
+    "brand": "Lenovo",
+    "price": 1499.99,
+    "currency": "USD",
+    "stockQuantity": 25,
+    "images": [
+      "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=600",
+      "https://images.unsplash.com/photo-1484788984921-03950022c9ef?w=600",
+      "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600"
+    ],
+    "specifications": {
+      "screenSize": "14 inches",
+      "processor": "Intel Core i7-1260P",
+      "ram": "16GB",
+      "storage": "512GB SSD",
+      "graphics": "Intel Iris Xe"
+    },
+    "attributes": {
+      "ram": "16GB",
+      "storage": "512GB SSD",
+      "processor": "i7",
+      "brand": "Lenovo"
+    },
+    "variations": [
+      {"sku": "LAP-LEN-001-BLK", "color": "Black", "price": 1499.99, "stockQuantity": 25}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-01-30T09:30:00.000Z"},
+    "updatedAt": {"$date": "2024-08-20T15:00:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0d8"},
+    "sku": "LAP-ASU-001",
+    "name": "ASUS ROG Zephyrus G14",
+    "description": "Compact gaming laptop with AMD Ryzen 9 and RTX 4060 graphics.",
+    "category": "Laptop",
+    "subCategory": "Gaming",
+    "brand": "Asus",
+    "price": 1799.99,
+    "currency": "USD",
+    "stockQuantity": 20,
+    "images": [
+      "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=600",
+      "https://images.unsplash.com/photo-1587831990711-23ca6441447b?w=600",
+      "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?w=600"
+    ],
+    "specifications": {
+      "screenSize": "14 inches",
+      "processor": "AMD Ryzen 9 7940HS",
+      "ram": "16GB",
+      "storage": "1TB SSD",
+      "graphics": "NVIDIA RTX 4060"
+    },
+    "attributes": {
+      "ram": "16GB",
+      "storage": "1TB SSD",
+      "processor": "Ryzen 9",
+      "brand": "Asus"
+    },
+    "variations": [
+      {"sku": "LAP-ASU-001-BLK", "color": "Eclipse Gray", "price": 1799.99, "stockQuantity": 10},
+      {"sku": "LAP-ASU-001-WHT", "color": "Moonlight White", "price": 1799.99, "stockQuantity": 10}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-04-10T16:20:00.000Z"},
+    "updatedAt": {"$date": "2024-09-02T12:10:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0d9"},
+    "sku": "LAP-APL-001",
+    "name": "MacBook Air M2",
+    "description": "Ultra-thin laptop with Apple M2 chip, all-day battery life, and stunning Liquid Retina display.",
+    "category": "Laptop",
+    "subCategory": "Ultrabooks",
+    "brand": "Apple",
+    "price": 1199.99,
+    "currency": "USD",
+    "stockQuantity": 45,
+    "images": [
+      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600",
+      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=600",
+      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600"
+    ],
+    "specifications": {
+      "screenSize": "13.6 inches",
+      "processor": "Apple M2",
+      "ram": "8GB",
+      "storage": "256GB SSD",
+      "graphics": "Apple M2 GPU"
+    },
+    "attributes": {
+      "ram": "8GB",
+      "storage": "256GB SSD",
+      "processor": "M2",
+      "brand": "Apple"
+    },
+    "variations": [
+      {"sku": "LAP-APL-001-SLV", "color": "Silver", "price": 1199.99, "stockQuantity": 15},
+      {"sku": "LAP-APL-001-GLD", "color": "Gold", "price": 1199.99, "stockQuantity": 15},
+      {"sku": "LAP-APL-001-GRY", "color": "Space Gray", "price": 1199.99, "stockQuantity": 15}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-02-20T13:45:00.000Z"},
+    "updatedAt": {"$date": "2024-08-31T14:20:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0e0"},
+    "sku": "FSH-NIK-001",
+    "name": "Nike Air Max 270",
+    "description": "Lifestyle sneakers with Max Air cushioning and breathable mesh upper.",
+    "category": "Fashion",
+    "subCategory": "Sneakers",
+    "brand": "Nike",
+    "price": 149.99,
+    "currency": "USD",
+    "stockQuantity": 80,
+    "images": [
+      "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600",
+      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600",
+      "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600"
+    ],
+    "specifications": {
+      "material": "Mesh and synthetic leather",
+      "sole": "Rubber with Max Air unit",
+      "closure": "Lace-up",
+      "weight": "320g"
+    },
+    "attributes": {
+      "size": ["S", "M", "L", "XL"],
+      "color": "Black",
+      "material": "Mesh",
+      "brand": "Nike"
+    },
+    "variations": [
+      {"sku": "FSH-NIK-001-BLK-S", "size": "S", "color": "Black", "price": 149.99, "stockQuantity": 20},
+      {"sku": "FSH-NIK-001-BLK-M", "size": "M", "color": "Black", "price": 149.99, "stockQuantity": 20},
+      {"sku": "FSH-NIK-001-BLK-L", "size": "L", "color": "Black", "price": 149.99, "stockQuantity": 20},
+      {"sku": "FSH-NIK-001-BLK-XL", "size": "XL", "color": "Black", "price": 149.99, "stockQuantity": 20}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-03-15T10:30:00.000Z"},
+    "updatedAt": {"$date": "2024-08-25T16:45:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0e1"},
+    "sku": "FSH-ADI-001",
+    "name": "Adidas Ultraboost 22",
+    "description": "Running shoes with responsive Boost cushioning and Primeknit upper.",
+    "category": "Fashion",
+    "subCategory": "Running Shoes",
+    "brand": "Adidas",
+    "price": 189.99,
+    "currency": "USD",
+    "stockQuantity": 65,
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600",
+      "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=600",
+      "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=600"
+    ],
+    "specifications": {
+      "material": "Primeknit",
+      "sole": "Boost foam",
+      "closure": "Lace-up",
+      "weight": "310g"
+    },
+    "attributes": {
+      "size": ["S", "M", "L", "XL"],
+      "color": "White",
+      "material": "Polyester",
+      "brand": "Adidas"
+    },
+    "variations": [
+      {"sku": "FSH-ADI-001-WHT-S", "size": "S", "color": "White", "price": 189.99, "stockQuantity": 15},
+      {"sku": "FSH-ADI-001-WHT-M", "size": "M", "color": "White", "price": 189.99, "stockQuantity": 20},
+      {"sku": "FSH-ADI-001-WHT-L", "size": "L", "color": "White", "price": 189.99, "stockQuantity": 20},
+      {"sku": "FSH-ADI-001-WHT-XL", "size": "XL", "color": "White", "price": 189.99, "stockQuantity": 10}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-04-05T11:15:00.000Z"},
+    "updatedAt": {"$date": "2024-08-30T09:30:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0e2"},
+    "sku": "FSH-PUM-001",
+    "name": "Puma RS-X Reinvention",
+    "description": "Retro-inspired sneakers with bold colors and chunky silhouette.",
+    "category": "Fashion",
+    "subCategory": "Casual Shoes",
+    "brand": "Puma",
+    "price": 109.99,
+    "currency": "USD",
+    "stockQuantity": 55,
+    "images": [
+      "https://images.unsplash.com/photo-1562613865-8f14ad45d70d?w=600",
+      "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=600",
+      "https://images.unsplash.com/photo-1557979619-445218145ad7?w=600"
+    ],
+    "specifications": {
+      "material": "Mesh and leather",
+      "sole": "Running System technology",
+      "closure": "Lace-up",
+      "weight": "340g"
+    },
+    "attributes": {
+      "size": ["S", "M", "L"],
+      "color": "Red",
+      "material": "Mesh",
+      "brand": "Puma"
+    },
+    "variations": [
+      {"sku": "FSH-PUM-001-RED-S", "size": "S", "color": "Red", "price": 109.99, "stockQuantity": 18},
+      {"sku": "FSH-PUM-001-RED-M", "size": "M", "color": "Red", "price": 109.99, "stockQuantity": 20},
+      {"sku": "FSH-PUM-001-RED-L", "size": "L", "color": "Red", "price": 109.99, "stockQuantity": 17}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-05-12T14:20:00.000Z"},
+    "updatedAt": {"$date": "2024-09-01T12:45:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0e3"},
+    "sku": "FSH-STY-001",
+    "name": "StyleHub Classic T-Shirt",
+    "description": "Premium cotton t-shirt with comfortable fit and durable construction.",
+    "category": "Fashion",
+    "subCategory": "T-Shirts",
+    "brand": "StyleHub",
+    "price": 24.99,
+    "currency": "USD",
+    "stockQuantity": 120,
+    "images": [
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600",
+      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600",
+      "https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=600"
+    ],
+    "specifications": {
+      "material": "100% Cotton",
+      "fit": "Regular",
+      "neckline": "Crew neck",
+      "sleeve": "Short sleeve"
+    },
+    "attributes": {
+      "size": ["S", "M", "L", "XL"],
+      "color": "Blue",
+      "material": "Cotton",
+      "brand": "StyleHub"
+    },
+    "variations": [
+      {"sku": "FSH-STY-001-BLU-S", "size": "S", "color": "Blue", "price": 24.99, "stockQuantity": 30},
+      {"sku": "FSH-STY-001-BLU-M", "size": "M", "color": "Blue", "price": 24.99, "stockQuantity": 30},
+      {"sku": "FSH-STY-001-BLU-L", "size": "L", "color": "Blue", "price": 24.99, "stockQuantity": 30},
+      {"sku": "FSH-STY-001-BLU-XL", "size": "XL", "color": "Blue", "price": 24.99, "stockQuantity": 30}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-01-20T08:30:00.000Z"},
+    "updatedAt": {"$date": "2024-08-15T11:20:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0e4"},
+    "sku": "HOM-LG-001",
+    "name": "LG French Door Refrigerator",
+    "description": "Energy-efficient refrigerator with smart cooling technology and spacious interior.",
+    "category": "Home Appliances",
+    "subCategory": "Refrigerators",
+    "brand": "LG",
+    "price": 1899.99,
+    "currency": "USD",
+    "stockQuantity": 15,
+    "images": [
+      "https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=600",
+      "https://images.unsplash.com/photo-1595514535102-35e52b838ba8?w=600",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=600"
+    ],
+    "specifications": {
+      "capacity": "500L",
+      "energyRating": "5 Star",
+      "type": "French Door",
+      "features": "Smart Cooling, LED Display"
+    },
+    "attributes": {
+      "type": "Refrigerator",
+      "capacity": "500L",
+      "energyRating": "5 Star",
+      "brand": "LG"
+    },
+    "variations": [
+      {"sku": "HOM-LG-001-SS", "color": "Stainless Steel", "price": 1899.99, "stockQuantity": 8},
+      {"sku": "HOM-LG-001-BLK", "color": "Black Stainless", "price": 1899.99, "stockQuantity": 7}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-02-28T15:40:00.000Z"},
+    "updatedAt": {"$date": "2024-08-28T17:30:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0e5"},
+    "sku": "HOM-SAM-001",
+    "name": "Samsung Front Load Washing Machine",
+    "description": "High-efficiency washing machine with steam cleaning and smart controls.",
+    "category": "Home Appliances",
+    "subCategory": "Washing Machines",
+    "brand": "Samsung",
+    "price": 899.99,
+    "currency": "USD",
+    "stockQuantity": 25,
+    "images": [
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600",
+      "https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=600",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=600"
+    ],
+    "specifications": {
+      "capacity": "300L",
+      "energyRating": "4 Star",
+      "type": "Front Load",
+      "features": "Steam Wash, Smart Control"
+    },
+    "attributes": {
+      "type": "Washing Machine",
+      "capacity": "300L",
+      "energyRating": "4 Star",
+      "brand": "Samsung"
+    },
+    "variations": [
+      {"sku": "HOM-SAM-001-WHT", "color": "White", "price": 899.99, "stockQuantity": 15},
+      {"sku": "HOM-SAM-001-SLV", "color": "Silver", "price": 899.99, "stockQuantity": 10}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-03-20T12:15:00.000Z"},
+    "updatedAt": {"$date": "2024-09-02T14:45:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0e6"},
+    "sku": "HOM-WHP-001",
+    "name": "Whirlpool Convection Microwave",
+    "description": "Versatile microwave with convection cooking and grill function.",
+    "category": "Home Appliances",
+    "subCategory": "Microwaves",
+    "brand": "Whirlpool",
+    "price": 299.99,
+    "currency": "USD",
+    "stockQuantity": 40,
+    "images": [
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600",
+      "https://images.unsplash.com/photo-1574623452334-1e0ac2b3ccb4?w=600",
+      "https://images.unsplash.com/photo-1585515320310-259814833e62?w=600"
+    ],
+    "specifications": {
+      "capacity": "200L",
+      "energyRating": "3 Star",
+      "type": "Convection",
+      "features": "Auto Cook, Child Lock"
+    },
+    "attributes": {
+      "type": "Microwave",
+      "capacity": "200L",
+      "energyRating": "3 Star",
+      "brand": "Whirlpool"
+    },
+    "variations": [
+      {"sku": "HOM-WHP-001-BLK", "color": "Black", "price": 299.99, "stockQuantity": 20},
+      {"sku": "HOM-WHP-001-SLV", "color": "Silver", "price": 299.99, "stockQuantity": 20}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-04-15T09:25:00.000Z"},
+    "updatedAt": {"$date": "2024-08-20T16:10:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0e7"},
+    "sku": "HOM-IFB-001",
+    "name": "IFB Split AC 1.5 Ton",
+    "description": "Energy-efficient air conditioner with inverter technology and smart features.",
+    "category": "Home Appliances",
+    "subCategory": "Air Conditioners",
+    "brand": "IFB",
+    "price": 649.99,
+    "currency": "USD",
+    "stockQuantity": 30,
+    "images": [
+      "https://images.unsplash.com/photo-1631545806848-d86168de2b43?w=600",
+      "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=600",
+      "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=600"
+    ],
+    "specifications": {
+      "capacity": "300L",
+      "energyRating": "5 Star",
+      "type": "Split AC",
+      "features": "Inverter Technology, Wi-Fi Control"
+    },
+    "attributes": {
+      "type": "AC",
+      "capacity": "300L",
+      "energyRating": "5 Star",
+      "brand": "IFB"
+    },
+    "variations": [
+      {"sku": "HOM-IFB-001-WHT", "color": "White", "price": 649.99, "stockQuantity": 30}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-05-05T13:50:00.000Z"},
+    "updatedAt": {"$date": "2024-08-30T10:20:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0e8"},
+    "sku": "MOB-SAM-002",
+    "name": "Samsung Galaxy A54 5G",
+    "description": "Mid-range smartphone with excellent camera and long-lasting battery.",
+    "category": "Mobile",
+    "subCategory": "Smartphones",
+    "brand": "Samsung",
+    "price": 449.99,
+    "currency": "USD",
+    "stockQuantity": 85,
+    "images": [
+      "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600",
+      "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=600",
+      "https://images.unsplash.com/photo-1580910051074-3eb694886505?w=600"
+    ],
+    "specifications": {
+      "screenSize": "6.4 inches",
+      "ram": "6GB",
+      "storage": "128GB",
+      "battery": "5000mAh",
+      "camera": "50MP + 12MP + 5MP"
+    },
+    "attributes": {
+      "ram": "6GB",
+      "storage": "128GB",
+      "battery": "5000mAh",
+      "brand": "Samsung"
+    },
+    "variations": [
+      {"sku": "MOB-SAM-002-VIO", "color": "Awesome Violet", "price": 449.99, "stockQuantity": 30},
+      {"sku": "MOB-SAM-002-WHT", "color": "Awesome White", "price": 449.99, "stockQuantity": 25},
+      {"sku": "MOB-SAM-002-BLK", "color": "Awesome Graphite", "price": 449.99, "stockQuantity": 30}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-06-01T10:30:00.000Z"},
+    "updatedAt": {"$date": "2024-09-01T15:45:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0e9"},
+    "sku": "MOB-APL-002",
+    "name": "iPhone 14",
+    "description": "Previous generation iPhone with A15 Bionic chip and advanced camera system.",
+    "category": "Mobile",
+    "subCategory": "Smartphones",
+    "brand": "Apple",
+    "price": 999.99,
+    "currency": "USD",
+    "stockQuantity": 60,
+    "images": [
+      "https://images.unsplash.com/photo-1512499617640-c2f999098c01?w=600",
+      "https://images.unsplash.com/photo-1556656793-08538906a9f8?w=600",
+      "https://images.unsplash.com/photo-1580910051074-3eb694886505?w=600"
+    ],
+    "specifications": {
+      "screenSize": "6.1 inches",
+      "ram": "6GB",
+      "storage": "128GB",
+      "battery": "4000mAh",
+      "camera": "12MP + 12MP"
+    },
+    "attributes": {
+      "ram": "6GB",
+      "storage": "128GB",
+      "battery": "4000mAh",
+      "brand": "Apple"
+    },
+    "variations": [
+      {"sku": "MOB-APL-002-BLU", "color": "Blue", "price": 999.99, "stockQuantity": 20},
+      {"sku": "MOB-APL-002-PUR", "color": "Purple", "price": 999.99, "stockQuantity": 20},
+      {"sku": "MOB-APL-002-RED", "color": "Red", "price": 999.99, "stockQuantity": 20}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-03-25T11:20:00.000Z"},
+    "updatedAt": {"$date": "2024-08-25T14:15:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0f0"},
+    "sku": "LAP-DEL-002",
+    "name": "Dell Inspiron 15 3000",
+    "description": "Budget-friendly laptop for everyday computing with reliable performance.",
+    "category": "Laptop",
+    "subCategory": "Budget",
+    "brand": "Dell",
+    "price": 549.99,
+    "currency": "USD",
+    "stockQuantity": 70,
+    "images": [
+      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600",
+      "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=600",
+      "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=600"
+    ],
+    "specifications": {
+      "screenSize": "15.6 inches",
+      "processor": "Intel Core i3-1115G4",
+      "ram": "8GB",
+      "storage": "256GB SSD",
+      "graphics": "Intel UHD Graphics"
+    },
+    "attributes": {
+      "ram": "8GB",
+      "storage": "256GB SSD",
+      "processor": "i3",
+      "brand": "Dell"
+    },
+    "variations": [
+      {"sku": "LAP-DEL-002-BLK", "color": "Black", "price": 549.99, "stockQuantity": 35},
+      {"sku": "LAP-DEL-002-SLV", "color": "Silver", "price": 549.99, "stockQuantity": 35}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-01-10T09:45:00.000Z"},
+    "updatedAt": {"$date": "2024-08-18T12:30:00.000Z"}
+  }
+]

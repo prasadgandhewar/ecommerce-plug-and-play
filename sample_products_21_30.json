@@ -1,0 +1,376 @@
+[
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0f1"},
+    "sku": "FSH-NIK-002",
+    "name": "Nike Air Force 1",
+    "description": "Classic basketball shoes with leather upper and Air-Sole cushioning.",
+    "category": "Fashion",
+    "subCategory": "Sneakers",
+    "brand": "Nike",
+    "price": 119.99,
+    "currency": "USD",
+    "stockQuantity": 90,
+    "images": [
+      "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600",
+      "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600",
+      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600"
+    ],
+    "specifications": {
+      "material": "Leather",
+      "sole": "Rubber with Air-Sole unit",
+      "closure": "Lace-up",
+      "weight": "350g"
+    },
+    "attributes": {
+      "size": ["S", "M", "L", "XL"],
+      "color": "White",
+      "material": "Cotton",
+      "brand": "Nike"
+    },
+    "variations": [
+      {"sku": "FSH-NIK-002-WHT-S", "size": "S", "color": "White", "price": 119.99, "stockQuantity": 25},
+      {"sku": "FSH-NIK-002-WHT-M", "size": "M", "color": "White", "price": 119.99, "stockQuantity": 25},
+      {"sku": "FSH-NIK-002-WHT-L", "size": "L", "color": "White", "price": 119.99, "stockQuantity": 25},
+      {"sku": "FSH-NIK-002-WHT-XL", "size": "XL", "color": "White", "price": 119.99, "stockQuantity": 15}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-04-18T13:20:00.000Z"},
+    "updatedAt": {"$date": "2024-08-28T10:45:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0f2"},
+    "sku": "FSH-ADI-002",
+    "name": "Adidas Stan Smith",
+    "description": "Iconic tennis shoes with clean white leather design and green accents.",
+    "category": "Fashion",
+    "subCategory": "Casual Shoes",
+    "brand": "Adidas",
+    "price": 89.99,
+    "currency": "USD",
+    "stockQuantity": 75,
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600",
+      "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=600",
+      "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=600"
+    ],
+    "specifications": {
+      "material": "Leather",
+      "sole": "Rubber",
+      "closure": "Lace-up",
+      "weight": "300g"
+    },
+    "attributes": {
+      "size": ["S", "M", "L"],
+      "color": "White",
+      "material": "Cotton",
+      "brand": "Adidas"
+    },
+    "variations": [
+      {"sku": "FSH-ADI-002-WHT-S", "size": "S", "color": "White", "price": 89.99, "stockQuantity": 25},
+      {"sku": "FSH-ADI-002-WHT-M", "size": "M", "color": "White", "price": 89.99, "stockQuantity": 25},
+      {"sku": "FSH-ADI-002-WHT-L", "size": "L", "color": "White", "price": 89.99, "stockQuantity": 25}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-05-22T14:35:00.000Z"},
+    "updatedAt": {"$date": "2024-09-02T11:20:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0f3"},
+    "sku": "FSH-STY-002",
+    "name": "StyleHub Polo Shirt",
+    "description": "Classic polo shirt with moisture-wicking fabric and stylish fit.",
+    "category": "Fashion",
+    "subCategory": "Polo Shirts",
+    "brand": "StyleHub",
+    "price": 39.99,
+    "currency": "USD",
+    "stockQuantity": 95,
+    "images": [
+      "https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=600",
+      "https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=600",
+      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600"
+    ],
+    "specifications": {
+      "material": "Cotton Blend",
+      "fit": "Slim",
+      "neckline": "Polo collar",
+      "sleeve": "Short sleeve"
+    },
+    "attributes": {
+      "size": ["S", "M", "L", "XL"],
+      "color": "Red",
+      "material": "Cotton",
+      "brand": "StyleHub"
+    },
+    "variations": [
+      {"sku": "FSH-STY-002-RED-S", "size": "S", "color": "Red", "price": 39.99, "stockQuantity": 25},
+      {"sku": "FSH-STY-002-RED-M", "size": "M", "color": "Red", "price": 39.99, "stockQuantity": 25},
+      {"sku": "FSH-STY-002-RED-L", "size": "L", "color": "Red", "price": 39.99, "stockQuantity": 25},
+      {"sku": "FSH-STY-002-RED-XL", "size": "XL", "color": "Red", "price": 39.99, "stockQuantity": 20}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-02-12T10:15:00.000Z"},
+    "updatedAt": {"$date": "2024-08-22T15:30:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0f4"},
+    "sku": "MOB-XIA-002",
+    "name": "Xiaomi Redmi Note 12",
+    "description": "Budget-friendly smartphone with impressive camera and fast charging.",
+    "category": "Mobile",
+    "subCategory": "Smartphones",
+    "brand": "Xiaomi",
+    "price": 249.99,
+    "currency": "USD",
+    "stockQuantity": 100,
+    "images": [
+      "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600",
+      "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=600",
+      "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=600"
+    ],
+    "specifications": {
+      "screenSize": "6.67 inches",
+      "ram": "4GB",
+      "storage": "64GB",
+      "battery": "5000mAh",
+      "camera": "50MP + 8MP + 2MP"
+    },
+    "attributes": {
+      "ram": "4GB",
+      "storage": "64GB",
+      "battery": "5000mAh",
+      "brand": "Xiaomi"
+    },
+    "variations": [
+      {"sku": "MOB-XIA-002-BLU", "color": "Ice Blue", "price": 249.99, "stockQuantity": 35},
+      {"sku": "MOB-XIA-002-BLK", "color": "Onyx Gray", "price": 249.99, "stockQuantity": 35},
+      {"sku": "MOB-XIA-002-WHT", "color": "Pearl White", "price": 249.99, "stockQuantity": 30}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-06-10T12:40:00.000Z"},
+    "updatedAt": {"$date": "2024-09-01T16:25:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0f5"},
+    "sku": "LAP-HP-002",
+    "name": "HP Pavilion Gaming 15",
+    "description": "Gaming laptop with AMD Ryzen processor and NVIDIA GTX graphics.",
+    "category": "Laptop",
+    "subCategory": "Gaming",
+    "brand": "HP",
+    "price": 899.99,
+    "currency": "USD",
+    "stockQuantity": 35,
+    "images": [
+      "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=600",
+      "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=600",
+      "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=600"
+    ],
+    "specifications": {
+      "screenSize": "15.6 inches",
+      "processor": "AMD Ryzen 5 5600H",
+      "ram": "8GB",
+      "storage": "512GB SSD",
+      "graphics": "NVIDIA GTX 1650"
+    },
+    "attributes": {
+      "ram": "8GB",
+      "storage": "512GB SSD",
+      "processor": "Ryzen 5",
+      "brand": "HP"
+    },
+    "variations": [
+      {"sku": "LAP-HP-002-BLK", "color": "Shadow Black", "price": 899.99, "stockQuantity": 20},
+      {"sku": "LAP-HP-002-GRN", "color": "Acid Green", "price": 899.99, "stockQuantity": 15}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-04-28T11:55:00.000Z"},
+    "updatedAt": {"$date": "2024-08-30T13:40:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0f6"},
+    "sku": "HOM-SAM-002",
+    "name": "Samsung 32-inch Smart TV",
+    "description": "Full HD Smart TV with streaming apps and voice control.",
+    "category": "Home Appliances",
+    "subCategory": "Televisions",
+    "brand": "Samsung",
+    "price": 449.99,
+    "currency": "USD",
+    "stockQuantity": 45,
+    "images": [
+      "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=600",
+      "https://images.unsplash.com/photo-1567690187548-f07b1d7bf5a9?w=600",
+      "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=600"
+    ],
+    "specifications": {
+      "screenSize": "32 inches",
+      "resolution": "Full HD",
+      "smartTV": "Yes",
+      "hdmi": "3 ports"
+    },
+    "attributes": {
+      "type": "TV",
+      "capacity": "32 inch",
+      "energyRating": "4 Star",
+      "brand": "Samsung"
+    },
+    "variations": [
+      {"sku": "HOM-SAM-002-BLK", "color": "Black", "price": 449.99, "stockQuantity": 45}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-05-15T14:20:00.000Z"},
+    "updatedAt": {"$date": "2024-08-25T12:10:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0f7"},
+    "sku": "FSH-PUM-002",
+    "name": "Puma Future Z Football Boots",
+    "description": "Professional football boots with adaptive fit and superior grip.",
+    "category": "Fashion",
+    "subCategory": "Sports Shoes",
+    "brand": "Puma",
+    "price": 179.99,
+    "currency": "USD",
+    "stockQuantity": 40,
+    "images": [
+      "https://images.unsplash.com/photo-1562613865-8f14ad45d70d?w=600",
+      "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=600",
+      "https://images.unsplash.com/photo-1557979619-445218145ad7?w=600"
+    ],
+    "specifications": {
+      "material": "Synthetic and textile",
+      "sole": "FG/AG outsole",
+      "closure": "Lace-up",
+      "weight": "280g"
+    },
+    "attributes": {
+      "size": ["S", "M", "L", "XL"],
+      "color": "Black",
+      "material": "Polyester",
+      "brand": "Puma"
+    },
+    "variations": [
+      {"sku": "FSH-PUM-002-BLK-S", "size": "S", "color": "Black", "price": 179.99, "stockQuantity": 10},
+      {"sku": "FSH-PUM-002-BLK-M", "size": "M", "color": "Black", "price": 179.99, "stockQuantity": 10},
+      {"sku": "FSH-PUM-002-BLK-L", "size": "L", "color": "Black", "price": 179.99, "stockQuantity": 10},
+      {"sku": "FSH-PUM-002-BLK-XL", "size": "XL", "color": "Black", "price": 179.99, "stockQuantity": 10}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-03-30T15:45:00.000Z"},
+    "updatedAt": {"$date": "2024-09-02T09:35:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0f8"},
+    "sku": "MOB-ONE-002",
+    "name": "OnePlus Nord 3 5G",
+    "description": "Mid-range smartphone with flagship features and smooth performance.",
+    "category": "Mobile",
+    "subCategory": "Smartphones",
+    "brand": "OnePlus",
+    "price": 399.99,
+    "currency": "USD",
+    "stockQuantity": 70,
+    "images": [
+      "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=600",
+      "https://images.unsplash.com/photo-1567581935884-3349723552ca?w=600",
+      "https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=600"
+    ],
+    "specifications": {
+      "screenSize": "6.74 inches",
+      "ram": "8GB",
+      "storage": "128GB",
+      "battery": "5000mAh",
+      "camera": "50MP + 8MP + 2MP"
+    },
+    "attributes": {
+      "ram": "8GB",
+      "storage": "128GB",
+      "battery": "5000mAh",
+      "brand": "OnePlus"
+    },
+    "variations": [
+      {"sku": "MOB-ONE-002-GRY", "color": "Misty Green", "price": 399.99, "stockQuantity": 25},
+      {"sku": "MOB-ONE-002-BLK", "color": "Tempest Gray", "price": 399.99, "stockQuantity": 25},
+      {"sku": "MOB-ONE-002-BLU", "color": "Lush Green", "price": 399.99, "stockQuantity": 20}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-07-08T10:25:00.000Z"},
+    "updatedAt": {"$date": "2024-09-01T14:50:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c0f9"},
+    "sku": "LAP-LEN-002",
+    "name": "Lenovo IdeaPad Gaming 3",
+    "description": "Affordable gaming laptop with AMD Ryzen and GTX graphics.",
+    "category": "Laptop",
+    "subCategory": "Gaming",
+    "brand": "Lenovo",
+    "price": 749.99,
+    "currency": "USD",
+    "stockQuantity": 50,
+    "images": [
+      "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=600",
+      "https://images.unsplash.com/photo-1484788984921-03950022c9ef?w=600",
+      "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600"
+    ],
+    "specifications": {
+      "screenSize": "15.6 inches",
+      "processor": "AMD Ryzen 5 5600H",
+      "ram": "8GB",
+      "storage": "256GB SSD",
+      "graphics": "NVIDIA GTX 1650"
+    },
+    "attributes": {
+      "ram": "8GB",
+      "storage": "256GB SSD",
+      "processor": "Ryzen 5",
+      "brand": "Lenovo"
+    },
+    "variations": [
+      {"sku": "LAP-LEN-002-BLK", "color": "Shadow Black", "price": 749.99, "stockQuantity": 30},
+      {"sku": "LAP-LEN-002-BLU", "color": "Chameleon Blue", "price": 749.99, "stockQuantity": 20}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-05-30T13:15:00.000Z"},
+    "updatedAt": {"$date": "2024-08-27T16:40:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c100"},
+    "sku": "FSH-STY-003",
+    "name": "StyleHub Denim Jeans",
+    "description": "Premium denim jeans with modern fit and durable construction.",
+    "category": "Fashion",
+    "subCategory": "Jeans",
+    "brand": "StyleHub",
+    "price": 69.99,
+    "currency": "USD",
+    "stockQuantity": 85,
+    "images": [
+      "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600",
+      "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=600",
+      "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=600"
+    ],
+    "specifications": {
+      "material": "100% Cotton Denim",
+      "fit": "Slim",
+      "rise": "Mid-rise",
+      "closure": "Button and zip"
+    },
+    "attributes": {
+      "size": ["S", "M", "L", "XL"],
+      "color": "Blue",
+      "material": "Cotton",
+      "brand": "StyleHub"
+    },
+    "variations": [
+      {"sku": "FSH-STY-003-BLU-S", "size": "S", "color": "Blue", "price": 69.99, "stockQuantity": 20},
+      {"sku": "FSH-STY-003-BLU-M", "size": "M", "color": "Blue", "price": 69.99, "stockQuantity": 25},
+      {"sku": "FSH-STY-003-BLU-L", "size": "L", "color": "Blue", "price": 69.99, "stockQuantity": 25},
+      {"sku": "FSH-STY-003-BLU-XL", "size": "XL", "color": "Blue", "price": 69.99, "stockQuantity": 15}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-01-28T11:30:00.000Z"},
+    "updatedAt": {"$date": "2024-08-19T14:55:00.000Z"}
+  }
+]

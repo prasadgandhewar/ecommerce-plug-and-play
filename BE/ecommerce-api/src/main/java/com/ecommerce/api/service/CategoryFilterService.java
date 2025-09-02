@@ -132,6 +132,9 @@ public class CategoryFilterService {
         dto.setName(filterOption.getName());
         dto.setType(filterOption.getType());
         dto.setOptions(filterOption.getOptions());
+        dto.setMinValue(filterOption.getMinValue());
+        dto.setMaxValue(filterOption.getMaxValue());
+        dto.setUnit(filterOption.getUnit());
         return dto;
     }
 
@@ -141,6 +144,9 @@ public class CategoryFilterService {
         filterOption.setName(filterOptionDto.getName());
         filterOption.setType(filterOptionDto.getType());
         filterOption.setOptions(filterOptionDto.getOptions());
+        filterOption.setMinValue(filterOptionDto.getMinValue());
+        filterOption.setMaxValue(filterOptionDto.getMaxValue());
+        filterOption.setUnit(filterOptionDto.getUnit());
         return filterOption;
     }
 }

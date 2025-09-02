@@ -1,0 +1,316 @@
+[
+  {
+    "_id": {
+      "$oid": "68b5cb3f5146d75d70d386d1"
+    },
+    "category": "Mobile",
+    "filters": [
+      {
+        "name": "ram",
+        "type": "string",
+        "options": [
+          "4GB",
+          "6GB",
+          "8GB",
+          "12GB",
+          "16GB",
+          "32GB"
+        ]
+      },
+      {
+        "name": "storage",
+        "type": "string",
+        "options": [
+          "64GB",
+          "128GB",
+          "256GB",
+          "512GB",
+          "1TB",
+          "2TB"
+        ]
+      },
+      {
+        "name": "battery",
+        "type": "string",
+        "options": [
+          "3279mAh",
+          "4000mAh",
+          "4385mAh",
+          "4400mAh",
+          "4449mAh",
+          "4600mAh",
+          "4700mAh",
+          "5000mAh",
+          "5100mAh",
+          "6150mAh"
+        ]
+      },
+      {
+        "name": "brand",
+        "type": "string",
+        "options": [
+          "Apple",
+          "Samsung",
+          "Xiaomi",
+          "OnePlus",
+          "Google",
+          "Vivo",
+          "Realme",
+          "POCO",
+          "Nothing",
+          "Microsoft",
+          "Oppo",
+          "Motorola",
+          "Honor",
+          "Huawei",
+          "BlackBerry",
+          "TCL",
+          "Infinix",
+          "UMIDIGI",
+          "ZTE"
+        ]
+      },
+      {
+        "name": "price",
+        "type": "range",
+        "minValue": 100,
+        "maxValue": 1500,
+        "unit": "USD"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "68b5cb3f5146d75d70d386d2"
+    },
+    "category": "Laptop",
+    "filters": [
+      {
+        "name": "ram",
+        "type": "string",
+        "options": [
+          "4GB",
+          "8GB",
+          "16GB",
+          "32GB"
+        ]
+      },
+      {
+        "name": "storage",
+        "type": "string",
+        "options": [
+          "128GB SSD",
+          "256GB SSD",
+          "512GB SSD",
+          "1TB SSD",
+          "2TB SSD"
+        ]
+      },
+      {
+        "name": "processor",
+        "type": "string",
+        "options": [
+          "Intel i3",
+          "Intel i5",
+          "Intel i7",
+          "Intel i9",
+          "Ryzen 3",
+          "Ryzen 5",
+          "Ryzen 7",
+          "Apple M2"
+        ]
+      },
+      {
+        "name": "brand",
+        "type": "string",
+        "options": [
+          "Dell",
+          "HP",
+          "Lenovo",
+          "ASUS",
+          "Acer",
+          "Apple",
+          "MSI",
+          "Microsoft",
+          "Google",
+          "Razer",
+          "Gigabyte",
+          "Origin PC",
+          "Alienware",
+          "Framework",
+          "Eluktronics"
+        ]
+      },
+      {
+        "name": "price",
+        "type": "range",
+        "minValue": 400,
+        "maxValue": 2500,
+        "unit": "USD"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "68b5cb3f5146d75d70d386d3"
+    },
+    "category": "Fashion",
+    "filters": [
+      {
+        "name": "size",
+        "type": "string",
+        "options": [
+          "S",
+          "M",
+          "L",
+          "XL",
+          "One Size"
+        ]
+      },
+      {
+        "name": "color",
+        "type": "string",
+        "options": [
+          "White",
+          "Black",
+          "Red",
+          "Blue",
+          "Gray",
+          "Navy",
+          "Khaki",
+          "Floral",
+          "Silver",
+          "Beige"
+        ]
+      },
+      {
+        "name": "material",
+        "type": "string",
+        "options": [
+          "Cotton",
+          "Polyester",
+          "Canvas",
+          "Leather",
+          "Wool",
+          "Steel"
+        ]
+      },
+      {
+        "name": "brand",
+        "type": "string",
+        "options": [
+          "Nike",
+          "Adidas",
+          "Puma",
+          "StyleHub",
+          "H&M",
+          "Levi's",
+          "Zara",
+          "Uniqlo",
+          "Calvin Klein",
+          "Tommy Hilfiger",
+          "Polo Ralph Lauren",
+          "GAP",
+          "Vans",
+          "Converse",
+          "Forever 21",
+          "Guess",
+          "Chanel",
+          "Hugo Boss",
+          "Armani Exchange",
+          "Versace",
+          "Diesel"
+        ]
+      },
+      {
+        "name": "price",
+        "type": "range",
+        "minValue": 15,
+        "maxValue": 6000,
+        "unit": "USD"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "68b5cb3f5146d75d70d386d4"
+    },
+    "category": "Home Appliances",
+    "filters": [
+      {
+        "name": "type",
+        "type": "string",
+        "options": [
+          "TV",
+          "Washing Machine",
+          "Refrigerator",
+          "AC",
+          "Microwave"
+        ]
+      },
+      {
+        "name": "capacity",
+        "type": "string",
+        "options": [
+          "32 inch",
+          "43 inch",
+          "55 inch",
+          "6.5kg",
+          "7kg",
+          "8kg",
+          "9kg",
+          "190L",
+          "240L",
+          "320L",
+          "25.5 Cu Ft",
+          "1 Ton",
+          "1.5 Ton",
+          "2 Ton",
+          "20L",
+          "25L",
+          "1.1 Cu Ft"
+        ]
+      },
+      {
+        "name": "energyRating",
+        "type": "string",
+        "options": [
+          "3 Star",
+          "4 Star",
+          "5 Star"
+        ]
+      },
+      {
+        "name": "brand",
+        "type": "string",
+        "options": [
+          "Samsung",
+          "LG",
+          "Whirlpool",
+          "Bosch",
+          "Godrej",
+          "Voltas",
+          "Panasonic",
+          "Blue Star",
+          "Haier",
+          "Daikin",
+          "Mitsubishi",
+          "IFB",
+          "Toshiba",
+          "Hisense",
+          "Hamilton Beach",
+          "Singer",
+          "Electrolux",
+          "Kenmore"
+        ]
+      },
+      {
+        "name": "price",
+        "type": "range",
+        "minValue": 80,
+        "maxValue": 1300,
+        "unit": "USD"
+      }
+    ]
+  }
+]

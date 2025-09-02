@@ -6,7 +6,7 @@
       { "name": "storage", "type": "string", "options": ["64GB", "128GB", "256GB", "512GB"] },
       { "name": "battery", "type": "string", "options": ["4000mAh", "5000mAh", "6000mAh"] },
       { "name": "brand", "type": "string", "options": ["Samsung", "Apple", "OnePlus", "Xiaomi"] },
-      { "name": "price", "type": "range", "minValue": 0, "maxValue": 2000, "unit": "$" }
+      { "name": "price", "type": "range" }
     ]
   },
   {
@@ -16,7 +16,7 @@
       { "name": "storage", "type": "string", "options": ["256GB SSD", "512GB SSD", "1TB SSD"] },
       { "name": "processor", "type": "string", "options": ["i5", "i7", "Ryzen 5", "Ryzen 7"] },
       { "name": "brand", "type": "string", "options": ["Dell", "HP", "Lenovo", "Asus", "Apple"] },
-      { "name": "price", "type": "range", "minValue": 500, "maxValue": 5000, "unit": "$" }
+      { "name": "price", "type": "range" }
     ]
   },
   {
@@ -26,7 +26,7 @@
       { "name": "color", "type": "string", "options": ["Black", "Blue", "Red", "White"] },
       { "name": "material", "type": "string", "options": ["Cotton", "Polyester", "Mesh"] },
       { "name": "brand", "type": "string", "options": ["Nike", "Adidas", "Puma", "StyleHub"] },
-      { "name": "price", "type": "range", "minValue": 10, "maxValue": 500, "unit": "$" }
+      { "name": "price", "type": "range" }
     ]
   },
   {
@@ -36,7 +36,7 @@
       { "name": "capacity", "type": "string", "options": ["200L", "300L", "500L"] },
       { "name": "energyRating", "type": "string", "options": ["3 Star", "4 Star", "5 Star"] },
       { "name": "brand", "type": "string", "options": ["LG", "Samsung", "Whirlpool", "IFB"] },
-      { "name": "price", "type": "range", "minValue": 100, "maxValue": 3000, "unit": "$" }
+      { "name": "price", "type": "range" }
     ]
   }
 ]

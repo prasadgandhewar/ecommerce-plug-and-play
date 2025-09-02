@@ -1,0 +1,374 @@
+[
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c131"},
+    "sku": "LAP-SUR-002",
+    "name": "Microsoft Surface Laptop 5",
+    "description": "Premium laptop with touchscreen display and Windows 11 Pro.",
+    "category": "Laptop",
+    "subCategory": "Ultrabook",
+    "brand": "Microsoft",
+    "price": 999.99,
+    "currency": "USD",
+    "stockQuantity": 35,
+    "images": [
+      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600",
+      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=600",
+      "https://images.unsplash.com/photo-1618424181497-157f25b6ddd5?w=600"
+    ],
+    "specifications": {
+      "screenSize": "13.5 inches",
+      "processor": "Intel Core i5-1235U",
+      "ram": "8GB",
+      "storage": "256GB SSD",
+      "graphics": "Intel Iris Xe"
+    },
+    "attributes": {
+      "ram": "8GB",
+      "storage": "256GB SSD",
+      "processor": "Intel i5",
+      "brand": "Microsoft"
+    },
+    "variations": [
+      {"sku": "LAP-SUR-002-BLU", "color": "Sage", "price": 999.99, "stockQuantity": 15},
+      {"sku": "LAP-SUR-002-SIL", "color": "Platinum", "price": 999.99, "stockQuantity": 12},
+      {"sku": "LAP-SUR-002-BLK", "color": "Matte Black", "price": 999.99, "stockQuantity": 8}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-06-30T11:25:00.000Z"},
+    "updatedAt": {"$date": "2024-09-01T14:40:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c132"},
+    "sku": "FSH-PRL-002",
+    "name": "Polo Ralph Lauren Oxford Shirt",
+    "description": "Classic button-down oxford shirt with custom fit and pony logo.",
+    "category": "Fashion",
+    "subCategory": "Shirts",
+    "brand": "Polo Ralph Lauren",
+    "price": 89.99,
+    "currency": "USD",
+    "stockQuantity": 45,
+    "images": [
+      "https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=600",
+      "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=600",
+      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600"
+    ],
+    "specifications": {
+      "material": "100% Cotton Oxford",
+      "fit": "Custom",
+      "collar": "Button-down",
+      "sleeve": "Long sleeve"
+    },
+    "attributes": {
+      "size": ["S", "M", "L", "XL"],
+      "color": "Blue",
+      "material": "Cotton",
+      "brand": "Polo Ralph Lauren"
+    },
+    "variations": [
+      {"sku": "FSH-PRL-002-BLU-S", "size": "S", "color": "Blue", "price": 89.99, "stockQuantity": 10},
+      {"sku": "FSH-PRL-002-BLU-M", "size": "M", "color": "Blue", "price": 89.99, "stockQuantity": 15},
+      {"sku": "FSH-PRL-002-BLU-L", "size": "L", "color": "Blue", "price": 89.99, "stockQuantity": 12},
+      {"sku": "FSH-PRL-002-BLU-XL", "size": "XL", "color": "Blue", "price": 89.99, "stockQuantity": 8}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-02-14T15:50:00.000Z"},
+    "updatedAt": {"$date": "2024-08-19T12:15:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c133"},
+    "sku": "HOM-PAN-002",
+    "name": "Panasonic 25L Convection Microwave",
+    "description": "Versatile microwave with convection cooking and auto cook menus.",
+    "category": "Home Appliances",
+    "subCategory": "Microwaves",
+    "brand": "Panasonic",
+    "price": 249.99,
+    "currency": "USD",
+    "stockQuantity": 38,
+    "images": [
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600",
+      "https://images.unsplash.com/photo-1586201375467-23fe3ba2d9b4?w=600",
+      "https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=600"
+    ],
+    "specifications": {
+      "capacity": "25L",
+      "type": "Convection",
+      "power": "900W",
+      "control": "Digital"
+    },
+    "attributes": {
+      "type": "Microwave",
+      "capacity": "25L",
+      "energyRating": "4 Star",
+      "brand": "Panasonic"
+    },
+    "variations": [
+      {"sku": "HOM-PAN-002-SIL", "color": "Silver", "price": 249.99, "stockQuantity": 25},
+      {"sku": "HOM-PAN-002-BLK", "color": "Black", "price": 249.99, "stockQuantity": 13}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-07-18T10:35:00.000Z"},
+    "updatedAt": {"$date": "2024-08-30T16:20:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c134"},
+    "sku": "MOB-OPP-002",
+    "name": "Oppo Reno10 Pro",
+    "description": "Portrait master smartphone with telephoto lens and ultra-fast charging.",
+    "category": "Mobile",
+    "subCategory": "Smartphones",
+    "brand": "Oppo",
+    "price": 429.99,
+    "currency": "USD",
+    "stockQuantity": 70,
+    "images": [
+      "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=600",
+      "https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=600",
+      "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=600"
+    ],
+    "specifications": {
+      "screenSize": "6.7 inches",
+      "ram": "8GB",
+      "storage": "256GB",
+      "battery": "4600mAh",
+      "camera": "50MP + 32MP + 8MP"
+    },
+    "attributes": {
+      "ram": "8GB",
+      "storage": "256GB",
+      "battery": "4600mAh",
+      "brand": "Oppo"
+    },
+    "variations": [
+      {"sku": "MOB-OPP-002-PUR", "color": "Silvery Gray", "price": 429.99, "stockQuantity": 25},
+      {"sku": "MOB-OPP-002-BLU", "color": "Ice Blue", "price": 429.99, "stockQuantity": 25},
+      {"sku": "MOB-OPP-002-GLD", "color": "Glossy Purple", "price": 429.99, "stockQuantity": 20}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-08-01T12:20:00.000Z"},
+    "updatedAt": {"$date": "2024-09-02T11:35:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c135"},
+    "sku": "LAP-CHR-002",
+    "name": "Google Chromebook Pixel",
+    "description": "Cloud-first laptop with Chrome OS and all-day battery life.",
+    "category": "Laptop",
+    "subCategory": "Chromebook",
+    "brand": "Google",
+    "price": 649.99,
+    "currency": "USD",
+    "stockQuantity": 50,
+    "images": [
+      "https://images.unsplash.com/photo-1564562062-e5fcf4da5577?w=600",
+      "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=600",
+      "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=600"
+    ],
+    "specifications": {
+      "screenSize": "13.3 inches",
+      "processor": "Intel Core i5",
+      "ram": "8GB",
+      "storage": "128GB SSD",
+      "graphics": "Integrated"
+    },
+    "attributes": {
+      "ram": "8GB",
+      "storage": "128GB SSD",
+      "processor": "Intel i5",
+      "brand": "Google"
+    },
+    "variations": [
+      {"sku": "LAP-CHR-002-SIL", "color": "Silver", "price": 649.99, "stockQuantity": 30},
+      {"sku": "LAP-CHR-002-BLK", "color": "Black", "price": 649.99, "stockQuantity": 20}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-05-20T14:45:00.000Z"},
+    "updatedAt": {"$date": "2024-08-28T13:10:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c136"},
+    "sku": "FSH-VAN-002",
+    "name": "Vans Old Skool Sneakers",
+    "description": "Classic skate shoes with durable canvas and suede construction.",
+    "category": "Fashion",
+    "subCategory": "Sneakers",
+    "brand": "Vans",
+    "price": 65.99,
+    "currency": "USD",
+    "stockQuantity": 90,
+    "images": [
+      "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600",
+      "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600",
+      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600"
+    ],
+    "specifications": {
+      "material": "Canvas and Suede",
+      "sole": "Waffle rubber",
+      "closure": "Lace-up",
+      "weight": "320g"
+    },
+    "attributes": {
+      "size": ["S", "M", "L", "XL"],
+      "color": "Black",
+      "material": "Canvas",
+      "brand": "Vans"
+    },
+    "variations": [
+      {"sku": "FSH-VAN-002-BLK-S", "size": "S", "color": "Black", "price": 65.99, "stockQuantity": 25},
+      {"sku": "FSH-VAN-002-BLK-M", "size": "M", "color": "Black", "price": 65.99, "stockQuantity": 25},
+      {"sku": "FSH-VAN-002-BLK-L", "size": "L", "color": "Black", "price": 65.99, "stockQuantity": 25},
+      {"sku": "FSH-VAN-002-BLK-XL", "size": "XL", "color": "Black", "price": 65.99, "stockQuantity": 15}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-04-01T09:30:00.000Z"},
+    "updatedAt": {"$date": "2024-08-20T15:45:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c137"},
+    "sku": "HOM-BLU-003",
+    "name": "Blue Star 1.5 Ton Window AC",
+    "description": "Window air conditioner with rotary compressor and anti-bacterial filter.",
+    "category": "Home Appliances",
+    "subCategory": "Air Conditioners",
+    "brand": "Blue Star",
+    "price": 399.99,
+    "currency": "USD",
+    "stockQuantity": 22,
+    "images": [
+      "https://images.unsplash.com/photo-1608137850080-15e23e9c0470?w=600",
+      "https://images.unsplash.com/photo-1600716051809-e997e11a5d52?w=600",
+      "https://images.unsplash.com/photo-1551917251-cfaa8d39e46b?w=600"
+    ],
+    "specifications": {
+      "capacity": "1.5 Ton",
+      "type": "Window AC",
+      "energyRating": "3 Star",
+      "compressor": "Rotary"
+    },
+    "attributes": {
+      "type": "AC",
+      "capacity": "1.5 Ton",
+      "energyRating": "3 Star",
+      "brand": "Blue Star"
+    },
+    "variations": [
+      {"sku": "HOM-BLU-003-WHT", "color": "White", "price": 399.99, "stockQuantity": 22}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-06-12T11:40:00.000Z"},
+    "updatedAt": {"$date": "2024-08-24T14:25:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c138"},
+    "sku": "MOB-HUA-002",
+    "name": "Huawei Nova 11i",
+    "description": "Elegant smartphone with curved display and 90Hz refresh rate.",
+    "category": "Mobile",
+    "subCategory": "Smartphones",
+    "brand": "Huawei",
+    "price": 359.99,
+    "currency": "USD",
+    "stockQuantity": 55,
+    "images": [
+      "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?w=600",
+      "https://images.unsplash.com/photo-1567581935884-3349723552ca?w=600",
+      "https://images.unsplash.com/photo-1556656793-08538906a9f8?w=600"
+    ],
+    "specifications": {
+      "screenSize": "6.8 inches",
+      "ram": "6GB",
+      "storage": "128GB",
+      "battery": "5000mAh",
+      "camera": "48MP + 2MP"
+    },
+    "attributes": {
+      "ram": "6GB",
+      "storage": "128GB",
+      "battery": "5000mAh",
+      "brand": "Huawei"
+    },
+    "variations": [
+      {"sku": "MOB-HUA-002-GLD", "color": "Isle Blue", "price": 359.99, "stockQuantity": 20},
+      {"sku": "MOB-HUA-002-GRN", "color": "Mint Green", "price": 359.99, "stockQuantity": 20},
+      {"sku": "MOB-HUA-002-BLK", "color": "Starry Black", "price": 359.99, "stockQuantity": 15}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-07-14T13:15:00.000Z"},
+    "updatedAt": {"$date": "2024-09-01T10:50:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c139"},
+    "sku": "LAP-FRA-002",
+    "name": "Framework Laptop DIY Edition",
+    "description": "Modular laptop with upgradeable ports and repairable design.",
+    "category": "Laptop",
+    "subCategory": "Modular",
+    "brand": "Framework",
+    "price": 849.99,
+    "currency": "USD",
+    "stockQuantity": 20,
+    "images": [
+      "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600",
+      "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=600",
+      "https://images.unsplash.com/photo-1564562062-e5fcf4da5577?w=600"
+    ],
+    "specifications": {
+      "screenSize": "13.5 inches",
+      "processor": "Intel Core i5-1240P",
+      "ram": "8GB",
+      "storage": "256GB SSD",
+      "graphics": "Intel Iris Xe"
+    },
+    "attributes": {
+      "ram": "8GB",
+      "storage": "256GB SSD",
+      "processor": "Intel i5",
+      "brand": "Framework"
+    },
+    "variations": [
+      {"sku": "LAP-FRA-002-SIL", "color": "Silver", "price": 849.99, "stockQuantity": 20}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-08-20T16:30:00.000Z"},
+    "updatedAt": {"$date": "2024-09-02T12:55:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c140"},
+    "sku": "FSH-CON-002",
+    "name": "Converse Chuck Taylor All Star",
+    "description": "Iconic canvas sneakers with timeless design and comfort.",
+    "category": "Fashion",
+    "subCategory": "Sneakers",
+    "brand": "Converse",
+    "price": 55.99,
+    "currency": "USD",
+    "stockQuantity": 100,
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600",
+      "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=600",
+      "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=600"
+    ],
+    "specifications": {
+      "material": "Canvas",
+      "sole": "Rubber",
+      "closure": "Lace-up",
+      "weight": "290g"
+    },
+    "attributes": {
+      "size": ["S", "M", "L", "XL"],
+      "color": "Red",
+      "material": "Canvas",
+      "brand": "Converse"
+    },
+    "variations": [
+      {"sku": "FSH-CON-002-RED-S", "size": "S", "color": "Red", "price": 55.99, "stockQuantity": 25},
+      {"sku": "FSH-CON-002-RED-M", "size": "M", "color": "Red", "price": 55.99, "stockQuantity": 30},
+      {"sku": "FSH-CON-002-RED-L", "size": "L", "color": "Red", "price": 55.99, "stockQuantity": 25},
+      {"sku": "FSH-CON-002-RED-XL", "size": "XL", "color": "Red", "price": 55.99, "stockQuantity": 20}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-01-25T12:10:00.000Z"},
+    "updatedAt": {"$date": "2024-08-16T14:30:00.000Z"}
+  }
+]

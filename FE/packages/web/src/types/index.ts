@@ -195,7 +195,7 @@ export interface SearchParams {
 export interface FilterOption {
   name: string;
   type: 'string' | 'range';
-  values?: string[]; // For string type filters
+  options?: string[]; // For string type filters (renamed from values to match backend)
   minValue?: number; // For range type filters
   maxValue?: number; // For range type filters
   unit?: string; // Optional unit for range filters (e.g., "$", "lbs")

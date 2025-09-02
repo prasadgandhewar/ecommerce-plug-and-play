@@ -1,0 +1,372 @@
+[
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c141"},
+    "sku": "HOM-TOS-002",
+    "name": "Toshiba 320L Double Door Refrigerator",
+    "description": "Energy efficient refrigerator with inverter technology and glass shelves.",
+    "category": "Home Appliances",
+    "subCategory": "Refrigerators",
+    "brand": "Toshiba",
+    "price": 529.99,
+    "currency": "USD",
+    "stockQuantity": 32,
+    "images": [
+      "https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=600",
+      "https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=600",
+      "https://images.unsplash.com/photo-1586201375467-23fe3ba2d9b4?w=600"
+    ],
+    "specifications": {
+      "capacity": "320L",
+      "type": "Double Door",
+      "cooling": "Frost Free",
+      "energyRating": "5 Star"
+    },
+    "attributes": {
+      "type": "Refrigerator",
+      "capacity": "320L",
+      "energyRating": "5 Star",
+      "brand": "Toshiba"
+    },
+    "variations": [
+      {"sku": "HOM-TOS-002-SIL", "color": "Silver Hairline", "price": 529.99, "stockQuantity": 20},
+      {"sku": "HOM-TOS-002-BLK", "color": "Black Steel", "price": 529.99, "stockQuantity": 12}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-03-20T10:25:00.000Z"},
+    "updatedAt": {"$date": "2024-08-26T15:40:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c142"},
+    "sku": "MOB-TCL-002",
+    "name": "TCL 30 SE",
+    "description": "Budget smartphone with large display and dual camera system.",
+    "category": "Mobile",
+    "subCategory": "Smartphones",
+    "brand": "TCL",
+    "price": 199.99,
+    "currency": "USD",
+    "stockQuantity": 95,
+    "images": [
+      "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600",
+      "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=600",
+      "https://images.unsplash.com/photo-1512499617640-c74ae3a79d37?w=600"
+    ],
+    "specifications": {
+      "screenSize": "6.52 inches",
+      "ram": "4GB",
+      "storage": "64GB",
+      "battery": "4000mAh",
+      "camera": "50MP + 2MP + 2MP"
+    },
+    "attributes": {
+      "ram": "4GB",
+      "storage": "64GB",
+      "battery": "4000mAh",
+      "brand": "TCL"
+    },
+    "variations": [
+      {"sku": "MOB-TCL-002-BLU", "color": "Atlantic Blue", "price": 199.99, "stockQuantity": 35},
+      {"sku": "MOB-TCL-002-GRY", "color": "Space Gray", "price": 199.99, "stockQuantity": 30},
+      {"sku": "MOB-TCL-002-BLK", "color": "Prime Black", "price": 199.99, "stockQuantity": 30}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-04-18T11:35:00.000Z"},
+    "updatedAt": {"$date": "2024-08-31T12:20:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c143"},
+    "sku": "LAP-RAZ-002",
+    "name": "Razer Blade 15",
+    "description": "Premium gaming laptop with RTX graphics and mechanical keyboard.",
+    "category": "Laptop",
+    "subCategory": "Gaming",
+    "brand": "Razer",
+    "price": 1799.99,
+    "currency": "USD",
+    "stockQuantity": 18,
+    "images": [
+      "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=600",
+      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=600",
+      "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=600"
+    ],
+    "specifications": {
+      "screenSize": "15.6 inches",
+      "processor": "Intel Core i7-12800H",
+      "ram": "16GB",
+      "storage": "1TB SSD",
+      "graphics": "NVIDIA RTX 3070 Ti"
+    },
+    "attributes": {
+      "ram": "16GB",
+      "storage": "1TB SSD",
+      "processor": "Intel i7",
+      "brand": "Razer"
+    },
+    "variations": [
+      {"sku": "LAP-RAZ-002-BLK", "color": "Black", "price": 1799.99, "stockQuantity": 18}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-08-15T14:50:00.000Z"},
+    "updatedAt": {"$date": "2024-09-02T16:15:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c144"},
+    "sku": "FSH-FOR-002",
+    "name": "Forever 21 Floral Dress",
+    "description": "Trendy floral print dress with comfortable fit and vibrant colors.",
+    "category": "Fashion",
+    "subCategory": "Dresses",
+    "brand": "Forever 21",
+    "price": 34.99,
+    "currency": "USD",
+    "stockQuantity": 75,
+    "images": [
+      "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600",
+      "https://images.unsplash.com/photo-1566479179817-c69c9717e28e?w=600",
+      "https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=600"
+    ],
+    "specifications": {
+      "material": "Polyester Blend",
+      "fit": "Regular",
+      "length": "Midi",
+      "neckline": "V-neck"
+    },
+    "attributes": {
+      "size": ["S", "M", "L", "XL"],
+      "color": "Floral",
+      "material": "Polyester",
+      "brand": "Forever 21"
+    },
+    "variations": [
+      {"sku": "FSH-FOR-002-FLO-S", "size": "S", "color": "Floral", "price": 34.99, "stockQuantity": 20},
+      {"sku": "FSH-FOR-002-FLO-M", "size": "M", "color": "Floral", "price": 34.99, "stockQuantity": 25},
+      {"sku": "FSH-FOR-002-FLO-L", "size": "L", "color": "Floral", "price": 34.99, "stockQuantity": 20},
+      {"sku": "FSH-FOR-002-FLO-XL", "size": "XL", "color": "Floral", "price": 34.99, "stockQuantity": 10}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-02-08T13:20:00.000Z"},
+    "updatedAt": {"$date": "2024-08-18T10:45:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c145"},
+    "sku": "HOM-MIT-002",
+    "name": "Mitsubishi Heavy 2 Ton Split AC",
+    "description": "Heavy-duty air conditioner with dual barrier coating and eco mode.",
+    "category": "Home Appliances",
+    "subCategory": "Air Conditioners",
+    "brand": "Mitsubishi",
+    "price": 749.99,
+    "currency": "USD",
+    "stockQuantity": 20,
+    "images": [
+      "https://images.unsplash.com/photo-1600716051809-e997e11a5d52?w=600",
+      "https://images.unsplash.com/photo-1608137850080-15e23e9c0470?w=600",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600"
+    ],
+    "specifications": {
+      "capacity": "2 Ton",
+      "type": "Split AC",
+      "energyRating": "4 Star",
+      "compressor": "Dual Rotary"
+    },
+    "attributes": {
+      "type": "AC",
+      "capacity": "2 Ton",
+      "energyRating": "4 Star",
+      "brand": "Mitsubishi"
+    },
+    "variations": [
+      {"sku": "HOM-MIT-002-WHT", "color": "White", "price": 749.99, "stockQuantity": 20}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-05-25T16:15:00.000Z"},
+    "updatedAt": {"$date": "2024-08-29T13:30:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c146"},
+    "sku": "MOB-RED-003",
+    "name": "Redmi Note 12 Pro",
+    "description": "Advanced smartphone with 120Hz AMOLED display and 67W fast charging.",
+    "category": "Mobile",
+    "subCategory": "Smartphones",
+    "brand": "Xiaomi",
+    "price": 349.99,
+    "currency": "USD",
+    "stockQuantity": 85,
+    "images": [
+      "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=600",
+      "https://images.unsplash.com/photo-1556656793-08538906a9f8?w=600",
+      "https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=600"
+    ],
+    "specifications": {
+      "screenSize": "6.67 inches",
+      "ram": "6GB",
+      "storage": "128GB",
+      "battery": "5000mAh",
+      "camera": "50MP + 8MP + 2MP"
+    },
+    "attributes": {
+      "ram": "6GB",
+      "storage": "128GB",
+      "battery": "5000mAh",
+      "brand": "Xiaomi"
+    },
+    "variations": [
+      {"sku": "MOB-RED-003-BLU", "color": "Polar White", "price": 349.99, "stockQuantity": 30},
+      {"sku": "MOB-RED-003-BLK", "color": "Graphite Gray", "price": 349.99, "stockQuantity": 30},
+      {"sku": "MOB-RED-003-GRN", "color": "Glacier Blue", "price": 349.99, "stockQuantity": 25}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-06-08T12:40:00.000Z"},
+    "updatedAt": {"$date": "2024-09-01T15:20:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c147"},
+    "sku": "LAP-GIG-002",
+    "name": "Gigabyte AERO 16",
+    "description": "Creator laptop with OLED display and professional graphics.",
+    "category": "Laptop",
+    "subCategory": "Creator",
+    "brand": "Gigabyte",
+    "price": 1549.99,
+    "currency": "USD",
+    "stockQuantity": 22,
+    "images": [
+      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600",
+      "https://images.unsplash.com/photo-1618424181497-157f25b6ddd5?w=600",
+      "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=600"
+    ],
+    "specifications": {
+      "screenSize": "16 inches",
+      "processor": "Intel Core i7-12700H",
+      "ram": "16GB",
+      "storage": "1TB SSD",
+      "graphics": "NVIDIA RTX 3060"
+    },
+    "attributes": {
+      "ram": "16GB",
+      "storage": "1TB SSD",
+      "processor": "Intel i7",
+      "brand": "Gigabyte"
+    },
+    "variations": [
+      {"sku": "LAP-GIG-002-SIL", "color": "Silver", "price": 1549.99, "stockQuantity": 15},
+      {"sku": "LAP-GIG-002-BLK", "color": "Black", "price": 1549.99, "stockQuantity": 7}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-07-28T11:55:00.000Z"},
+    "updatedAt": {"$date": "2024-09-02T14:10:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c148"},
+    "sku": "FSH-GUE-002",
+    "name": "Guess Leather Jacket",
+    "description": "Premium leather jacket with modern styling and comfortable fit.",
+    "category": "Fashion",
+    "subCategory": "Jackets",
+    "brand": "Guess",
+    "price": 249.99,
+    "currency": "USD",
+    "stockQuantity": 35,
+    "images": [
+      "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600",
+      "https://images.unsplash.com/photo-1564583138697-34f8687625c0?w=600",
+      "https://images.unsplash.com/photo-1520903920243-00d872a2d1c9?w=600"
+    ],
+    "specifications": {
+      "material": "Genuine Leather",
+      "fit": "Slim",
+      "closure": "Zipper",
+      "lining": "Polyester"
+    },
+    "attributes": {
+      "size": ["S", "M", "L", "XL"],
+      "color": "Black",
+      "material": "Leather",
+      "brand": "Guess"
+    },
+    "variations": [
+      {"sku": "FSH-GUE-002-BLK-S", "size": "S", "color": "Black", "price": 249.99, "stockQuantity": 8},
+      {"sku": "FSH-GUE-002-BLK-M", "size": "M", "color": "Black", "price": 249.99, "stockQuantity": 12},
+      {"sku": "FSH-GUE-002-BLK-L", "size": "L", "color": "Black", "price": 249.99, "stockQuantity": 10},
+      {"sku": "FSH-GUE-002-BLK-XL", "size": "XL", "color": "Black", "price": 249.99, "stockQuantity": 5}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-03-05T14:30:00.000Z"},
+    "updatedAt": {"$date": "2024-08-22T11:15:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c149"},
+    "sku": "HOM-IFB-002",
+    "name": "IFB 8kg Front Load Washing Machine",
+    "description": "Premium washing machine with steam wash and aqua energie filter.",
+    "category": "Home Appliances",
+    "subCategory": "Washing Machines",
+    "brand": "IFB",
+    "price": 849.99,
+    "currency": "USD",
+    "stockQuantity": 18,
+    "images": [
+      "https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=600",
+      "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=600",
+      "https://images.unsplash.com/photo-1558367479-8ba6892b4a11?w=600"
+    ],
+    "specifications": {
+      "capacity": "8kg",
+      "type": "Front Load",
+      "energyRating": "5 Star",
+      "dimensions": "60 x 59 x 87 cm"
+    },
+    "attributes": {
+      "type": "Washing Machine",
+      "capacity": "8kg",
+      "energyRating": "5 Star",
+      "brand": "IFB"
+    },
+    "variations": [
+      {"sku": "HOM-IFB-002-WHT", "color": "White", "price": 849.99, "stockQuantity": 12},
+      {"sku": "HOM-IFB-002-SIL", "color": "Silver", "price": 849.99, "stockQuantity": 6}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-07-05T15:45:00.000Z"},
+    "updatedAt": {"$date": "2024-08-31T14:20:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c150"},
+    "sku": "MOB-POC-002",
+    "name": "POCO X5 Pro 5G",
+    "description": "Performance smartphone with Snapdragon processor and fast charging.",
+    "category": "Mobile",
+    "subCategory": "Smartphones",
+    "brand": "POCO",
+    "price": 299.99,
+    "currency": "USD",
+    "stockQuantity": 90,
+    "images": [
+      "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=600",
+      "https://images.unsplash.com/photo-1567581935884-3349723552ca?w=600",
+      "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600"
+    ],
+    "specifications": {
+      "screenSize": "6.67 inches",
+      "ram": "6GB",
+      "storage": "128GB",
+      "battery": "5000mAh",
+      "camera": "108MP + 8MP + 2MP"
+    },
+    "attributes": {
+      "ram": "6GB",
+      "storage": "128GB",
+      "battery": "5000mAh",
+      "brand": "POCO"
+    },
+    "variations": [
+      {"sku": "MOB-POC-002-YEL", "color": "POCO Yellow", "price": 299.99, "stockQuantity": 30},
+      {"sku": "MOB-POC-002-BLU", "color": "Horizon Blue", "price": 299.99, "stockQuantity": 30},
+      {"sku": "MOB-POC-002-BLK", "color": "Astral Black", "price": 299.99, "stockQuantity": 30}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-04-25T10:30:00.000Z"},
+    "updatedAt": {"$date": "2024-09-01T16:55:00.000Z"}
+  }
+]

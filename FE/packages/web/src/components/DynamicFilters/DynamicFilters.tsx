@@ -81,7 +81,7 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
     }
   }, [tempRange, filterOption, onFilterChange, onFilterRemove]);
 
-  if (filterOption.type === 'string' && filterOption.values) {
+  if (filterOption.type === 'string' && filterOption.options) {
     return (
       <Box>
         <Heading size="sm" mb={3} color="neutral.800" textTransform="capitalize">
@@ -92,7 +92,7 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
           onChange={handleStringFilterChange}
         >
           <VStack align="start" spacing={2}>
-            {filterOption.values.map((value) => (
+            {filterOption.options.map((value) => (
               <Checkbox
                 key={value}
                 value={value}

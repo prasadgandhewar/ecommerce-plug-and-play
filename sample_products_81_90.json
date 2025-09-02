@@ -1,0 +1,369 @@
+[
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c151"},
+    "sku": "LAP-ORG-002",
+    "name": "Origin Neuron",
+    "description": "Custom gaming laptop with liquid cooling and RGB lighting.",
+    "category": "Laptop",
+    "subCategory": "Gaming",
+    "brand": "Origin PC",
+    "price": 2199.99,
+    "currency": "USD",
+    "stockQuantity": 12,
+    "images": [
+      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=600",
+      "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=600",
+      "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=600"
+    ],
+    "specifications": {
+      "screenSize": "17.3 inches",
+      "processor": "Intel Core i9-12900H",
+      "ram": "32GB",
+      "storage": "2TB SSD",
+      "graphics": "NVIDIA RTX 3080 Ti"
+    },
+    "attributes": {
+      "ram": "32GB",
+      "storage": "2TB SSD",
+      "processor": "Intel i9",
+      "brand": "Origin PC"
+    },
+    "variations": [
+      {"sku": "LAP-ORG-002-BLK", "color": "Black", "price": 2199.99, "stockQuantity": 12}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-08-25T13:40:00.000Z"},
+    "updatedAt": {"$date": "2024-09-02T17:10:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c152"},
+    "sku": "FSH-CHA-002",
+    "name": "Chanel Classic Handbag",
+    "description": "Luxury quilted handbag with chain strap and timeless design.",
+    "category": "Fashion",
+    "subCategory": "Handbags",
+    "brand": "Chanel",
+    "price": 5999.99,
+    "currency": "USD",
+    "stockQuantity": 5,
+    "images": [
+      "https://images.unsplash.com/photo-1594223274512-ad4803739b7c?w=600",
+      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600",
+      "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=600"
+    ],
+    "specifications": {
+      "material": "Quilted Lambskin",
+      "closure": "Turn-lock",
+      "strap": "Chain and leather",
+      "dimensions": "25 x 15 x 6 cm"
+    },
+    "attributes": {
+      "size": ["One Size"],
+      "color": "Black",
+      "material": "Leather",
+      "brand": "Chanel"
+    },
+    "variations": [
+      {"sku": "FSH-CHA-002-BLK", "size": "One Size", "color": "Black", "price": 5999.99, "stockQuantity": 3},
+      {"sku": "FSH-CHA-002-BEI", "size": "One Size", "color": "Beige", "price": 5999.99, "stockQuantity": 2}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-01-10T16:25:00.000Z"},
+    "updatedAt": {"$date": "2024-08-12T13:50:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c153"},
+    "sku": "HOM-SIN-002",
+    "name": "Singer 8kg Top Load Washing Machine",
+    "description": "Reliable washing machine with magic filter and multiple wash programs.",
+    "category": "Home Appliances",
+    "subCategory": "Washing Machines",
+    "brand": "Singer",
+    "price": 379.99,
+    "currency": "USD",
+    "stockQuantity": 40,
+    "images": [
+      "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=600",
+      "https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=600",
+      "https://images.unsplash.com/photo-1558367479-8ba6892b4a11?w=600"
+    ],
+    "specifications": {
+      "capacity": "8kg",
+      "type": "Top Load",
+      "energyRating": "4 Star",
+      "dimensions": "56 x 59 x 94 cm"
+    },
+    "attributes": {
+      "type": "Washing Machine",
+      "capacity": "8kg",
+      "energyRating": "4 Star",
+      "brand": "Singer"
+    },
+    "variations": [
+      {"sku": "HOM-SIN-002-WHT", "color": "White", "price": 379.99, "stockQuantity": 25},
+      {"sku": "HOM-SIN-002-GRY", "color": "Light Gray", "price": 379.99, "stockQuantity": 15}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-06-05T11:15:00.000Z"},
+    "updatedAt": {"$date": "2024-08-27T16:30:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c154"},
+    "sku": "MOB-INF-002",
+    "name": "Infinix Note 12",
+    "description": "Budget smartphone with large display and long-lasting battery.",
+    "category": "Mobile",
+    "subCategory": "Smartphones",
+    "brand": "Infinix",
+    "price": 179.99,
+    "currency": "USD",
+    "stockQuantity": 110,
+    "images": [
+      "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=600",
+      "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=600",
+      "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600"
+    ],
+    "specifications": {
+      "screenSize": "6.7 inches",
+      "ram": "4GB",
+      "storage": "128GB",
+      "battery": "5000mAh",
+      "camera": "50MP + 2MP + AI"
+    },
+    "attributes": {
+      "ram": "4GB",
+      "storage": "128GB",
+      "battery": "5000mAh",
+      "brand": "Infinix"
+    },
+    "variations": [
+      {"sku": "MOB-INF-002-BLU", "color": "Force Black", "price": 179.99, "stockQuantity": 40},
+      {"sku": "MOB-INF-002-GLD", "color": "Jewel Blue", "price": 179.99, "stockQuantity": 40},
+      {"sku": "MOB-INF-002-GRN", "color": "Snowfall", "price": 179.99, "stockQuantity": 30}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-05-02T14:55:00.000Z"},
+    "updatedAt": {"$date": "2024-09-01T11:40:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c155"},
+    "sku": "LAP-TUF-002",
+    "name": "ASUS TUF Gaming A15",
+    "description": "Durable gaming laptop with military-grade construction and RGB keyboard.",
+    "category": "Laptop",
+    "subCategory": "Gaming",
+    "brand": "ASUS",
+    "price": 949.99,
+    "currency": "USD",
+    "stockQuantity": 42,
+    "images": [
+      "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=600",
+      "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=600",
+      "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=600"
+    ],
+    "specifications": {
+      "screenSize": "15.6 inches",
+      "processor": "AMD Ryzen 7 6800H",
+      "ram": "8GB",
+      "storage": "512GB SSD",
+      "graphics": "NVIDIA RTX 3050"
+    },
+    "attributes": {
+      "ram": "8GB",
+      "storage": "512GB SSD",
+      "processor": "Ryzen 7",
+      "brand": "ASUS"
+    },
+    "variations": [
+      {"sku": "LAP-TUF-002-GRY", "color": "Graphite Black", "price": 949.99, "stockQuantity": 25},
+      {"sku": "LAP-TUF-002-GLD", "color": "Mecha Gray", "price": 949.99, "stockQuantity": 17}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-04-30T12:20:00.000Z"},
+    "updatedAt": {"$date": "2024-08-30T15:35:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c156"},
+    "sku": "FSH-HUG-002",
+    "name": "Hugo Boss Formal Suit",
+    "description": "Premium wool suit with tailored fit and professional styling.",
+    "category": "Fashion",
+    "subCategory": "Suits",
+    "brand": "Hugo Boss",
+    "price": 899.99,
+    "currency": "USD",
+    "stockQuantity": 25,
+    "images": [
+      "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=600",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600",
+      "https://images.unsplash.com/photo-1564564244660-5d73c057f2d2?w=600"
+    ],
+    "specifications": {
+      "material": "Super 120s Wool",
+      "fit": "Slim",
+      "construction": "Half-canvassed",
+      "pieces": "2-piece"
+    },
+    "attributes": {
+      "size": ["S", "M", "L", "XL"],
+      "color": "Navy",
+      "material": "Wool",
+      "brand": "Hugo Boss"
+    },
+    "variations": [
+      {"sku": "FSH-HUG-002-NAV-S", "size": "S", "color": "Navy", "price": 899.99, "stockQuantity": 5},
+      {"sku": "FSH-HUG-002-NAV-M", "size": "M", "color": "Navy", "price": 899.99, "stockQuantity": 8},
+      {"sku": "FSH-HUG-002-NAV-L", "size": "L", "color": "Navy", "price": 899.99, "stockQuantity": 8},
+      {"sku": "FSH-HUG-002-NAV-XL", "size": "XL", "color": "Navy", "price": 899.99, "stockQuantity": 4}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-01-18T15:10:00.000Z"},
+    "updatedAt": {"$date": "2024-08-14T12:45:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c157"},
+    "sku": "HOM-HIE-002",
+    "name": "Hisense 55-inch 4K QLED Smart TV",
+    "description": "Quantum dot display TV with Dolby Vision and voice control.",
+    "category": "Home Appliances",
+    "subCategory": "Televisions",
+    "brand": "Hisense",
+    "price": 799.99,
+    "currency": "USD",
+    "stockQuantity": 28,
+    "images": [
+      "https://images.unsplash.com/photo-1567690187548-f07b1d7bf5a9?w=600",
+      "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=600",
+      "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=600"
+    ],
+    "specifications": {
+      "screenSize": "55 inches",
+      "resolution": "4K QLED",
+      "smartTV": "Yes",
+      "hdr": "Dolby Vision"
+    },
+    "attributes": {
+      "type": "TV",
+      "capacity": "55 inch",
+      "energyRating": "4 Star",
+      "brand": "Hisense"
+    },
+    "variations": [
+      {"sku": "HOM-HIE-002-BLK", "color": "Black", "price": 799.99, "stockQuantity": 28}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-07-12T14:25:00.000Z"},
+    "updatedAt": {"$date": "2024-08-25T17:50:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c158"},
+    "sku": "MOB-MOT-002",
+    "name": "Motorola Edge 40",
+    "description": "Stylish smartphone with curved display and wireless charging.",
+    "category": "Mobile",
+    "subCategory": "Smartphones",
+    "brand": "Motorola",
+    "price": 469.99,
+    "currency": "USD",
+    "stockQuantity": 65,
+    "images": [
+      "https://images.unsplash.com/photo-1556656793-08538906a9f8?w=600",
+      "https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=600",
+      "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?w=600"
+    ],
+    "specifications": {
+      "screenSize": "6.55 inches",
+      "ram": "8GB",
+      "storage": "256GB",
+      "battery": "4400mAh",
+      "camera": "50MP + 13MP"
+    },
+    "attributes": {
+      "ram": "8GB",
+      "storage": "256GB",
+      "battery": "4400mAh",
+      "brand": "Motorola"
+    },
+    "variations": [
+      {"sku": "MOB-MOT-002-BLU", "color": "Nebula Green", "price": 469.99, "stockQuantity": 25},
+      {"sku": "MOB-MOT-002-BLK", "color": "Eclipse Black", "price": 469.99, "stockQuantity": 25},
+      {"sku": "MOB-MOT-002-WHT", "color": "Lunar Blue", "price": 469.99, "stockQuantity": 15}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-06-22T10:35:00.000Z"},
+    "updatedAt": {"$date": "2024-09-01T13:25:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c159"},
+    "sku": "LAP-ALI-002",
+    "name": "Alienware x15 R2",
+    "description": "Ultra-thin gaming laptop with advanced thermal design and RGB.",
+    "category": "Laptop",
+    "subCategory": "Gaming",
+    "brand": "Alienware",
+    "price": 2399.99,
+    "currency": "USD",
+    "stockQuantity": 15,
+    "images": [
+      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=600",
+      "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=600",
+      "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=600"
+    ],
+    "specifications": {
+      "screenSize": "15.6 inches",
+      "processor": "Intel Core i9-12900H",
+      "ram": "32GB",
+      "storage": "1TB SSD",
+      "graphics": "NVIDIA RTX 3080 Ti"
+    },
+    "attributes": {
+      "ram": "32GB",
+      "storage": "1TB SSD",
+      "processor": "Intel i9",
+      "brand": "Alienware"
+    },
+    "variations": [
+      {"sku": "LAP-ALI-002-WHT", "color": "Lunar Light", "price": 2399.99, "stockQuantity": 8},
+      {"sku": "LAP-ALI-002-BLK", "color": "Dark Side of the Moon", "price": 2399.99, "stockQuantity": 7}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-08-18T16:45:00.000Z"},
+    "updatedAt": {"$date": "2024-09-02T18:20:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c160"},
+    "sku": "FSH-ARM-002",
+    "name": "Armani Exchange Watch",
+    "description": "Elegant chronograph watch with stainless steel band and water resistance.",
+    "category": "Fashion",
+    "subCategory": "Watches",
+    "brand": "Armani Exchange",
+    "price": 149.99,
+    "currency": "USD",
+    "stockQuantity": 60,
+    "images": [
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600",
+      "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=600",
+      "https://images.unsplash.com/photo-1434056886845-dac89ffe9b56?w=600"
+    ],
+    "specifications": {
+      "movement": "Quartz",
+      "material": "Stainless Steel",
+      "waterResistance": "5 ATM",
+      "functions": "Chronograph"
+    },
+    "attributes": {
+      "size": ["One Size"],
+      "color": "Silver",
+      "material": "Steel",
+      "brand": "Armani Exchange"
+    },
+    "variations": [
+      {"sku": "FSH-ARM-002-SIL", "size": "One Size", "color": "Silver", "price": 149.99, "stockQuantity": 35},
+      {"sku": "FSH-ARM-002-BLK", "size": "One Size", "color": "Black", "price": 149.99, "stockQuantity": 25}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-03-15T13:30:00.000Z"},
+    "updatedAt": {"$date": "2024-08-21T10:15:00.000Z"}
+  }
+]

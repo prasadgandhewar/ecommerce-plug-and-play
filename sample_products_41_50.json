@@ -1,0 +1,372 @@
+[
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c111"},
+    "sku": "LAP-DEL-003",
+    "name": "Dell XPS 13",
+    "description": "Premium ultrabook with Intel Core i7 and stunning InfinityEdge display.",
+    "category": "Laptop",
+    "subCategory": "Ultrabook",
+    "brand": "Dell",
+    "price": 1299.99,
+    "currency": "USD",
+    "stockQuantity": 30,
+    "images": [
+      "https://images.unsplash.com/photo-1618424181497-157f25b6ddd5?w=600",
+      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600",
+      "https://images.unsplash.com/photo-1606576634846-7b09f20e44b2?w=600"
+    ],
+    "specifications": {
+      "screenSize": "13.4 inches",
+      "processor": "Intel Core i7-1255U",
+      "ram": "16GB",
+      "storage": "512GB SSD",
+      "graphics": "Intel Iris Xe"
+    },
+    "attributes": {
+      "ram": "16GB",
+      "storage": "512GB SSD",
+      "processor": "Intel i7",
+      "brand": "Dell"
+    },
+    "variations": [
+      {"sku": "LAP-DEL-003-SIL", "color": "Platinum Silver", "price": 1299.99, "stockQuantity": 20},
+      {"sku": "LAP-DEL-003-BLK", "color": "Graphite", "price": 1299.99, "stockQuantity": 10}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-06-25T10:45:00.000Z"},
+    "updatedAt": {"$date": "2024-09-02T14:30:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c112"},
+    "sku": "FSH-ZAR-002",
+    "name": "Zara Blazer Jacket",
+    "description": "Professional blazer with tailored fit and modern design.",
+    "category": "Fashion",
+    "subCategory": "Blazers",
+    "brand": "Zara",
+    "price": 79.99,
+    "currency": "USD",
+    "stockQuantity": 50,
+    "images": [
+      "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=600",
+      "https://images.unsplash.com/photo-1564583138697-34f8687625c0?w=600",
+      "https://images.unsplash.com/photo-1585760897677-7ca7c6ad4d97?w=600"
+    ],
+    "specifications": {
+      "material": "Polyester Blend",
+      "fit": "Slim",
+      "closure": "Button",
+      "lining": "Partial"
+    },
+    "attributes": {
+      "size": ["S", "M", "L", "XL"],
+      "color": "Black",
+      "material": "Polyester",
+      "brand": "Zara"
+    },
+    "variations": [
+      {"sku": "FSH-ZAR-002-BLK-S", "size": "S", "color": "Black", "price": 79.99, "stockQuantity": 12},
+      {"sku": "FSH-ZAR-002-BLK-M", "size": "M", "color": "Black", "price": 79.99, "stockQuantity": 15},
+      {"sku": "FSH-ZAR-002-BLK-L", "size": "L", "color": "Black", "price": 79.99, "stockQuantity": 15},
+      {"sku": "FSH-ZAR-002-BLK-XL", "size": "XL", "color": "Black", "price": 79.99, "stockQuantity": 8}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-03-08T11:20:00.000Z"},
+    "updatedAt": {"$date": "2024-08-22T16:40:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c113"},
+    "sku": "HOM-VOL-002",
+    "name": "Voltas 20L Microwave Oven",
+    "description": "Solo microwave oven with auto cook menus and child safety lock.",
+    "category": "Home Appliances",
+    "subCategory": "Microwaves",
+    "brand": "Voltas",
+    "price": 179.99,
+    "currency": "USD",
+    "stockQuantity": 40,
+    "images": [
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600",
+      "https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=600",
+      "https://images.unsplash.com/photo-1586201375467-23fe3ba2d9b4?w=600"
+    ],
+    "specifications": {
+      "capacity": "20L",
+      "type": "Solo",
+      "power": "700W",
+      "control": "Touch Panel"
+    },
+    "attributes": {
+      "type": "Microwave",
+      "capacity": "20L",
+      "energyRating": "3 Star",
+      "brand": "Voltas"
+    },
+    "variations": [
+      {"sku": "HOM-VOL-002-WHT", "color": "White", "price": 179.99, "stockQuantity": 25},
+      {"sku": "HOM-VOL-002-BLK", "color": "Black", "price": 179.99, "stockQuantity": 15}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-07-10T13:50:00.000Z"},
+    "updatedAt": {"$date": "2024-08-31T10:15:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c114"},
+    "sku": "MOB-MIC-002",
+    "name": "Microsoft Surface Duo 2",
+    "description": "Dual-screen productivity device with Microsoft 365 integration.",
+    "category": "Mobile",
+    "subCategory": "Smartphones",
+    "brand": "Microsoft",
+    "price": 1399.99,
+    "currency": "USD",
+    "stockQuantity": 15,
+    "images": [
+      "https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=600",
+      "https://images.unsplash.com/photo-1512499617640-c74ae3a79d37?w=600",
+      "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=600"
+    ],
+    "specifications": {
+      "screenSize": "5.8 inches (dual)",
+      "ram": "8GB",
+      "storage": "256GB",
+      "battery": "4449mAh",
+      "camera": "12MP + 12MP + 16MP"
+    },
+    "attributes": {
+      "ram": "8GB",
+      "storage": "256GB",
+      "battery": "4449mAh",
+      "brand": "Microsoft"
+    },
+    "variations": [
+      {"sku": "MOB-MIC-002-WHT", "color": "Glacier", "price": 1399.99, "stockQuantity": 8},
+      {"sku": "MOB-MIC-002-BLK", "color": "Obsidian", "price": 1399.99, "stockQuantity": 7}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-08-05T15:25:00.000Z"},
+    "updatedAt": {"$date": "2024-09-02T11:45:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c115"},
+    "sku": "LAP-ACE-002",
+    "name": "Acer Aspire 5",
+    "description": "Budget-friendly laptop with AMD Ryzen processor and full-size keyboard.",
+    "category": "Laptop",
+    "subCategory": "Budget",
+    "brand": "Acer",
+    "price": 459.99,
+    "currency": "USD",
+    "stockQuantity": 70,
+    "images": [
+      "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=600",
+      "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=600",
+      "https://images.unsplash.com/photo-1564562062-e5fcf4da5577?w=600"
+    ],
+    "specifications": {
+      "screenSize": "15.6 inches",
+      "processor": "AMD Ryzen 3 5300U",
+      "ram": "4GB",
+      "storage": "128GB SSD",
+      "graphics": "Integrated"
+    },
+    "attributes": {
+      "ram": "4GB",
+      "storage": "128GB SSD",
+      "processor": "Ryzen 3",
+      "brand": "Acer"
+    },
+    "variations": [
+      {"sku": "LAP-ACE-002-SIL", "color": "Pure Silver", "price": 459.99, "stockQuantity": 40},
+      {"sku": "LAP-ACE-002-BLK", "color": "Charcoal Black", "price": 459.99, "stockQuantity": 30}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-05-12T09:15:00.000Z"},
+    "updatedAt": {"$date": "2024-08-27T12:50:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c116"},
+    "sku": "FSH-UNI-002",
+    "name": "Uniqlo Heattech T-Shirt",
+    "description": "Thermal base layer t-shirt with moisture-wicking technology.",
+    "category": "Fashion",
+    "subCategory": "T-Shirts",
+    "brand": "Uniqlo",
+    "price": 19.99,
+    "currency": "USD",
+    "stockQuantity": 150,
+    "images": [
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600",
+      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600",
+      "https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=600"
+    ],
+    "specifications": {
+      "material": "Polyester, Rayon, Spandex",
+      "fit": "Slim",
+      "neckline": "Crew neck",
+      "sleeve": "Long sleeve"
+    },
+    "attributes": {
+      "size": ["S", "M", "L", "XL"],
+      "color": "Black",
+      "material": "Polyester",
+      "brand": "Uniqlo"
+    },
+    "variations": [
+      {"sku": "FSH-UNI-002-BLK-S", "size": "S", "color": "Black", "price": 19.99, "stockQuantity": 40},
+      {"sku": "FSH-UNI-002-BLK-M", "size": "M", "color": "Black", "price": 19.99, "stockQuantity": 40},
+      {"sku": "FSH-UNI-002-BLK-L", "size": "L", "color": "Black", "price": 19.99, "stockQuantity": 35},
+      {"sku": "FSH-UNI-002-BLK-XL", "size": "XL", "color": "Black", "price": 19.99, "stockQuantity": 35}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-01-20T14:30:00.000Z"},
+    "updatedAt": {"$date": "2024-08-18T11:25:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c117"},
+    "sku": "HOM-DAI-002",
+    "name": "Daikin 1 Ton Inverter AC",
+    "description": "Inverter air conditioner with copper coil and WiFi connectivity.",
+    "category": "Home Appliances",
+    "subCategory": "Air Conditioners",
+    "brand": "Daikin",
+    "price": 649.99,
+    "currency": "USD",
+    "stockQuantity": 25,
+    "images": [
+      "https://images.unsplash.com/photo-1608137850080-15e23e9c0470?w=600",
+      "https://images.unsplash.com/photo-1600716051809-e997e11a5d52?w=600",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600"
+    ],
+    "specifications": {
+      "capacity": "1 Ton",
+      "type": "Inverter Split AC",
+      "energyRating": "5 Star",
+      "compressor": "Copper"
+    },
+    "attributes": {
+      "type": "AC",
+      "capacity": "1 Ton",
+      "energyRating": "5 Star",
+      "brand": "Daikin"
+    },
+    "variations": [
+      {"sku": "HOM-DAI-002-WHT", "color": "White", "price": 649.99, "stockQuantity": 25}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-06-18T12:20:00.000Z"},
+    "updatedAt": {"$date": "2024-08-29T14:45:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c118"},
+    "sku": "MOB-VIV-002",
+    "name": "Vivo V27 Pro",
+    "description": "Camera-centric smartphone with portrait photography and fast charging.",
+    "category": "Mobile",
+    "subCategory": "Smartphones",
+    "brand": "Vivo",
+    "price": 379.99,
+    "currency": "USD",
+    "stockQuantity": 75,
+    "images": [
+      "https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=600",
+      "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?w=600",
+      "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=600"
+    ],
+    "specifications": {
+      "screenSize": "6.78 inches",
+      "ram": "8GB",
+      "storage": "128GB",
+      "battery": "4600mAh",
+      "camera": "50MP + 8MP + 2MP"
+    },
+    "attributes": {
+      "ram": "8GB",
+      "storage": "128GB",
+      "battery": "4600mAh",
+      "brand": "Vivo"
+    },
+    "variations": [
+      {"sku": "MOB-VIV-002-PUR", "color": "Magic Blue", "price": 379.99, "stockQuantity": 25},
+      {"sku": "MOB-VIV-002-BLK", "color": "Noble Black", "price": 379.99, "stockQuantity": 25},
+      {"sku": "MOB-VIV-002-GLD", "color": "Emerald Green", "price": 379.99, "stockQuantity": 25}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-07-25T11:40:00.000Z"},
+    "updatedAt": {"$date": "2024-09-01T13:15:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c119"},
+    "sku": "LAP-THI-002",
+    "name": "Lenovo ThinkPad E15",
+    "description": "Business laptop with Intel Core i5 and enterprise-grade security.",
+    "category": "Laptop",
+    "subCategory": "Business",
+    "brand": "Lenovo",
+    "price": 799.99,
+    "currency": "USD",
+    "stockQuantity": 45,
+    "images": [
+      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=600",
+      "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600",
+      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600"
+    ],
+    "specifications": {
+      "screenSize": "15.6 inches",
+      "processor": "Intel Core i5-1235U",
+      "ram": "8GB",
+      "storage": "256GB SSD",
+      "graphics": "Integrated"
+    },
+    "attributes": {
+      "ram": "8GB",
+      "storage": "256GB SSD",
+      "processor": "Intel i5",
+      "brand": "Lenovo"
+    },
+    "variations": [
+      {"sku": "LAP-THI-002-BLK", "color": "Black", "price": 799.99, "stockQuantity": 45}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-04-14T10:30:00.000Z"},
+    "updatedAt": {"$date": "2024-08-28T15:20:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c120"},
+    "sku": "FSH-GAP-002",
+    "name": "GAP Casual Chinos",
+    "description": "Comfortable chino pants with classic fit and versatile styling.",
+    "category": "Fashion",
+    "subCategory": "Trousers",
+    "brand": "GAP",
+    "price": 49.99,
+    "currency": "USD",
+    "stockQuantity": 80,
+    "images": [
+      "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=600",
+      "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=600",
+      "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600"
+    ],
+    "specifications": {
+      "material": "Cotton Twill",
+      "fit": "Classic",
+      "rise": "Mid-rise",
+      "closure": "Button and zip"
+    },
+    "attributes": {
+      "size": ["S", "M", "L", "XL"],
+      "color": "Khaki",
+      "material": "Cotton",
+      "brand": "GAP"
+    },
+    "variations": [
+      {"sku": "FSH-GAP-002-KHA-S", "size": "S", "color": "Khaki", "price": 49.99, "stockQuantity": 20},
+      {"sku": "FSH-GAP-002-KHA-M", "size": "M", "color": "Khaki", "price": 49.99, "stockQuantity": 20},
+      {"sku": "FSH-GAP-002-KHA-L", "size": "L", "color": "Khaki", "price": 49.99, "stockQuantity": 20},
+      {"sku": "FSH-GAP-002-KHA-XL", "size": "XL", "color": "Khaki", "price": 49.99, "stockQuantity": 20}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-02-18T13:55:00.000Z"},
+    "updatedAt": {"$date": "2024-08-21T16:10:00.000Z"}
+  }
+]

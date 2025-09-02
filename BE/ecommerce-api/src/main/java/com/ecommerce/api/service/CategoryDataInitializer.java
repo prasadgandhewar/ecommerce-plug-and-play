@@ -56,6 +56,17 @@ public class CategoryDataInitializer implements CommandLineRunner {
                         filterOption.setOptions(options);
                     }
                     
+                    // Handle range type filters
+                    if (filterNode.has("minValue")) {
+                        filterOption.setMinValue(filterNode.get("minValue").asDouble());
+                    }
+                    if (filterNode.has("maxValue")) {
+                        filterOption.setMaxValue(filterNode.get("maxValue").asDouble());
+                    }
+                    if (filterNode.has("unit")) {
+                        filterOption.setUnit(filterNode.get("unit").asText());
+                    }
+                    
                     filters.add(filterOption);
                 }
                 

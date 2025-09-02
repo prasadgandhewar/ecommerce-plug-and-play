@@ -1,0 +1,369 @@
+[
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c161"},
+    "sku": "HOM-ELE-002",
+    "name": "Electrolux 9kg Front Load Washer",
+    "description": "Premium washing machine with UltraMix technology and steam care.",
+    "category": "Home Appliances",
+    "subCategory": "Washing Machines",
+    "brand": "Electrolux",
+    "price": 999.99,
+    "currency": "USD",
+    "stockQuantity": 15,
+    "images": [
+      "https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=600",
+      "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=600",
+      "https://images.unsplash.com/photo-1558367479-8ba6892b4a11?w=600"
+    ],
+    "specifications": {
+      "capacity": "9kg",
+      "type": "Front Load",
+      "energyRating": "5 Star",
+      "dimensions": "60 x 63 x 85 cm"
+    },
+    "attributes": {
+      "type": "Washing Machine",
+      "capacity": "9kg",
+      "energyRating": "5 Star",
+      "brand": "Electrolux"
+    },
+    "variations": [
+      {"sku": "HOM-ELE-002-WHT", "color": "White", "price": 999.99, "stockQuantity": 10},
+      {"sku": "HOM-ELE-002-SIL", "color": "Titanium", "price": 999.99, "stockQuantity": 5}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-07-22T12:40:00.000Z"},
+    "updatedAt": {"$date": "2024-08-30T14:55:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c162"},
+    "sku": "MOB-BLA-002",
+    "name": "BlackBerry KEY2",
+    "description": "Business smartphone with physical QWERTY keyboard and security features.",
+    "category": "Mobile",
+    "subCategory": "Smartphones",
+    "brand": "BlackBerry",
+    "price": 649.99,
+    "currency": "USD",
+    "stockQuantity": 25,
+    "images": [
+      "https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=600",
+      "https://images.unsplash.com/photo-1512499617640-c74ae3a79d37?w=600",
+      "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=600"
+    ],
+    "specifications": {
+      "screenSize": "4.5 inches",
+      "ram": "6GB",
+      "storage": "64GB",
+      "battery": "3500mAh",
+      "camera": "12MP + 12MP"
+    },
+    "attributes": {
+      "ram": "6GB",
+      "storage": "64GB",
+      "battery": "3500mAh",
+      "brand": "BlackBerry"
+    },
+    "variations": [
+      {"sku": "MOB-BLA-002-BLK", "color": "Black", "price": 649.99, "stockQuantity": 15},
+      {"sku": "MOB-BLA-002-SIL", "color": "Silver", "price": 649.99, "stockQuantity": 10}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-02-28T11:20:00.000Z"},
+    "updatedAt": {"$date": "2024-08-16T16:35:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c163"},
+    "sku": "LAP-THE-002",
+    "name": "ThinkPad X1 Carbon Gen 10",
+    "description": "Ultralight business laptop with carbon fiber construction and long battery.",
+    "category": "Laptop",
+    "subCategory": "Business",
+    "brand": "Lenovo",
+    "price": 1599.99,
+    "currency": "USD",
+    "stockQuantity": 30,
+    "images": [
+      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600",
+      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=600",
+      "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600"
+    ],
+    "specifications": {
+      "screenSize": "14 inches",
+      "processor": "Intel Core i7-1260P",
+      "ram": "16GB",
+      "storage": "512GB SSD",
+      "graphics": "Intel Iris Xe"
+    },
+    "attributes": {
+      "ram": "16GB",
+      "storage": "512GB SSD",
+      "processor": "Intel i7",
+      "brand": "Lenovo"
+    },
+    "variations": [
+      {"sku": "LAP-THE-002-BLK", "color": "Black", "price": 1599.99, "stockQuantity": 30}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-05-15T15:50:00.000Z"},
+    "updatedAt": {"$date": "2024-09-01T12:30:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c164"},
+    "sku": "FSH-DIE-002",
+    "name": "Diesel Denim Jacket",
+    "description": "Vintage-style denim jacket with distressed finish and modern fit.",
+    "category": "Fashion",
+    "subCategory": "Jackets",
+    "brand": "Diesel",
+    "price": 189.99,
+    "currency": "USD",
+    "stockQuantity": 45,
+    "images": [
+      "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600",
+      "https://images.unsplash.com/photo-1520903920243-00d872a2d1c9?w=600",
+      "https://images.unsplash.com/photo-1564583138697-34f8687625c0?w=600"
+    ],
+    "specifications": {
+      "material": "100% Cotton Denim",
+      "fit": "Regular",
+      "closure": "Button",
+      "finish": "Distressed"
+    },
+    "attributes": {
+      "size": ["S", "M", "L", "XL"],
+      "color": "Blue",
+      "material": "Cotton",
+      "brand": "Diesel"
+    },
+    "variations": [
+      {"sku": "FSH-DIE-002-BLU-S", "size": "S", "color": "Blue", "price": 189.99, "stockQuantity": 10},
+      {"sku": "FSH-DIE-002-BLU-M", "size": "M", "color": "Blue", "price": 189.99, "stockQuantity": 15},
+      {"sku": "FSH-DIE-002-BLU-L", "size": "L", "color": "Blue", "price": 189.99, "stockQuantity": 12},
+      {"sku": "FSH-DIE-002-BLU-XL", "size": "XL", "color": "Blue", "price": 189.99, "stockQuantity": 8}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-04-12T14:15:00.000Z"},
+    "updatedAt": {"$date": "2024-08-23T11:50:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c165"},
+    "sku": "HOM-HAM-002",
+    "name": "Hamilton Beach 1.1 Cu Ft Microwave",
+    "description": "Compact microwave with digital controls and express cooking options.",
+    "category": "Home Appliances",
+    "subCategory": "Microwaves",
+    "brand": "Hamilton Beach",
+    "price": 89.99,
+    "currency": "USD",
+    "stockQuantity": 55,
+    "images": [
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600",
+      "https://images.unsplash.com/photo-1586201375467-23fe3ba2d9b4?w=600",
+      "https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=600"
+    ],
+    "specifications": {
+      "capacity": "1.1 Cu Ft",
+      "type": "Countertop",
+      "power": "1000W",
+      "control": "Digital"
+    },
+    "attributes": {
+      "type": "Microwave",
+      "capacity": "1.1 Cu Ft",
+      "energyRating": "3 Star",
+      "brand": "Hamilton Beach"
+    },
+    "variations": [
+      {"sku": "HOM-HAM-002-BLK", "color": "Black", "price": 89.99, "stockQuantity": 30},
+      {"sku": "HOM-HAM-002-WHT", "color": "White", "price": 89.99, "stockQuantity": 25}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-06-01T10:45:00.000Z"},
+    "updatedAt": {"$date": "2024-08-28T13:25:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c166"},
+    "sku": "MOB-ZTE-002",
+    "name": "ZTE Axon 40 Ultra",
+    "description": "Flagship smartphone with under-display camera and premium design.",
+    "category": "Mobile",
+    "subCategory": "Smartphones",
+    "brand": "ZTE",
+    "price": 799.99,
+    "currency": "USD",
+    "stockQuantity": 35,
+    "images": [
+      "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=600",
+      "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=600",
+      "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?w=600"
+    ],
+    "specifications": {
+      "screenSize": "6.8 inches",
+      "ram": "12GB",
+      "storage": "256GB",
+      "battery": "5000mAh",
+      "camera": "64MP + 64MP + 64MP"
+    },
+    "attributes": {
+      "ram": "12GB",
+      "storage": "256GB",
+      "battery": "5000mAh",
+      "brand": "ZTE"
+    },
+    "variations": [
+      {"sku": "MOB-ZTE-002-BLK", "color": "Black", "price": 799.99, "stockQuantity": 20},
+      {"sku": "MOB-ZTE-002-GLD", "color": "Gold", "price": 799.99, "stockQuantity": 15}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-07-08T16:20:00.000Z"},
+    "updatedAt": {"$date": "2024-09-01T14:40:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c167"},
+    "sku": "LAP-EVO-002",
+    "name": "Eluktronics MAX-15",
+    "description": "High-performance gaming laptop with liquid metal cooling.",
+    "category": "Laptop",
+    "subCategory": "Gaming",
+    "brand": "Eluktronics",
+    "price": 1699.99,
+    "currency": "USD",
+    "stockQuantity": 20,
+    "images": [
+      "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=600",
+      "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=600",
+      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=600"
+    ],
+    "specifications": {
+      "screenSize": "15.6 inches",
+      "processor": "Intel Core i7-11800H",
+      "ram": "16GB",
+      "storage": "1TB SSD",
+      "graphics": "NVIDIA RTX 3070"
+    },
+    "attributes": {
+      "ram": "16GB",
+      "storage": "1TB SSD",
+      "processor": "Intel i7",
+      "brand": "Eluktronics"
+    },
+    "variations": [
+      {"sku": "LAP-EVO-002-BLK", "color": "Black", "price": 1699.99, "stockQuantity": 20}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-08-28T11:30:00.000Z"},
+    "updatedAt": {"$date": "2024-09-02T15:45:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c168"},
+    "sku": "FSH-VER-002",
+    "name": "Versace Medusa T-Shirt",
+    "description": "Luxury cotton t-shirt with iconic Medusa logo and premium finish.",
+    "category": "Fashion",
+    "subCategory": "T-Shirts",
+    "brand": "Versace",
+    "price": 395.99,
+    "currency": "USD",
+    "stockQuantity": 30,
+    "images": [
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600",
+      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600",
+      "https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=600"
+    ],
+    "specifications": {
+      "material": "100% Cotton",
+      "fit": "Slim",
+      "neckline": "Crew neck",
+      "sleeve": "Short sleeve"
+    },
+    "attributes": {
+      "size": ["S", "M", "L", "XL"],
+      "color": "Black",
+      "material": "Cotton",
+      "brand": "Versace"
+    },
+    "variations": [
+      {"sku": "FSH-VER-002-BLK-S", "size": "S", "color": "Black", "price": 395.99, "stockQuantity": 8},
+      {"sku": "FSH-VER-002-BLK-M", "size": "M", "color": "Black", "price": 395.99, "stockQuantity": 10},
+      {"sku": "FSH-VER-002-BLK-L", "size": "L", "color": "Black", "price": 395.99, "stockQuantity": 8},
+      {"sku": "FSH-VER-002-BLK-XL", "size": "XL", "color": "Black", "price": 395.99, "stockQuantity": 4}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-01-05T14:55:00.000Z"},
+    "updatedAt": {"$date": "2024-08-13T12:20:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c169"},
+    "sku": "HOM-KEN-002",
+    "name": "Kenmore Elite French Door Refrigerator",
+    "description": "Premium refrigerator with smart cooling and ice maker.",
+    "category": "Home Appliances",
+    "subCategory": "Refrigerators",
+    "brand": "Kenmore",
+    "price": 1299.99,
+    "currency": "USD",
+    "stockQuantity": 12,
+    "images": [
+      "https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=600",
+      "https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=600",
+      "https://images.unsplash.com/photo-1586201375467-23fe3ba2d9b4?w=600"
+    ],
+    "specifications": {
+      "capacity": "25.5 Cu Ft",
+      "type": "French Door",
+      "cooling": "Multi-Air Flow",
+      "energyRating": "5 Star"
+    },
+    "attributes": {
+      "type": "Refrigerator",
+      "capacity": "25.5 Cu Ft",
+      "energyRating": "5 Star",
+      "brand": "Kenmore"
+    },
+    "variations": [
+      {"sku": "HOM-KEN-002-SIL", "color": "Stainless Steel", "price": 1299.99, "stockQuantity": 8},
+      {"sku": "HOM-KEN-002-BLK", "color": "Black Stainless", "price": 1299.99, "stockQuantity": 4}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-06-28T13:40:00.000Z"},
+    "updatedAt": {"$date": "2024-08-31T15:25:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c170"},
+    "sku": "MOB-UMI-002",
+    "name": "UMIDIGI Bison GT2 Pro",
+    "description": "Rugged smartphone with thermal camera and night vision capability.",
+    "category": "Mobile",
+    "subCategory": "Smartphones",
+    "brand": "UMIDIGI",
+    "price": 289.99,
+    "currency": "USD",
+    "stockQuantity": 50,
+    "images": [
+      "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600",
+      "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=600",
+      "https://images.unsplash.com/photo-1567581935884-3349723552ca?w=600"
+    ],
+    "specifications": {
+      "screenSize": "6.5 inches",
+      "ram": "8GB",
+      "storage": "256GB",
+      "battery": "6150mAh",
+      "camera": "108MP + 20MP + 2MP"
+    },
+    "attributes": {
+      "ram": "8GB",
+      "storage": "256GB",
+      "battery": "6150mAh",
+      "brand": "UMIDIGI"
+    },
+    "variations": [
+      {"sku": "MOB-UMI-002-BLK", "color": "Midnight Black", "price": 289.99, "stockQuantity": 25},
+      {"sku": "MOB-UMI-002-ORG", "color": "Flame Orange", "price": 289.99, "stockQuantity": 25}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-05-10T12:15:00.000Z"},
+    "updatedAt": {"$date": "2024-08-29T17:40:00.000Z"}
+  }
+]

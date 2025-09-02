@@ -1,0 +1,371 @@
+[
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c101"},
+    "sku": "HOM-LG-002",
+    "name": "LG 7kg Front Load Washing Machine",
+    "description": "Energy efficient washing machine with smart inverter technology.",
+    "category": "Home Appliances",
+    "subCategory": "Washing Machines",
+    "brand": "LG",
+    "price": 699.99,
+    "currency": "USD",
+    "stockQuantity": 25,
+    "images": [
+      "https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=600",
+      "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=600",
+      "https://images.unsplash.com/photo-1558367479-8ba6892b4a11?w=600"
+    ],
+    "specifications": {
+      "capacity": "7kg",
+      "type": "Front Load",
+      "energyRating": "5 Star",
+      "dimensions": "60 x 56 x 85 cm"
+    },
+    "attributes": {
+      "type": "Washing Machine",
+      "capacity": "7kg",
+      "energyRating": "5 Star",
+      "brand": "LG"
+    },
+    "variations": [
+      {"sku": "HOM-LG-002-WHT", "color": "White", "price": 699.99, "stockQuantity": 25}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-06-20T15:20:00.000Z"},
+    "updatedAt": {"$date": "2024-08-30T11:45:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c102"},
+    "sku": "MOB-GAL-002",
+    "name": "Samsung Galaxy A54 5G",
+    "description": "Mid-range smartphone with impressive camera and 5G connectivity.",
+    "category": "Mobile",
+    "subCategory": "Smartphones",
+    "brand": "Samsung",
+    "price": 449.99,
+    "currency": "USD",
+    "stockQuantity": 90,
+    "images": [
+      "https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=600",
+      "https://images.unsplash.com/photo-1556656793-08538906a9f8?w=600",
+      "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?w=600"
+    ],
+    "specifications": {
+      "screenSize": "6.4 inches",
+      "ram": "6GB",
+      "storage": "128GB",
+      "battery": "5000mAh",
+      "camera": "50MP + 12MP + 5MP"
+    },
+    "attributes": {
+      "ram": "6GB",
+      "storage": "128GB",
+      "battery": "5000mAh",
+      "brand": "Samsung"
+    },
+    "variations": [
+      {"sku": "MOB-GAL-002-VIO", "color": "Awesome Violet", "price": 449.99, "stockQuantity": 30},
+      {"sku": "MOB-GAL-002-BLK", "color": "Awesome Graphite", "price": 449.99, "stockQuantity": 30},
+      {"sku": "MOB-GAL-002-WHT", "color": "Awesome White", "price": 449.99, "stockQuantity": 30}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-03-15T12:40:00.000Z"},
+    "updatedAt": {"$date": "2024-09-01T10:25:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c103"},
+    "sku": "LAP-MSI-002",
+    "name": "MSI Gaming GF63 Thin",
+    "description": "Lightweight gaming laptop with Intel Core i5 and GTX graphics.",
+    "category": "Laptop",
+    "subCategory": "Gaming",
+    "brand": "MSI",
+    "price": 799.99,
+    "currency": "USD",
+    "stockQuantity": 40,
+    "images": [
+      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=600",
+      "https://images.unsplash.com/photo-1616763355548-1b606f439f86?w=600",
+      "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=600"
+    ],
+    "specifications": {
+      "screenSize": "15.6 inches",
+      "processor": "Intel Core i5-11400H",
+      "ram": "8GB",
+      "storage": "512GB SSD",
+      "graphics": "NVIDIA GTX 1650"
+    },
+    "attributes": {
+      "ram": "8GB",
+      "storage": "512GB SSD",
+      "processor": "Intel i5",
+      "brand": "MSI"
+    },
+    "variations": [
+      {"sku": "LAP-MSI-002-BLK", "color": "Black", "price": 799.99, "stockQuantity": 40}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-04-10T14:15:00.000Z"},
+    "updatedAt": {"$date": "2024-08-28T16:30:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c104"},
+    "sku": "FSH-LEV-002",
+    "name": "Levi's 501 Original Jeans",
+    "description": "Classic straight-leg jeans in authentic Levi's style.",
+    "category": "Fashion",
+    "subCategory": "Jeans",
+    "brand": "Levi's",
+    "price": 89.99,
+    "currency": "USD",
+    "stockQuantity": 60,
+    "images": [
+      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=600",
+      "https://images.unsplash.com/photo-1555689502-c4b22d76c56f?w=600",
+      "https://images.unsplash.com/photo-1584462128309-b7ac8b16c705?w=600"
+    ],
+    "specifications": {
+      "material": "100% Cotton",
+      "fit": "Straight",
+      "rise": "Regular",
+      "closure": "Button fly"
+    },
+    "attributes": {
+      "size": ["S", "M", "L", "XL"],
+      "color": "Blue",
+      "material": "Cotton",
+      "brand": "Levi's"
+    },
+    "variations": [
+      {"sku": "FSH-LEV-002-BLU-S", "size": "S", "color": "Blue", "price": 89.99, "stockQuantity": 15},
+      {"sku": "FSH-LEV-002-BLU-M", "size": "M", "color": "Blue", "price": 89.99, "stockQuantity": 15},
+      {"sku": "FSH-LEV-002-BLU-L", "size": "L", "color": "Blue", "price": 89.99, "stockQuantity": 15},
+      {"sku": "FSH-LEV-002-BLU-XL", "size": "XL", "color": "Blue", "price": 89.99, "stockQuantity": 15}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-02-25T10:50:00.000Z"},
+    "updatedAt": {"$date": "2024-08-20T13:40:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c105"},
+    "sku": "HOM-WHI-002",
+    "name": "Whirlpool 1.5 Ton Split AC",
+    "description": "Energy efficient air conditioner with copper condenser and remote control.",
+    "category": "Home Appliances",
+    "subCategory": "Air Conditioners",
+    "brand": "Whirlpool",
+    "price": 549.99,
+    "currency": "USD",
+    "stockQuantity": 35,
+    "images": [
+      "https://images.unsplash.com/photo-1608137850080-15e23e9c0470?w=600",
+      "https://images.unsplash.com/photo-1551917251-cfaa8d39e46b?w=600",
+      "https://images.unsplash.com/photo-1600716051809-e997e11a5d52?w=600"
+    ],
+    "specifications": {
+      "capacity": "1.5 Ton",
+      "type": "Split AC",
+      "energyRating": "3 Star",
+      "compressor": "Copper"
+    },
+    "attributes": {
+      "type": "AC",
+      "capacity": "1.5 Ton",
+      "energyRating": "3 Star",
+      "brand": "Whirlpool"
+    },
+    "variations": [
+      {"sku": "HOM-WHI-002-WHT", "color": "White", "price": 549.99, "stockQuantity": 35}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-05-05T11:25:00.000Z"},
+    "updatedAt": {"$date": "2024-08-25T14:15:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c106"},
+    "sku": "MOB-APP-003",
+    "name": "Apple iPhone 14",
+    "description": "Latest iPhone with A15 Bionic chip and advanced camera system.",
+    "category": "Mobile",
+    "subCategory": "Smartphones",
+    "brand": "Apple",
+    "price": 899.99,
+    "currency": "USD",
+    "stockQuantity": 80,
+    "images": [
+      "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=600",
+      "https://images.unsplash.com/photo-1603184017968-953f59cd2e37?w=600",
+      "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=600"
+    ],
+    "specifications": {
+      "screenSize": "6.1 inches",
+      "ram": "6GB",
+      "storage": "128GB",
+      "battery": "3279mAh",
+      "camera": "12MP + 12MP"
+    },
+    "attributes": {
+      "ram": "6GB",
+      "storage": "128GB",
+      "battery": "3279mAh",
+      "brand": "Apple"
+    },
+    "variations": [
+      {"sku": "MOB-APP-003-BLU", "color": "Blue", "price": 899.99, "stockQuantity": 30},
+      {"sku": "MOB-APP-003-BLK", "color": "Midnight", "price": 899.99, "stockQuantity": 25},
+      {"sku": "MOB-APP-003-WHT", "color": "Starlight", "price": 899.99, "stockQuantity": 25}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-07-20T13:45:00.000Z"},
+    "updatedAt": {"$date": "2024-09-02T12:20:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c107"},
+    "sku": "LAP-ASU-002",
+    "name": "ASUS VivoBook 15",
+    "description": "Everyday laptop with AMD Ryzen processor and modern design.",
+    "category": "Laptop",
+    "subCategory": "Ultrabook",
+    "brand": "ASUS",
+    "price": 549.99,
+    "currency": "USD",
+    "stockQuantity": 55,
+    "images": [
+      "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=600",
+      "https://images.unsplash.com/photo-1564962241700-3ff43d1c3501?w=600",
+      "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=600"
+    ],
+    "specifications": {
+      "screenSize": "15.6 inches",
+      "processor": "AMD Ryzen 5 5500U",
+      "ram": "8GB",
+      "storage": "256GB SSD",
+      "graphics": "Integrated"
+    },
+    "attributes": {
+      "ram": "8GB",
+      "storage": "256GB SSD",
+      "processor": "Ryzen 5",
+      "brand": "ASUS"
+    },
+    "variations": [
+      {"sku": "LAP-ASU-002-SIL", "color": "Transparent Silver", "price": 549.99, "stockQuantity": 30},
+      {"sku": "LAP-ASU-002-BLK", "color": "Slate Gray", "price": 549.99, "stockQuantity": 25}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-06-02T09:30:00.000Z"},
+    "updatedAt": {"$date": "2024-08-29T15:45:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c108"},
+    "sku": "FSH-H&M-002",
+    "name": "H&M Cotton Hoodie",
+    "description": "Comfortable cotton hoodie with drawstring hood and kangaroo pocket.",
+    "category": "Fashion",
+    "subCategory": "Hoodies",
+    "brand": "H&M",
+    "price": 29.99,
+    "currency": "USD",
+    "stockQuantity": 120,
+    "images": [
+      "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600",
+      "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600",
+      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600"
+    ],
+    "specifications": {
+      "material": "80% Cotton, 20% Polyester",
+      "fit": "Regular",
+      "hood": "Drawstring",
+      "pocket": "Kangaroo"
+    },
+    "attributes": {
+      "size": ["S", "M", "L", "XL"],
+      "color": "Gray",
+      "material": "Cotton",
+      "brand": "H&M"
+    },
+    "variations": [
+      {"sku": "FSH-H&M-002-GRY-S", "size": "S", "color": "Gray", "price": 29.99, "stockQuantity": 30},
+      {"sku": "FSH-H&M-002-GRY-M", "size": "M", "color": "Gray", "price": 29.99, "stockQuantity": 30},
+      {"sku": "FSH-H&M-002-GRY-L", "size": "L", "color": "Gray", "price": 29.99, "stockQuantity": 30},
+      {"sku": "FSH-H&M-002-GRY-XL", "size": "XL", "color": "Gray", "price": 29.99, "stockQuantity": 30}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-01-15T14:20:00.000Z"},
+    "updatedAt": {"$date": "2024-08-15T11:55:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c109"},
+    "sku": "HOM-BOS-002",
+    "name": "Bosch 190L Single Door Refrigerator",
+    "description": "Compact refrigerator with direct cool technology and energy efficiency.",
+    "category": "Home Appliances",
+    "subCategory": "Refrigerators",
+    "brand": "Bosch",
+    "price": 299.99,
+    "currency": "USD",
+    "stockQuantity": 30,
+    "images": [
+      "https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=600",
+      "https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=600",
+      "https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=600"
+    ],
+    "specifications": {
+      "capacity": "190L",
+      "type": "Single Door",
+      "cooling": "Direct Cool",
+      "energyRating": "4 Star"
+    },
+    "attributes": {
+      "type": "Refrigerator",
+      "capacity": "190L",
+      "energyRating": "4 Star",
+      "brand": "Bosch"
+    },
+    "variations": [
+      {"sku": "HOM-BOS-002-WHT", "color": "White", "price": 299.99, "stockQuantity": 20},
+      {"sku": "HOM-BOS-002-RED", "color": "Wine Red", "price": 299.99, "stockQuantity": 10}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-04-22T16:10:00.000Z"},
+    "updatedAt": {"$date": "2024-08-26T13:25:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "64f1a2b3c4d5e6f7a8b9c110"},
+    "sku": "MOB-GOO-002",
+    "name": "Google Pixel 7a",
+    "description": "Google's flagship camera in an affordable smartphone with pure Android.",
+    "category": "Mobile",
+    "subCategory": "Smartphones",
+    "brand": "Google",
+    "price": 499.99,
+    "currency": "USD",
+    "stockQuantity": 65,
+    "images": [
+      "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=600",
+      "https://images.unsplash.com/photo-1512499617640-c74ae3a79d37?w=600",
+      "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?w=600"
+    ],
+    "specifications": {
+      "screenSize": "6.1 inches",
+      "ram": "8GB",
+      "storage": "128GB",
+      "battery": "4385mAh",
+      "camera": "64MP + 13MP"
+    },
+    "attributes": {
+      "ram": "8GB",
+      "storage": "128GB",
+      "battery": "4385mAh",
+      "brand": "Google"
+    },
+    "variations": [
+      {"sku": "MOB-GOO-002-BLU", "color": "Sea", "price": 499.99, "stockQuantity": 25},
+      {"sku": "MOB-GOO-002-WHT", "color": "Snow", "price": 499.99, "stockQuantity": 20},
+      {"sku": "MOB-GOO-002-BLK", "color": "Charcoal", "price": 499.99, "stockQuantity": 20}
+    ],
+    "isActive": true,
+    "createdAt": {"$date": "2024-05-18T12:35:00.000Z"},
+    "updatedAt": {"$date": "2024-09-01T17:15:00.000Z"}
+  }
+]
