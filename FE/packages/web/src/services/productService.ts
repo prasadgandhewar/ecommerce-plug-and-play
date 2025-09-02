@@ -123,13 +123,22 @@ class ProductService {
   // Get categories
   async getCategories(): Promise<string[]> {
     try {
-      const endpoint = '/products/categories';
+      // Use the new category filter API first
+      const endpoint = '/api/categories/names';
       const response = await api.get(endpoint);
       return response.data;
     } catch (error) {
-      console.error('Error fetching categories:', error);
-      // Fallback: extract from products
-      return this.extractCategoriesFromProducts();
+      console.error('Error fetching categories from new API:', error);
+      // Fallback to old endpoint
+      try {
+        const endpoint = '/products/categories';
+        const response = await api.get(endpoint);
+        return response.data;
+      } catch (fallbackError) {
+        console.error('Error fetching categories from fallback:', fallbackError);
+        // Final fallback: extract from products
+        return this.extractCategoriesFromProducts();
+      }
     }
   }
 

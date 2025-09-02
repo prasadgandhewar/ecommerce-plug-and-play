@@ -56,8 +56,16 @@ import {
   fetchCategories,
   setFilters
 } from '../../store/slices/productSlice';
+import {
+  fetchCategoryFilters,
+  fetchFiltersForCategory,
+  addSelectedFilter,
+  removeSelectedFilter,
+  clearSelectedFilters,
+} from '../../store/slices/categoryFilterSlice';
 import { addToCartAsync } from '../../store/slices/cartSlice';
-import { Product } from '../../types';
+import { Product, SelectedFilter } from '../../types';
+import DynamicFilters from '../../components/DynamicFilters';
 
 const ProductsPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -72,6 +80,12 @@ const ProductsPage: React.FC = () => {
     error, 
     filters 
   } = useSelector((state: RootState) => state.products);
+  const { 
+    availableFilters, 
+    selectedFilters, 
+    isLoading: filtersLoading, 
+    error: filtersError 
+  } = useSelector((state: RootState) => state.categoryFilters);
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
   const { isLoading: cartLoading } = useSelector((state: RootState) => state.cart);
 
@@ -96,7 +110,18 @@ const ProductsPage: React.FC = () => {
   useEffect(() => {
     dispatch(fetchProducts({ page: 0, size: 20, sortBy: 'averageRating', sortDir: 'desc' }));
     dispatch(fetchCategories());
+    dispatch(fetchCategoryFilters());
   }, [dispatch]);
+
+  // Load filters when category changes
+  useEffect(() => {
+    if (selectedCategory) {
+      dispatch(fetchFiltersForCategory(selectedCategory));
+    } else {
+      // Clear selected filters when no category is selected
+      dispatch(clearSelectedFilters());
+    }
+  }, [selectedCategory, dispatch]);
 
   // Infinite scroll implementation
   const loadMoreProducts = useCallback(async () => {
@@ -238,6 +263,9 @@ const ProductsPage: React.FC = () => {
     setCurrentPage(0);
     setHasMore(true);
     
+    // Clear selected filters when category changes
+    dispatch(clearSelectedFilters());
+    
     const newFilters = {
       page: 0,
       size: 20,
@@ -255,6 +283,37 @@ const ProductsPage: React.FC = () => {
       dispatch(fetchProducts(newFilters));
     }
   };
+
+  // Handle dynamic filter changes
+  const handleDynamicFiltersChange = useCallback((filters: SelectedFilter[]) => {
+    setCurrentPage(0);
+    setHasMore(true);
+    
+    // Convert selected filters to API format
+    const filterParams: any = {};
+    
+    filters.forEach(filter => {
+      if (filter.type === 'string' && filter.selectedValues && filter.selectedValues.length > 0) {
+        filterParams[filter.name] = filter.selectedValues;
+      } else if (filter.type === 'range' && filter.selectedRange) {
+        filterParams[`${filter.name}Min`] = filter.selectedRange[0];
+        filterParams[`${filter.name}Max`] = filter.selectedRange[1];
+      }
+    });
+
+    const newFilters = {
+      page: 0,
+      size: 20,
+      sortBy: sortBy,
+      sortDir: sortDir,
+      query: searchTerm.trim() || undefined,
+      category: selectedCategory || undefined,
+      ...filterParams
+    };
+    
+    dispatch(setFilters(newFilters));
+    dispatch(fetchProducts(newFilters));
+  }, [dispatch, sortBy, sortDir, searchTerm, selectedCategory]);
 
   // Handle price range filter
   const handlePriceRangeFilter = () => {
@@ -323,81 +382,103 @@ const ProductsPage: React.FC = () => {
   };
   const cardBgColor = useColorModeValue('white', 'gray.800');
 
+  // Get current category filters
+  const currentCategoryFilters = selectedCategory 
+    ? availableFilters.find(filter => filter.category === selectedCategory)?.filters || []
+    : [];
+
   const FilterPanel = () => (
     <VStack spacing={8} align="stretch" w="280px">
+      {/* Category Selection */}
       <Box>
-        <Heading size="md" mb={4} color="neutral.800">Plant Categories</Heading>
+        <Heading size="md" mb={4} color="neutral.800">Categories</Heading>
         <VStack align="start" spacing={3}>
-          <Checkbox colorScheme="green" fontWeight="500">Indoor Plants</Checkbox>
-          <Checkbox colorScheme="green" fontWeight="500">Outdoor Plants</Checkbox>
-          <Checkbox colorScheme="green" fontWeight="500">Succulents</Checkbox>
-          <Checkbox colorScheme="green" fontWeight="500">Flowering Plants</Checkbox>
-          <Checkbox colorScheme="green" fontWeight="500">Air Purifying</Checkbox>
-          <Checkbox colorScheme="green" fontWeight="500">Low Maintenance</Checkbox>
-          <Checkbox colorScheme="green" fontWeight="500">Pet Safe</Checkbox>
-        </VStack>
-      </Box>
-
-      <Divider borderColor="neutral.200" />
-
-      <Box>
-        <Heading size="md" mb={4} color="neutral.800">Price Range</Heading>
-        <VStack spacing={4}>
-          <RangeSlider
-            value={priceRange}
-            onChange={setPriceRange}
-            min={0}
-            max={200}
-            step={5}
-            colorScheme="green"
-          >
-            <RangeSliderTrack bg="neutral.200">
-              <RangeSliderFilledTrack bg="primary.500" />
-            </RangeSliderTrack>
-            <RangeSliderThumb index={0} bg="primary.600" />
-            <RangeSliderThumb index={1} bg="primary.600" />
-          </RangeSlider>
-          <HStack justify="space-between" w="full">
-            <Text fontSize="sm" fontWeight="600" color="neutral.600">${priceRange[0]}</Text>
-            <Text fontSize="sm" fontWeight="600" color="neutral.600">${priceRange[1]}</Text>
-          </HStack>
           <Button
+            variant={!selectedCategory ? "solid" : "ghost"}
+            colorScheme={!selectedCategory ? "green" : undefined}
             size="sm"
-            colorScheme="green"
-            variant="outline"
+            justifyContent="flex-start"
             w="full"
-            onClick={handlePriceRangeFilter}
-            borderRadius="lg"
-            fontWeight="600"
+            onClick={() => handleCategoryChange('')}
+            fontWeight="500"
           >
-            Apply Price Filter
+            All Categories
           </Button>
+          {categories.map((category) => (
+            <Button
+              key={category}
+              variant={selectedCategory === category ? "solid" : "ghost"}
+              colorScheme={selectedCategory === category ? "green" : undefined}
+              size="sm"
+              justifyContent="flex-start"
+              w="full"
+              onClick={() => handleCategoryChange(category)}
+              fontWeight="500"
+              textTransform="capitalize"
+            >
+              {category.replace(/([A-Z])/g, ' $1').trim()}
+            </Button>
+          ))}
         </VStack>
       </Box>
 
-      <Divider borderColor="neutral.200" />
+      {selectedCategory && (
+        <>
+          <Divider borderColor="neutral.200" />
+          
+          {/* Dynamic Filters for Selected Category */}
+          <DynamicFilters
+            filters={currentCategoryFilters}
+            selectedFilters={selectedFilters}
+            onFiltersChange={handleDynamicFiltersChange}
+            isLoading={filtersLoading}
+            error={filtersError}
+            title={`${selectedCategory} Filters`}
+          />
+        </>
+      )}
 
-      <Box>
-        <Heading size="md" mb={4} color="neutral.800">Plant Size</Heading>
-        <VStack align="start" spacing={3}>
-          <Checkbox colorScheme="green" fontWeight="500">Small (4"-6")</Checkbox>
-          <Checkbox colorScheme="green" fontWeight="500">Medium (6"-12")</Checkbox>
-          <Checkbox colorScheme="green" fontWeight="500">Large (12"-24")</Checkbox>
-          <Checkbox colorScheme="green" fontWeight="500">Extra Large (24"+)</Checkbox>
-        </VStack>
-      </Box>
-
-      <Divider borderColor="neutral.200" />
-
-      <Box>
-        <Heading size="md" mb={4} color="neutral.800">Care Level</Heading>
-        <VStack align="start" spacing={3}>
-          <Checkbox colorScheme="green" fontWeight="500">Beginner Friendly</Checkbox>
-          <Checkbox colorScheme="green" fontWeight="500">Easy Care</Checkbox>
-          <Checkbox colorScheme="green" fontWeight="500">Moderate Care</Checkbox>
-          <Checkbox colorScheme="green" fontWeight="500">Expert Level</Checkbox>
-        </VStack>
-      </Box>
+      {/* Fallback Price Range Filter (always available) */}
+      {(!selectedCategory || currentCategoryFilters.length === 0) && (
+        <>
+          <Divider borderColor="neutral.200" />
+          
+          <Box>
+            <Heading size="md" mb={4} color="neutral.800">Price Range</Heading>
+            <VStack spacing={4}>
+              <RangeSlider
+                value={priceRange}
+                onChange={setPriceRange}
+                min={0}
+                max={200}
+                step={5}
+                colorScheme="green"
+              >
+                <RangeSliderTrack bg="neutral.200">
+                  <RangeSliderFilledTrack bg="primary.500" />
+                </RangeSliderTrack>
+                <RangeSliderThumb index={0} bg="primary.600" />
+                <RangeSliderThumb index={1} bg="primary.600" />
+              </RangeSlider>
+              <HStack justify="space-between" w="full">
+                <Text fontSize="sm" fontWeight="600" color="neutral.600">${priceRange[0]}</Text>
+                <Text fontSize="sm" fontWeight="600" color="neutral.600">${priceRange[1]}</Text>
+              </HStack>
+              <Button
+                size="sm"
+                colorScheme="green"
+                variant="outline"
+                w="full"
+                onClick={handlePriceRangeFilter}
+                borderRadius="lg"
+                fontWeight="600"
+              >
+                Apply Price Filter
+              </Button>
+            </VStack>
+          </Box>
+        </>
+      )}
     </VStack>
   );
 

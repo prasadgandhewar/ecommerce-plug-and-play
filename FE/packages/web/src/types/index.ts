@@ -190,3 +190,34 @@ export interface SearchParams {
   page?: number;
   limit?: number;
 }
+
+// Category Filter types - New API for dynamic filters
+export interface FilterOption {
+  name: string;
+  type: 'string' | 'range';
+  values?: string[]; // For string type filters
+  minValue?: number; // For range type filters
+  maxValue?: number; // For range type filters
+  unit?: string; // Optional unit for range filters (e.g., "$", "lbs")
+}
+
+export interface CategoryFilter {
+  id?: string;
+  category: string;
+  filters: FilterOption[];
+}
+
+// Frontend filter state
+export interface SelectedFilter {
+  name: string;
+  type: 'string' | 'range';
+  selectedValues?: string[]; // For string type
+  selectedRange?: [number, number]; // For range type
+}
+
+export interface CategoryFilterState {
+  availableFilters: CategoryFilter[];
+  selectedFilters: SelectedFilter[];
+  isLoading: boolean;
+  error: string | null;
+}

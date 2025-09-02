@@ -1,5 +1,6 @@
 package com.ecommerce.api.service;
 
+import com.ecommerce.api.dto.CategoryFilterDto;
 import com.ecommerce.api.dto.ProductRequest;
 import com.ecommerce.api.dto.ProductResponse;
 import com.ecommerce.api.dto.ProductReviewRequest;
@@ -28,6 +29,9 @@ public class ProductService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private CategoryFilterService categoryFilterService;
 
     public Page<ProductResponse> getAllProducts(Pageable pageable) {
         // Use the more flexible query that includes products with null isActive
@@ -127,6 +131,17 @@ public class ProductService {
     }
 
     public List<String> getAllCategories() {
+        // First try to get categories from the new category filter system
+        try {
+            List<String> categoriesFromFilter = categoryFilterService.getAllCategoryNames();
+            if (!categoriesFromFilter.isEmpty()) {
+                return categoriesFromFilter;
+            }
+        } catch (Exception e) {
+            System.err.println("Error getting categories from filter service: " + e.getMessage());
+        }
+        
+        // Fallback to getting categories from products
         List<Product> products = productRepository.findDistinctCategoryProducts();
         return products.stream()
                 .map(Product::getCategory)
@@ -134,6 +149,35 @@ public class ProductService {
                 .distinct()
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    // Method to get categories from products (legacy)
+    public List<String> getCategoriesFromProducts() {
+        List<Product> products = productRepository.findDistinctCategoryProducts();
+        return products.stream()
+                .map(Product::getCategory)
+                .filter(Objects::nonNull)
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    // Method to get available filters for a category
+    public CategoryFilterDto getFiltersForCategory(String category) {
+        try {
+            Optional<CategoryFilterDto> categoryFilter = categoryFilterService.getCategoryByName(category);
+            return categoryFilter.orElse(createEmptyFilter(category));
+        } catch (Exception e) {
+            System.err.println("Error getting filters for category " + category + ": " + e.getMessage());
+            return createEmptyFilter(category);
+        }
+    }
+
+    private CategoryFilterDto createEmptyFilter(String category) {
+        CategoryFilterDto emptyFilter = new CategoryFilterDto();
+        emptyFilter.setCategory(category);
+        emptyFilter.setFilters(new ArrayList<>());
+        return emptyFilter;
     }
 
     public List<String> getSubCategoriesByCategory(String category) {

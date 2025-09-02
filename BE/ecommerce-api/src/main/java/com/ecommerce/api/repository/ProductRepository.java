@@ -49,9 +49,7 @@ public interface ProductRepository extends MongoRepository<Product, String> {
     List<Product> findByPriceBetweenAndIsActiveTrue(BigDecimal minPrice, BigDecimal maxPrice);
 
     // Advanced filtering
-    @Query("{ 'isActive': true, " +
-           "$and: [ " +
-           "{ $or: [ { 'category': { $exists: false } }, { 'category': null }, { 'category': ?0 } ] }, " +
+    @Query("{ $or: [ { 'category': { $exists: false } }, { 'category': null }, { 'category': ?0 } ] }, " +
            "{ $or: [ { 'subCategory': { $exists: false } }, { 'subCategory': null }, { 'subCategory': ?1 } ] }, " +
            "{ $or: [ { 'brand': { $exists: false } }, { 'brand': null }, { 'brand': ?2 } ] }, " +
            "{ $or: [ { 'price': { $gte: ?3 } } ] }, " +
