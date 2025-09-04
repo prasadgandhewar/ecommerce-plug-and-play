@@ -1,0 +1,60 @@
+{
+  "common": {
+    "currency": "$",
+    "loading": "Cargando...",
+    "error": "Algo salió mal",
+    "tryAgain": "Intentar de Nuevo",
+    "close": "Cerrar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "confirm": "Confirmar",
+    "yes": "Sí",
+    "no": "No"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "products": "Productos",
+    "categories": "Categorías",
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "cart": "Carrito",
+    "profile": "Perfil",
+    "login": "Iniciar Sesión",
+    "logout": "Cerrar Sesión",
+    "register": "Registrarse"
+  },
+  "product": {
+    "addToCart": "Añadir al Carrito",
+    "quickLook": "Vista Rápida",
+    "outOfStock": "Agotado",
+    "inStock": "En Stock",
+    "price": "Precio",
+    "originalPrice": "Precio Original",
+    "discount": "Descuento",
+    "rating": "Valoración",
+    "reviews": "Reseñas",
+    "new": "Nuevo",
+    "sale": "Oferta",
+    "featured": "Destacado"
+  },
+  "cart": {
+    "title": "Carrito de Compras",
+    "empty": "Tu carrito está vacío",
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "tax": "Impuestos",
+    "shipping": "Envío",
+    "checkout": "Finalizar Compra",
+    "continueShopping": "Continuar Comprando",
+    "removeItem": "Eliminar Artículo",
+    "updateQuantity": "Actualizar Cantidad"
+  },
+  "footer": {
+    "copyright": "© 2024 E-commerce. Todos los derechos reservados.",
+    "privacyPolicy": "Política de Privacidad",
+    "termsOfService": "Términos de Servicio",
+    "contactUs": "Contáctanos"
+  }
+}

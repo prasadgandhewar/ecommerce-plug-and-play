@@ -43,6 +43,7 @@ import { FaLeaf, FaSearch, FaShoppingBag, FaUser, FaHeart } from 'react-icons/fa
 import { useTheme } from '../../context/ThemeContext';
 import { BrandLogo } from '../common/BrandLogo';
 import { ThemeSwitcher } from '../common/ThemeSwitcher';
+import LanguageSwitcher from '../LanguageSwitcher';
 
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { logoutUser } from '../../store/slices/authSlice';
@@ -105,7 +106,12 @@ const Header: React.FC = () => {
             >
               <BrandLogo size={{ base: 'sm', md: 'md' }} />
             </Link>
-            {!isMobile && <ThemeSwitcher size="sm" />}
+            {!isMobile && (
+              <HStack spacing={2}>
+                <ThemeSwitcher size="sm" />
+                <LanguageSwitcher />
+              </HStack>
+            )}
           </HStack>
 
           {/* Desktop Navigation */}

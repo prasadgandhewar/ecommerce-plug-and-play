@@ -17,46 +17,14 @@ import {
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { useContent } from '../../hooks/useContent';
 
 const HomePage: React.FC = () => {
+  const { t } = useContent('homepage');
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Hero slider data
-  const heroSlides = [
-    {
-      id: 1,
-      title: "Household Chairs",
-      subtitle: "The best deals on Chairs",
-      description: "Professional-grade chairs for creatives and professionals",
-      discount: "$250 off",
-      price: "$2,349.99",
-      buttonText: "EXPLORE HOME DECOR",
-      image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop",
-      bgColor: "gray.900"
-    },
-    {
-      id: 2,
-      title: "Modern Furniture",
-      subtitle: "Transform your living space",
-      description: "Stylish and comfortable furniture for every room",
-      discount: "Up to 40% off",
-      price: "$1,999.99",
-      buttonText: "SHOP FURNITURE",
-      image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&h=600&fit=crop",
-      bgColor: "blue.900"
-    },
-    {
-      id: 3,
-      title: "Home Accessories",
-      subtitle: "Complete your home design",
-      description: "Beautiful accessories and decor items",
-      discount: "Free shipping",
-      price: "$199.99",
-      buttonText: "DISCOVER MORE",
-      image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800&h=600&fit=crop",
-      bgColor: "green.900"
-    }
-  ];
+  // Get hero slider data from content
+  const heroSlides = t('hero.slides', { returnObjects: true }) as any[];
 
   // Auto-advance slider
   useEffect(() => {
@@ -79,127 +47,10 @@ const HomePage: React.FC = () => {
     setCurrentSlide(index);
   };
 
-  // Mock data for featured products
-  const featuredProducts = [
-    {
-      id: 1,
-      name: 'TABLE LAMP',
-      price: 350.00,
-      originalPrice: null,
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
-      rating: 5,
-      reviews: 24,
-      badge: 'NEW',
-      isNew: true,
-      discount: null,
-    },
-    {
-      id: 2,
-      name: 'BASKET WITH HANDLES',
-      price: 150.00,
-      originalPrice: 165.00,
-      image: 'https://images.unsplash.com/photo-1586093248969-3d8ea0c76a99?w=400&h=400&fit=crop',
-      rating: 5,
-      reviews: 18,
-      badge: '-10%',
-      isNew: true,
-      discount: 10,
-    },
-    {
-      id: 3,
-      name: 'SMART WATCH',
-      price: 45.00,
-      originalPrice: 49.50,
-      image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop',
-      rating: 4,
-      reviews: 31,
-      badge: '-10%',
-      isNew: true,
-      discount: 10,
-    },
-    {
-      id: 4,
-      name: 'SUN GLASSES',
-      price: 35.00,
-      originalPrice: null,
-      image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400&h=400&fit=crop',
-      rating: 5,
-      reviews: 15,
-      badge: 'NEW',
-      isNew: true,
-      discount: null,
-    },
-  ];
-
-  const bestsellerProducts = [
-    {
-      id: 5,
-      name: 'TEA TABLE',
-      price: 69.00,
-      originalPrice: null,
-      image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=400&fit=crop',
-      rating: 5,
-      reviews: 12,
-      badge: 'NEW',
-      isNew: true,
-    },
-    {
-      id: 6,
-      name: 'FLOWER VASE',
-      price: 55.00,
-      originalPrice: null,
-      image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop',
-      rating: 4,
-      reviews: 22,
-      badge: 'NEW',
-      isNew: true,
-    },
-    {
-      id: 7,
-      name: 'HEADPHONES',
-      price: 145.00,
-      originalPrice: 159.50,
-      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop',
-      rating: 5,
-      reviews: 35,
-      badge: '-10%',
-      discount: 10,
-    },
-    {
-      id: 8,
-      name: 'HOUSEHOLD MATERIALS',
-      price: 18.00,
-      originalPrice: 21.60,
-      image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=400&fit=crop',
-      rating: 4,
-      reviews: 8,
-      badge: '-20%',
-      discount: 20,
-    },
-  ];
-
-  const serviceFeatures = [
-    {
-      title: "Free Delivery",
-      description: "Free shipping on all orders over $50",
-      emoji: "🚚"
-    },
-    {
-      title: "Easy Returns", 
-      description: "30-day return guarantee",
-      emoji: "↩️"
-    },
-    {
-      title: "24/7 Support",
-      description: "Expert support anytime", 
-      emoji: "🎧"
-    },
-    {
-      title: "Secure Payment",
-      description: "100% secure transactions",
-      emoji: "🔒"
-    }
-  ];
+  // Get product and service data from content
+  const featuredProducts = t('products.featured', { returnObjects: true }) as any[];
+  const bestsellerProducts = t('products.bestsellers', { returnObjects: true }) as any[];
+  const serviceFeatures = t('serviceFeatures', { returnObjects: true }) as any[];
 
   return (
     <Box>
@@ -256,7 +107,7 @@ const HomePage: React.FC = () => {
                         bg="red.500"
                         color="white"
                       >
-                        SPECIAL OFFER
+                        {t('hero.badgeText')}
                       </Badge>
                       <Heading
                         fontSize={{ base: '3xl', md: '4xl', lg: '5xl' }}
@@ -277,7 +128,7 @@ const HomePage: React.FC = () => {
                             {slide.discount}
                           </Badge>
                           <Text fontSize="lg" fontWeight="600">
-                            Starting from <Text as="span" color="yellow.400" fontWeight="800">{slide.price}</Text>
+                            {t('hero.pricePrefix')} <Text as="span" color="yellow.400" fontWeight="800">{slide.price}</Text>
                           </Text>
                         </HStack>
                       </VStack>
@@ -318,7 +169,7 @@ const HomePage: React.FC = () => {
 
             {/* Navigation Arrows */}
             <IconButton
-              aria-label="Previous slide"
+              aria-label={t('navigation.previousSlide')}
               icon={<ChevronLeftIcon />}
               position="absolute"
               left={4}
@@ -333,7 +184,7 @@ const HomePage: React.FC = () => {
               onClick={prevSlide}
             />
             <IconButton
-              aria-label="Next slide"
+              aria-label={t('navigation.nextSlide')}
               icon={<ChevronRightIcon />}
               position="absolute"
               right={4}
@@ -379,7 +230,7 @@ const HomePage: React.FC = () => {
       <Container maxW="7xl" py={{ base: 12, md: 16 }} px={{ base: 4, md: 6 }}>
         <VStack spacing={8}>
           <Heading size="xl" color="gray.900" textAlign="center">
-            New Arrivals
+            {t('sections.newArrivals.title')}
           </Heading>
 
           <SimpleGrid columns={{ base: 2, sm: 2, md: 3, lg: 4 }} spacing={{ base: 4, md: 6 }} w="full">
@@ -406,10 +257,10 @@ const HomePage: React.FC = () => {
             </Box>
             <VStack spacing={6} align="start" textAlign="left">
               <Heading size="lg" color="gray.900">
-                Product of The Year
+                {t('sections.productOfYear.title')}
               </Heading>
               <Text color="gray.600" fontSize="md" lineHeight="1.6">
-                Discover our most innovative and popular product that has captured hearts worldwide. Experience excellence in every detail.
+                {t('sections.productOfYear.description')}
               </Text>
               <Button
                 as={RouterLink}
@@ -423,7 +274,7 @@ const HomePage: React.FC = () => {
                 textTransform="uppercase"
                 letterSpacing="wider"
               >
-                Shop Now
+                {t('sections.productOfYear.buttonText')}
               </Button>
             </VStack>
           </Grid>
@@ -434,7 +285,7 @@ const HomePage: React.FC = () => {
       <Container maxW="7xl" py={{ base: 12, md: 16 }} px={{ base: 4, md: 6 }}>
         <VStack spacing={8}>
           <Heading size="xl" color="gray.900" textAlign="center">
-            Our Bestsellers
+            {t('sections.bestsellers.title')}
           </Heading>
 
           <SimpleGrid columns={{ base: 2, sm: 2, md: 3, lg: 4 }} spacing={{ base: 4, md: 6 }} w="full">
@@ -449,7 +300,7 @@ const HomePage: React.FC = () => {
       <Container maxW="7xl" py={{ base: 12, md: 16 }} px={{ base: 4, md: 6 }}>
         <VStack spacing={8}>
           <Heading size="xl" color="gray.900" textAlign="center">
-            Special Offers
+            {t('sections.specialOffers.title')}
           </Heading>
 
           <SimpleGrid columns={{ base: 2, sm: 2, md: 3, lg: 4 }} spacing={{ base: 4, md: 6 }} w="full">
@@ -495,6 +346,7 @@ const HomePage: React.FC = () => {
 
 // Product Card Component
 const ProductCard: React.FC<{ product: any }> = ({ product }) => {
+  const { t } = useContent('homepage');
   return (
     <Box
       cursor="pointer"
@@ -545,7 +397,7 @@ const ProductCard: React.FC<{ product: any }> = ({ product }) => {
               fontWeight="600"
               borderRadius="sm"
             >
-              NEW
+              {t('buttons.newBadge', { defaultValue: 'NEW' })}
             </Badge>
           )}
         </VStack>
@@ -575,7 +427,7 @@ const ProductCard: React.FC<{ product: any }> = ({ product }) => {
             textTransform="uppercase"
             letterSpacing="wide"
           >
-            QUICK LOOK
+            {t('buttons.quickLook')}
           </Button>
         </Box>
       </Box>
@@ -627,7 +479,7 @@ const ProductCard: React.FC<{ product: any }> = ({ product }) => {
             letterSpacing="wide"
             py={6}
           >
-            ADD TO CART
+            {t('buttons.addToCart')}
           </Button>
         </VStack>
       </Box>
