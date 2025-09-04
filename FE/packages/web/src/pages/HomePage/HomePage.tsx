@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Container,
@@ -8,216 +8,479 @@ import {
   VStack,
   HStack,
   SimpleGrid,
-  Card,
-  CardBody,
   Image,
   Badge,
-  Icon,
-  Flex,
-  useColorModeValue,
-  Center,
-  Stack,
   Grid,
-  GridItem,
   AspectRatio,
-  Divider,
-  Avatar,
+  IconButton,
+  Flex,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
-import { FaShieldAlt, FaShippingFast, FaHeart, FaStar, FaQuoteLeft } from 'react-icons/fa';
-import { useTheme } from '../../context/ThemeContext';
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 
 const HomePage: React.FC = () => {
-  const { currentTheme } = useTheme();
-  
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Hero slider data
+  const heroSlides = [
+    {
+      id: 1,
+      title: "Household Chairs",
+      subtitle: "The best deals on Chairs",
+      description: "Professional-grade chairs for creatives and professionals",
+      discount: "$250 off",
+      price: "$2,349.99",
+      buttonText: "EXPLORE HOME DECOR",
+      image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop",
+      bgColor: "gray.900"
+    },
+    {
+      id: 2,
+      title: "Modern Furniture",
+      subtitle: "Transform your living space",
+      description: "Stylish and comfortable furniture for every room",
+      discount: "Up to 40% off",
+      price: "$1,999.99",
+      buttonText: "SHOP FURNITURE",
+      image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&h=600&fit=crop",
+      bgColor: "blue.900"
+    },
+    {
+      id: 3,
+      title: "Home Accessories",
+      subtitle: "Complete your home design",
+      description: "Beautiful accessories and decor items",
+      discount: "Free shipping",
+      price: "$199.99",
+      buttonText: "DISCOVER MORE",
+      image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800&h=600&fit=crop",
+      bgColor: "green.900"
+    }
+  ];
+
+  // Auto-advance slider
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 5000); // Change slide every 5 seconds
+
+    return () => clearInterval(timer);
+  }, [heroSlides.length]);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
+  };
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+  };
+
   // Mock data for featured products
   const featuredProducts = [
     {
       id: 1,
-      name: 'Starlight Succulent',
-      price: 95.00,
-      originalPrice: 120.00,
-      image: 'https://images.unsplash.com/photo-1509423350716-97f2360af622?w=400&h=400&fit=crop',
+      name: 'TABLE LAMP',
+      price: 350.00,
+      originalPrice: null,
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
       rating: 5,
       reviews: 24,
-      badge: 'Trending',
-      category: 'Indoor Plants',
+      badge: 'NEW',
+      isNew: true,
+      discount: null,
     },
     {
       id: 2,
-      name: 'Silver Mist',
-      price: 92.00,
-      originalPrice: 115.00,
-      image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=400&fit=crop',
+      name: 'BASKET WITH HANDLES',
+      price: 150.00,
+      originalPrice: 165.00,
+      image: 'https://images.unsplash.com/photo-1586093248969-3d8ea0c76a99?w=400&h=400&fit=crop',
       rating: 5,
       reviews: 18,
-      badge: 'Popular',
-      category: 'Indoor Plants',
+      badge: '-10%',
+      isNew: true,
+      discount: 10,
     },
     {
       id: 3,
-      name: 'Golden Glow',
-      price: 85.00,
-      originalPrice: 105.00,
-      image: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=400&h=400&fit=crop',
+      name: 'SMART WATCH',
+      price: 45.00,
+      originalPrice: 49.50,
+      image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop',
       rating: 4,
       reviews: 31,
-      badge: 'Sale',
-      category: 'Indoor Plants',
+      badge: '-10%',
+      isNew: true,
+      discount: 10,
     },
     {
       id: 4,
-      name: 'Desert Bloom',
-      price: 70.00,
-      originalPrice: 90.00,
-      image: 'https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=400&h=400&fit=crop',
+      name: 'SUN GLASSES',
+      price: 35.00,
+      originalPrice: null,
+      image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400&h=400&fit=crop',
       rating: 5,
       reviews: 15,
-      badge: 'New',
-      category: 'Succulents',
+      badge: 'NEW',
+      isNew: true,
+      discount: null,
     },
   ];
 
-  const categories = currentTheme.content.categories;
+  const bestsellerProducts = [
+    {
+      id: 5,
+      name: 'TEA TABLE',
+      price: 69.00,
+      originalPrice: null,
+      image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=400&fit=crop',
+      rating: 5,
+      reviews: 12,
+      badge: 'NEW',
+      isNew: true,
+    },
+    {
+      id: 6,
+      name: 'FLOWER VASE',
+      price: 55.00,
+      originalPrice: null,
+      image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop',
+      rating: 4,
+      reviews: 22,
+      badge: 'NEW',
+      isNew: true,
+    },
+    {
+      id: 7,
+      name: 'HEADPHONES',
+      price: 145.00,
+      originalPrice: 159.50,
+      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop',
+      rating: 5,
+      reviews: 35,
+      badge: '-10%',
+      discount: 10,
+    },
+    {
+      id: 8,
+      name: 'HOUSEHOLD MATERIALS',
+      price: 18.00,
+      originalPrice: 21.60,
+      image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=400&fit=crop',
+      rating: 4,
+      reviews: 8,
+      badge: '-20%',
+      discount: 20,
+    },
+  ];
 
-  const features = currentTheme.content.features.map((feature, index) => ({
-    ...feature,
-    icon: [FaShieldAlt, FaShippingFast, FaHeart, FaStar][index] || FaShieldAlt
-  }));
-
-  const testimonials = [
+  const serviceFeatures = [
     {
-      text: "I am absolutely thrilled with the service I received from their company! They were attentive, responsive, and genuinely cared about meeting my needs. I highly recommend them.",
-      author: "Sarah Johnson",
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616c88c70a7?w=100&h=100&fit=crop",
-      rating: 5,
+      title: "Free Delivery",
+      description: "Free shipping on all orders over $50",
+      emoji: "🚚"
     },
     {
-      text: "Their team exceeded our expectations. Their creative approach and attention to detail brought our vision to life. Highly recommended!",
-      author: "Michael Chen",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
-      rating: 5,
+      title: "Easy Returns", 
+      description: "30-day return guarantee",
+      emoji: "↩️"
     },
     {
-      text: "Outstanding quality and customer service. The plants arrived in perfect condition and have thrived in our home. Will definitely order again!",
-      author: "Emily Davis",
-      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop",
-      rating: 5,
+      title: "24/7 Support",
+      description: "Expert support anytime", 
+      emoji: "🎧"
     },
+    {
+      title: "Secure Payment",
+      description: "100% secure transactions",
+      emoji: "🔒"
+    }
   ];
 
   return (
     <Box>
-      {/* Hero Section */}
+      {/* Hero Slider Section */}
       <Box
-        bgImage="linear-gradient(135deg, rgba(34, 197, 94, 0.9) 0%, rgba(22, 163, 74, 0.9) 100%), url('https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=1920&h=1080&fit=crop')"
-        bgSize="cover"
-        bgPosition="center"
-        color="white"
-        py={{ base: 16, md: 24, lg: 32 }}
+        bg="gray.50"
+        py={{ base: 8, md: 12 }}
         px={{ base: 4, md: 0 }}
-        position="relative"
-        overflow="hidden"
       >
         <Container maxW="7xl">
-          <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} gap={{ base: 8, lg: 12 }} alignItems="center">
-            <VStack spacing={{ base: 6, md: 8 }} align={{ base: 'center', lg: 'start' }} textAlign={{ base: 'center', lg: 'left' }}>
-              <Text
-                fontSize={{ base: 'md', md: 'lg' }}
-                fontWeight="600"
-                letterSpacing="wider"
-                textTransform="uppercase"
-                opacity={0.9}
-              >
-                Welcome to {currentTheme.branding.companyName}
-              </Text>
-              <Heading
-                fontSize={{ base: '2xl', sm: '3xl', md: '4xl', lg: '5xl', xl: '6xl' }}
-                fontWeight="800"
-                lineHeight="1.1"
-                letterSpacing="-0.02em"
-              >
-                {currentTheme.content.heroTitle}
+          {/* Main Hero Slider */}
+          <Box
+            position="relative"
+            bg="white"
+            borderRadius="lg"
+            overflow="hidden"
+            boxShadow="lg"
+            mb={8}
+          >
+            {/* Slider Container */}
+            <Box position="relative" minH="400px" overflow="hidden">
+              {heroSlides.map((slide, index) => (
+                <Box
+                  key={slide.id}
+                  position="absolute"
+                  top={0}
+                  left={0}
+                  w="full"
+                  h="full"
+                  opacity={index === currentSlide ? 1 : 0}
+                  transform={`translateX(${(index - currentSlide) * 100}%)`}
+                  transition="all 0.5s ease-in-out"
+                  zIndex={index === currentSlide ? 1 : 0}
+                >
+                  <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} gap={0} alignItems="center" minH="400px">
+                    <VStack 
+                      spacing={6} 
+                      align={{ base: 'center', lg: 'start' }} 
+                      textAlign={{ base: 'center', lg: 'left' }}
+                      p={{ base: 8, md: 12 }}
+                      bg={slide.bgColor}
+                      color="white"
+                      h="full"
+                      justify="center"
+                    >
+                      <Badge 
+                        colorScheme="red" 
+                        fontSize="sm" 
+                        px={4} 
+                        py={2} 
+                        borderRadius="full"
+                        textTransform="uppercase"
+                        letterSpacing="wider"
+                        bg="red.500"
+                        color="white"
+                      >
+                        SPECIAL OFFER
+                      </Badge>
+                      <Heading
+                        fontSize={{ base: '3xl', md: '4xl', lg: '5xl' }}
+                        fontWeight="800"
+                        lineHeight="1.1"
+                      >
+                        {slide.title}
+                      </Heading>
+                      <Text fontSize={{ base: 'lg', md: 'xl' }} opacity={0.9}>
+                        {slide.subtitle}
+                      </Text>
+                      <Text fontSize="md" opacity={0.8}>
+                        {slide.description}
+                      </Text>
+                      <VStack spacing={3} align={{ base: 'center', lg: 'start' }}>
+                        <HStack spacing={3}>
+                          <Badge colorScheme="yellow" fontSize="lg" px={3} py={1} bg="yellow.400" color="gray.900">
+                            {slide.discount}
+                          </Badge>
+                          <Text fontSize="lg" fontWeight="600">
+                            Starting from <Text as="span" color="yellow.400" fontWeight="800">{slide.price}</Text>
+                          </Text>
+                        </HStack>
+                      </VStack>
+                      <Button
+                        as={RouterLink}
+                        to="/products"
+                        size="lg"
+                        bg="white"
+                        color="gray.900"
+                        _hover={{ bg: 'gray.100', transform: 'translateY(-2px)' }}
+                        px={8}
+                        py={6}
+                        borderRadius="sm"
+                        fontWeight="600"
+                        textTransform="uppercase"
+                        letterSpacing="wider"
+                        mt={4}
+                        transition="all 0.3s ease"
+                      >
+                        {slide.buttonText}
+                      </Button>
+                    </VStack>
+                    <Box h="400px" overflow="hidden">
+                      <Image
+                        src={slide.image}
+                        alt={slide.title}
+                        w="full"
+                        h="full"
+                        objectFit="cover"
+                        transition="transform 0.5s ease"
+                        _hover={{ transform: 'scale(1.05)' }}
+                      />
+                    </Box>
+                  </Grid>
+                </Box>
+              ))}
+            </Box>
+
+            {/* Navigation Arrows */}
+            <IconButton
+              aria-label="Previous slide"
+              icon={<ChevronLeftIcon />}
+              position="absolute"
+              left={4}
+              top="50%"
+              transform="translateY(-50%)"
+              zIndex={2}
+              bg="whiteAlpha.800"
+              color="gray.900"
+              _hover={{ bg: 'white' }}
+              size="lg"
+              borderRadius="full"
+              onClick={prevSlide}
+            />
+            <IconButton
+              aria-label="Next slide"
+              icon={<ChevronRightIcon />}
+              position="absolute"
+              right={4}
+              top="50%"
+              transform="translateY(-50%)"
+              zIndex={2}
+              bg="whiteAlpha.800"
+              color="gray.900"
+              _hover={{ bg: 'white' }}
+              size="lg"
+              borderRadius="full"
+              onClick={nextSlide}
+            />
+
+            {/* Slide Indicators */}
+            <Flex
+              position="absolute"
+              bottom={4}
+              left="50%"
+              transform="translateX(-50%)"
+              zIndex={2}
+              gap={2}
+            >
+              {heroSlides.map((_, index) => (
+                <Box
+                  key={index}
+                  w={3}
+                  h={3}
+                  borderRadius="full"
+                  bg={index === currentSlide ? 'white' : 'whiteAlpha.500'}
+                  cursor="pointer"
+                  transition="all 0.3s ease"
+                  _hover={{ bg: 'white' }}
+                  onClick={() => goToSlide(index)}
+                />
+              ))}
+            </Flex>
+          </Box>
+        </Container>
+      </Box>
+
+      {/* New Arrivals Section */}
+      <Container maxW="7xl" py={{ base: 12, md: 16 }} px={{ base: 4, md: 6 }}>
+        <VStack spacing={8}>
+          <Heading size="xl" color="gray.900" textAlign="center">
+            New Arrivals
+          </Heading>
+
+          <SimpleGrid columns={{ base: 2, sm: 2, md: 3, lg: 4 }} spacing={{ base: 4, md: 6 }} w="full">
+            {featuredProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </SimpleGrid>
+        </VStack>
+      </Container>
+
+      {/* Product of the Year Banner */}
+      <Box bg="gray.100" py={16}>
+        <Container maxW="5xl">
+          <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} gap={8} alignItems="center">
+            <Box>
+              <Image
+                src="https://images.unsplash.com/photo-1586093248969-3d8ea0c76a99?w=500&h=400&fit=crop"
+                alt="Product of the Year"
+                borderRadius="lg"
+                w="full"
+                h="300px"
+                objectFit="cover"
+              />
+            </Box>
+            <VStack spacing={6} align="start" textAlign="left">
+              <Heading size="lg" color="gray.900">
+                Product of The Year
               </Heading>
-              <Text 
-                fontSize={{ base: 'md', md: 'lg', lg: 'xl' }} 
-                maxW={{ base: 'full', lg: '2xl' }} 
-                opacity={0.95} 
-                lineHeight="1.7"
-              >
-                {currentTheme.content.heroSubtitle}
+              <Text color="gray.600" fontSize="md" lineHeight="1.6">
+                Discover our most innovative and popular product that has captured hearts worldwide. Experience excellence in every detail.
               </Text>
-              <Stack 
-                direction={{ base: 'column', sm: 'row' }} 
-                spacing={4} 
-                pt={4}
-                w={{ base: 'full', sm: 'auto' }}
-                align="center"
+              <Button
+                as={RouterLink}
+                to="/products"
+                size="md"
+                colorScheme="blackAlpha"
+                bg="gray.900"
+                color="white"
+                _hover={{ bg: 'gray.800' }}
+                borderRadius="sm"
+                textTransform="uppercase"
+                letterSpacing="wider"
               >
-                <Button
-                  as={RouterLink}
-                  to="/products"
-                  size={{ base: 'lg', md: 'xl' }}
-                  bg="white"
-                  color="primary.600"
-                  _hover={{
-                    bg: 'gray.50',
-                    transform: 'translateY(-2px)',
-                  }}
-                  px={{ base: 6, md: 8 }}
-                  py={{ base: 4, md: 6 }}
-                  borderRadius="xl"
-                  fontWeight="700"
-                  w={{ base: 'full', sm: 'auto' }}
-                  minW={{ base: 'full', sm: '140px' }}
-                >
-                  Shop Now
-                </Button>
-                <Button
-                  variant="outline"
-                  size={{ base: 'lg', md: 'xl' }}
-                  borderColor="white"
-                  color="white"
-                  _hover={{
-                    bg: 'whiteAlpha.200',
-                    transform: 'translateY(-2px)',
-                  }}
-                  px={{ base: 6, md: 8 }}
-                  py={{ base: 4, md: 6 }}
-                  borderRadius="xl"
-                  borderWidth="2px"
-                  fontWeight="700"
-                  w={{ base: 'full', sm: 'auto' }}
-                  minW={{ base: 'full', sm: '140px' }}
-                >
-                  Learn More
-                </Button>
-              </Stack>
+                Shop Now
+              </Button>
             </VStack>
           </Grid>
         </Container>
       </Box>
 
-      {/* Features Section */}
-      <Box py={{ base: 12, md: 16 }} bg="gray.50">
+      {/* Our Bestsellers Section */}
+      <Container maxW="7xl" py={{ base: 12, md: 16 }} px={{ base: 4, md: 6 }}>
+        <VStack spacing={8}>
+          <Heading size="xl" color="gray.900" textAlign="center">
+            Our Bestsellers
+          </Heading>
+
+          <SimpleGrid columns={{ base: 2, sm: 2, md: 3, lg: 4 }} spacing={{ base: 4, md: 6 }} w="full">
+            {bestsellerProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </SimpleGrid>
+        </VStack>
+      </Container>
+
+      {/* Special Offers Section */}
+      <Container maxW="7xl" py={{ base: 12, md: 16 }} px={{ base: 4, md: 6 }}>
+        <VStack spacing={8}>
+          <Heading size="xl" color="gray.900" textAlign="center">
+            Special Offers
+          </Heading>
+
+          <SimpleGrid columns={{ base: 2, sm: 2, md: 3, lg: 4 }} spacing={{ base: 4, md: 6 }} w="full">
+            {bestsellerProducts.slice(0, 3).map((product) => (
+              <ProductCard key={`offer-${product.id}`} product={product} />
+            ))}
+          </SimpleGrid>
+        </VStack>
+      </Container>
+
+      {/* Service Features Section */}
+      <Box bg="gray.50" py={{ base: 12, md: 16 }}>
         <Container maxW="7xl" px={{ base: 4, md: 6 }}>
-          <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} spacing={{ base: 6, md: 8 }}>
-            {features.map((feature, index) => (
-              <VStack key={index} spacing={4} textAlign="center">
+          <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} spacing={{ base: 8, md: 6 }}>
+            {serviceFeatures.map((feature, index) => (
+              <VStack key={index} spacing={4} textAlign="center" p={6}>
                 <Box
-                  p={{ base: 3, md: 4 }}
+                  p={4}
                   borderRadius="full"
-                  bg="primary.100"
-                  color="primary.600"
+                  bg="white"
+                  color="gray.700"
+                  boxShadow="sm"
+                  fontSize="2xl"
                 >
-                  {/* @ts-ignore */}
-                  <feature.icon size={{ base: "20px", md: "24px" }} />
+                  {feature.emoji}
                 </Box>
                 <VStack spacing={2}>
-                  <Heading size={{ base: 'sm', md: 'md' }} color="neutral.800">
+                  <Heading size="md" color="gray.900">
                     {feature.title}
                   </Heading>
-                  <Text color="neutral.600" fontSize={{ base: 'xs', md: 'sm' }} textAlign="center">
+                  <Text color="gray.600" fontSize="sm" textAlign="center">
                     {feature.description}
                   </Text>
                 </VStack>
@@ -226,341 +489,147 @@ const HomePage: React.FC = () => {
           </SimpleGrid>
         </Container>
       </Box>
+    </Box>
+  );
+};
 
-      {/* Trending Products Section */}
-      <Container maxW="7xl" py={{ base: 16, md: 20 }} px={{ base: 4, md: 6 }}>
-        <VStack spacing={{ base: 8, md: 12 }}>
-          <Box textAlign="center" maxW="3xl">
-            <Heading size={{ base: 'xl', md: '2xl', lg: '3xl' }} mb={4} color="neutral.800">
-              Trending Products
-            </Heading>
-            <Text fontSize={{ base: 'md', md: 'lg', lg: 'xl' }} color="neutral.600">
-              Discover our most popular plants loved by garden enthusiasts worldwide
-            </Text>
-          </Box>
-
-          <SimpleGrid columns={{ base: 2, sm: 2, md: 3, lg: 4 }} spacing={{ base: 4, sm: 6, md: 8 }} w="full">
-            {featuredProducts.map((product) => (
-              <Card
-                key={product.id}
-                variant="elevated"
-                cursor="pointer"
-                overflow="hidden"
-                bg="white"
-                borderRadius={{ base: "xl", md: "2xl" }}
-                _hover={{
-                  transform: { base: 'none', md: 'translateY(-4px)' },
-                  shadow: { base: 'md', md: 'xl' },
-                }}
-                transition="all 0.3s ease"
-                h="fit-content"
-              >
-                <Box position="relative">
-                  <AspectRatio ratio={1}>
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      objectFit="cover"
-                    />
-                  </AspectRatio>
-                  <Badge
-                    position="absolute"
-                    top={{ base: 2, md: 4 }}
-                    left={{ base: 2, md: 4 }}
-                    bg="accent.500"
-                    color="white"
-                    px={{ base: 2, md: 3 }}
-                    py={1}
-                    borderRadius="full"
-                    fontSize={{ base: "2xs", md: "xs" }}
-                    fontWeight="700"
-                  >
-                    {product.badge}
-                  </Badge>
-                  <Button
-                    position="absolute"
-                    top={{ base: 2, md: 4 }}
-                    right={{ base: 2, md: 4 }}
-                    size={{ base: "xs", md: "sm" }}
-                    variant="ghost"
-                    bg="whiteAlpha.900"
-                    color="gray.600"
-                    borderRadius="full"
-                    _hover={{ bg: 'white', color: 'red.500' }}
-                  >
-                    {/* @ts-ignore */}
-                    <FaHeart />
-                  </Button>
-                </Box>
-                <CardBody p={{ base: 3, md: 6 }}>
-                  <VStack align="start" spacing={{ base: 2, md: 4 }}>
-                    <VStack align="start" spacing={1} w="full">
-                      <Text 
-                        fontSize={{ base: "xs", md: "sm" }}
-                        color="primary.600" 
-                        fontWeight="600"
-                        noOfLines={1}
-                      >
-                        {product.category}
-                      </Text>
-                      <Heading 
-                        size={{ base: "sm", md: "md" }} 
-                        color="neutral.800" 
-                        lineHeight="1.3"
-                        noOfLines={2}
-                      >
-                        {product.name}
-                      </Heading>
-                    </VStack>
-                    
-                    <HStack spacing={2} display={{ base: "none", sm: "flex" }}>
-                      <HStack spacing={1}>
-                        {[...Array(5)].map((_, i) => (
-                          // @ts-ignore
-                          <FaStar
-                            key={i}
-                            color={i < product.rating ? 'var(--chakra-colors-accent-400)' : 'var(--chakra-colors-gray-300)'}
-                            size="10px"
-                          />
-                        ))}
-                      </HStack>
-                      <Text fontSize="sm" color="neutral.500" fontWeight="500">
-                        ({product.reviews})
-                      </Text>
-                    </HStack>
-
-                    <HStack justify="space-between" w="full" align="center">
-                      <VStack spacing={0} align="start">
-                        <Text fontSize="xl" fontWeight="800" color="primary.600">
-                          ${product.price.toFixed(2)}
-                        </Text>
-                        {product.originalPrice && (
-                          <Text
-                            fontSize="sm"
-                            color="neutral.400"
-                            textDecoration="line-through"
-                          >
-                            ${product.originalPrice.toFixed(2)}
-                          </Text>
-                        )}
-                      </VStack>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        colorScheme="primary"
-                        borderRadius="lg"
-                        px={4}
-                        _hover={{
-                          bg: 'primary.600',
-                          color: 'white',
-                          borderColor: 'primary.600',
-                        }}
-                      >
-                        Add to Cart
-                      </Button>
-                    </HStack>
-                  </VStack>
-                </CardBody>
-              </Card>
-            ))}
-          </SimpleGrid>
-        </VStack>
-      </Container>
-
-      {/* Flash Sale Section */}
-      <Box bg="primary.600" color="white" py={16}>
-        <Container maxW="5xl" textAlign="center">
-          <VStack spacing={6}>
-            <Heading size="2xl" fontWeight="800">
-              Flash Sale: Up to 50% Off On Select Items!
-            </Heading>
-            <Text fontSize="xl" opacity={0.9} maxW="3xl">
-              Don't miss out on our flash sale event! For a limited time, enjoy up to 50% off
-              on a selection of our best-selling products.
-            </Text>
-            <Button
-              size="xl"
-              bg="white"
-              color="primary.600"
-              _hover={{
-                bg: 'gray.50',
-                transform: 'translateY(-2px)',
-              }}
-              px={10}
-              py={6}
-              borderRadius="xl"
-              fontWeight="700"
-              mt={4}
-            >
-              Shop Now
-            </Button>
-          </VStack>
-        </Container>
-      </Box>
-
-      {/* Categories Section */}
-      <Container maxW="7xl" py={{ base: 16, md: 20 }} px={{ base: 4, md: 6 }}>
-        <VStack spacing={{ base: 8, md: 12 }}>
-          <Box textAlign="center">
-            <Heading size={{ base: 'xl', md: '2xl', lg: '3xl' }} mb={4} color="neutral.800">
-              Our Categories
-            </Heading>
-            <Text fontSize={{ base: 'md', md: 'lg', lg: 'xl' }} color="neutral.600">
-              Explore our diverse collection of plants for every space and style
-            </Text>
-          </Box>
-
-          <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} spacing={{ base: 4, md: 6 }} w="full">
-            {categories.map((category, index) => (
-              <Card
-                key={index}
-                cursor="pointer"
-                overflow="hidden"
-                borderRadius={{ base: 'xl', md: '2xl' }}
-                _hover={{
-                  transform: 'translateY(-8px)',
-                  boxShadow: '2xl',
-                }}
-                transition="all 0.3s ease"
-              >
-                <AspectRatio ratio={1}>
-                  <Image
-                    src={category.image}
-                    alt={category.name}
-                    objectFit="cover"
-                  />
-                </AspectRatio>
-                <CardBody p={{ base: 4, md: 6 }} textAlign="center">
-                  <VStack spacing={2}>
-                    <Heading size={{ base: 'sm', md: 'md' }} color="neutral.800">
-                      {category.name}
-                    </Heading>
-                    <Text color="neutral.500" fontSize={{ base: 'xs', md: 'sm' }}>
-                      {category.count}
-                    </Text>
-                  </VStack>
-                </CardBody>
-              </Card>
-            ))}
-          </SimpleGrid>
-        </VStack>
-      </Container>
-
-      {/* About Section */}
-      <Box bg="sage.50" py={20}>
-        <Container maxW="7xl">
-          <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} gap={16} alignItems="center">
-            <VStack spacing={8} align="start">
-              <Heading size="3xl" color="neutral.800" lineHeight="1.2">
-                Your Premier Destination for All Green.
-              </Heading>
-              <Text fontSize="lg" color="neutral.600" lineHeight="1.8">
-                At Urban Jungle Co., we believe in the transformative power of plants. Whether
-                you're a seasoned gardener or just starting your green journey, our curated
-                selection of plants will inspire and enrich your living space.
-              </Text>
-              <SimpleGrid columns={2} spacing={8} w="full">
-                <VStack spacing={2} align="start">
-                  <Heading size="xl" color="primary.600" fontWeight="800">
-                    98%
-                  </Heading>
-                  <Text color="neutral.600" fontWeight="600">
-                    Customer Satisfaction
-                  </Text>
-                </VStack>
-                <VStack spacing={2} align="start">
-                  <Heading size="xl" color="primary.600" fontWeight="800">
-                    103K
-                  </Heading>
-                  <Text color="neutral.600" fontWeight="600">
-                    Plants Sold
-                  </Text>
-                </VStack>
-              </SimpleGrid>
-            </VStack>
-            <Box>
-              <Image
-                src="https://images.unsplash.com/photo-1586093248969-3d8ea0c76a99?w=600&h=600&fit=crop"
-                alt="Beautiful plants"
-                borderRadius="2xl"
-                boxShadow="2xl"
-              />
-            </Box>
-          </Grid>
-        </Container>
-      </Box>
-
-      {/* Testimonials Section */}
-      <Container maxW="7xl" py={20}>
-        <VStack spacing={12}>
-          <Box textAlign="center">
-            <Heading size="3xl" mb={4} color="neutral.800">
-              What Our Customers Say
-            </Heading>
-            <Text fontSize="xl" color="neutral.600">
-              Discover the reasons why people love us and become your go-to partner.
-            </Text>
-          </Box>
-
-          <SimpleGrid columns={{ base: 1, lg: 3 }} spacing={8} w="full">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} variant="elevated" p={8} borderRadius="2xl">
-                <VStack spacing={6} align="start">
-                  {/* @ts-ignore */}
-                  <FaQuoteLeft size="32px" color="var(--chakra-colors-primary-300)" />
-                  <Text fontSize="lg" lineHeight="1.7" color="neutral.700">
-                    {testimonial.text}
-                  </Text>
-                  <HStack spacing={4}>
-                    <Avatar src={testimonial.avatar} size="md" />
-                    <VStack spacing={1} align="start">
-                      <Text fontWeight="700" color="neutral.800">
-                        {testimonial.author}
-                      </Text>
-                      <HStack spacing={1}>
-                        {[...Array(testimonial.rating)].map((_, i) => (
-                          // @ts-ignore
-                          <FaStar key={i} color="var(--chakra-colors-accent-400)" size="12px" />
-                        ))}
-                      </HStack>
-                    </VStack>
-                  </HStack>
-                </VStack>
-              </Card>
-            ))}
-          </SimpleGrid>
-        </VStack>
-      </Container>
-
-      {/* CTA Section */}
-      <Box bg="neutral.800" color="white" py={20}>
-        <Container maxW="5xl" textAlign="center">
-          <VStack spacing={8}>
-            <Heading size="3xl" fontWeight="800">
-              Ready to Find your Perfect Plant?
-            </Heading>
-            <Text fontSize="xl" opacity={0.9} maxW="3xl">
-              Browse our online store or visit us in person to experience the beauty of
-              nature.
-            </Text>
-            <Button
-              size="xl"
-              bg="primary.600"
+// Product Card Component
+const ProductCard: React.FC<{ product: any }> = ({ product }) => {
+  return (
+    <Box
+      cursor="pointer"
+      bg="white"
+      borderRadius="sm"
+      overflow="hidden"
+      _hover={{
+        shadow: 'lg',
+      }}
+      transition="all 0.2s ease"
+      h="fit-content"
+      border="1px solid"
+      borderColor="gray.100"
+    >
+      <Box position="relative" bg="gray.50" overflow="hidden">
+        <AspectRatio ratio={1}>
+          <Image
+            src={product.image}
+            alt={product.name}
+            objectFit="cover"
+            transition="transform 0.3s ease"
+            _hover={{ transform: 'scale(1.05)' }}
+          />
+        </AspectRatio>
+        
+        {/* Badges */}
+        <VStack position="absolute" top={3} left={3} spacing={1} align="start">
+          {product.discount && (
+            <Badge
+              bg="red.500"
               color="white"
-              _hover={{
-                bg: 'primary.700',
-                transform: 'translateY(-2px)',
-              }}
-              px={10}
-              py={6}
-              borderRadius="xl"
-              fontWeight="700"
-              mt={4}
+              px={2}
+              py={1}
+              fontSize="xs"
+              fontWeight="600"
+              borderRadius="sm"
             >
-              Shop Now
-            </Button>
-          </VStack>
-        </Container>
+              {product.badge}
+            </Badge>
+          )}
+          {product.isNew && !product.discount && (
+            <Badge
+              bg="green.500"
+              color="white"
+              px={2}
+              py={1}
+              fontSize="xs"
+              fontWeight="600"
+              borderRadius="sm"
+            >
+              NEW
+            </Badge>
+          )}
+        </VStack>
+
+        {/* Hover overlay with Quick Look button */}
+        <Box
+          position="absolute"
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
+          bg="blackAlpha.600"
+          opacity={0}
+          _hover={{ opacity: 1 }}
+          transition="opacity 0.3s ease"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Button
+            size="sm"
+            bg="white"
+            color="gray.900"
+            fontSize="xs"
+            fontWeight="600"
+            _hover={{ bg: 'gray.100' }}
+            textTransform="uppercase"
+            letterSpacing="wide"
+          >
+            QUICK LOOK
+          </Button>
+        </Box>
+      </Box>
+      
+      <Box p={4}>
+        <VStack align="start" spacing={3}>
+          <Heading 
+            size="sm" 
+            color="gray.900" 
+            lineHeight="1.3"
+            textTransform="uppercase"
+            fontWeight="600"
+            letterSpacing="wide"
+            fontSize="sm"
+            noOfLines={2}
+          >
+            {product.name}
+          </Heading>
+          
+          <HStack justify="space-between" w="full" align="center">
+            <VStack spacing={0} align="start">
+              {product.originalPrice ? (
+                <HStack spacing={2} align="baseline">
+                  <Text fontSize="sm" color="gray.400" textDecoration="line-through">
+                    ${product.originalPrice.toFixed(2)}
+                  </Text>
+                  <Text fontSize="lg" fontWeight="700" color="gray.900">
+                    ${product.price.toFixed(2)}
+                  </Text>
+                </HStack>
+              ) : (
+                <Text fontSize="lg" fontWeight="700" color="gray.900">
+                  ${product.price.toFixed(2)}
+                </Text>
+              )}
+            </VStack>
+          </HStack>
+          
+          {/* Add to Cart Button - Full Width */}
+          <Button
+            w="full"
+            size="sm"
+            bg="gray.900"
+            color="white"
+            _hover={{ bg: 'gray.800' }}
+            fontSize="xs"
+            fontWeight="600"
+            textTransform="uppercase"
+            letterSpacing="wide"
+            py={6}
+          >
+            ADD TO CART
+          </Button>
+        </VStack>
       </Box>
     </Box>
   );
