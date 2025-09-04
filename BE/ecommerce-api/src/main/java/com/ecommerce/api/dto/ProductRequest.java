@@ -13,6 +13,8 @@ import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 @Data
 @NoArgsConstructor
@@ -52,6 +54,8 @@ public class ProductRequest {
     private List<String> images = new ArrayList<>();
 
     private ProductSpecifications specifications;
+
+    private Map<String, Object> attributes = new HashMap<>();
 
     private List<ProductVariation> variations = new ArrayList<>();
 

@@ -59,6 +59,24 @@ public class ProductService {
         return products.map(this::convertToResponse);
     }
 
+    // New method for attribute-based filtering
+    public Page<ProductResponse> getProductsWithAttributeFilters(Pageable pageable, String category, 
+                                                               Map<String, Object> attributeFilters) {
+        Page<Product> products;
+        
+        if (attributeFilters == null || attributeFilters.isEmpty()) {
+            if (category != null && !category.isEmpty()) {
+                products = productRepository.findByCategoryWithActiveFilter(category, pageable);
+            } else {
+                products = getAllProducts(pageable).map(response -> modelMapper.map(response, Product.class));
+            }
+        } else {
+            products = productRepository.findByAttributeFilters(category, attributeFilters, pageable);
+        }
+        
+        return products.map(this::convertToResponse);
+    }
+
     public Optional<ProductResponse> getProductById(String id) {
         Optional<Product> product = productRepository.findById(id);
         return product.filter(p -> p.getIsActive()).map(this::convertToResponse);
@@ -391,6 +409,7 @@ public class ProductService {
         product.setStockQuantity(request.getStockQuantity());
         product.setImages(request.getImages());
         product.setSpecifications(request.getSpecifications());
+        product.setAttributes(request.getAttributes());
         product.setVariations(request.getVariations());
         product.setIsActive(request.getIsActive());
     }

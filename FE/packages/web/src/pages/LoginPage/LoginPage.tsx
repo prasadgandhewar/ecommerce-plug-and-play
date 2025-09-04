@@ -94,22 +94,34 @@ const LoginPage: React.FC = () => {
   const cardBg = useColorModeValue('white', 'gray.800');
 
   return (
-    <Box minH="calc(100vh - 80px)" bg={bgColor} py={12}>
+    <Box 
+      minH="calc(100vh - 80px)" 
+      bg={bgColor} 
+      py={{ base: 6, md: 12 }}
+      px={{ base: 4, md: 0 }}
+    >
       <Container maxW="md">
-        <VStack spacing={8}>
+        <VStack spacing={{ base: 6, md: 8 }}>
           <VStack spacing={4} textAlign="center">
-            <Heading size="xl" color="primary.500">
+            <Heading 
+              size={{ base: "lg", md: "xl" }} 
+              color="primary.500"
+            >
               Welcome Back
             </Heading>
-            <Text color="gray.600" fontSize="lg">
+            <Text 
+              color="gray.600" 
+              fontSize={{ base: "md", md: "lg" }}
+              px={{ base: 4, md: 0 }}
+            >
               Sign in to your account to continue shopping
             </Text>
           </VStack>
 
-          <Card w="full" bg={cardBg} shadow="xl">
-            <CardBody p={8}>
+          <Card w="full" bg={cardBg} shadow="xl" borderRadius={{ base: "lg", md: "xl" }}>
+            <CardBody p={{ base: 6, md: 8 }}>
               <form onSubmit={handleSubmit}>
-                <VStack spacing={6}>
+                <VStack spacing={{ base: 5, md: 6 }}>
                   {error && (
                     <Alert status="error" borderRadius="md">
                       <AlertIcon />
@@ -118,20 +130,22 @@ const LoginPage: React.FC = () => {
                   )}
 
                   <FormControl isInvalid={!!emailError}>
-                    <FormLabel>Email Address</FormLabel>
+                    <FormLabel fontSize={{ base: "sm", md: "md" }}>Email Address</FormLabel>
                     <Input
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Enter your email"
-                      size="lg"
+                      size={{ base: "md", md: "lg" }}
                       focusBorderColor="primary.500"
+                      fontSize={{ base: "16px", md: "md" }}
+                      className="mobile-input"
                     />
-                    <FormErrorMessage>{emailError}</FormErrorMessage>
+                    <FormErrorMessage fontSize="sm">{emailError}</FormErrorMessage>
                   </FormControl>
 
                   <FormControl isInvalid={!!passwordError}>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel fontSize={{ base: "sm", md: "md" }}>Password</FormLabel>
                     <InputGroup>
                       <Input
                         type={showPassword ? 'text' : 'password'}

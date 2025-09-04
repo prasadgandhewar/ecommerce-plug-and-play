@@ -72,6 +72,9 @@ const categoryFilterSlice = createSlice({
     setAvailableFilters: (state, action: PayloadAction<CategoryFilter[]>) => {
       state.availableFilters = action.payload;
     },
+    setSelectedFilters: (state, action: PayloadAction<SelectedFilter[]>) => {
+      state.selectedFilters = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -122,6 +125,7 @@ export const {
   removeSelectedFilter,
   updateSelectedFilter,
   setAvailableFilters,
+  setSelectedFilters,
 } = categoryFilterSlice.actions;
 
 export default categoryFilterSlice.reducer;

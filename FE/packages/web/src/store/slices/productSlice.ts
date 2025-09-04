@@ -155,6 +155,44 @@ export const fetchCategories = createAsyncThunk(
   }
 );
 
+// New async thunk for attribute-based filtering
+export const fetchProductsWithAttributeFilters = createAsyncThunk(
+  'products/fetchProductsWithAttributeFilters',
+  async (
+    { filters, attributeFilters }: { 
+      filters: ProductFilters; 
+      attributeFilters: Record<string, any> 
+    }, 
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await productService.getProductsWithAttributeFilters(filters, attributeFilters);
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to fetch products with filters');
+    }
+  }
+);
+
+// New async thunk for appending more products with attribute filters (infinite scroll)
+export const fetchMoreProductsWithAttributeFilters = createAsyncThunk(
+  'products/fetchMoreProductsWithAttributeFilters',
+  async (
+    { filters, attributeFilters }: { 
+      filters: ProductFilters; 
+      attributeFilters: Record<string, any> 
+    }, 
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await productService.getProductsWithAttributeFilters(filters, attributeFilters);
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to fetch more products with filters');
+    }
+  }
+);
+
 const productSlice = createSlice({
   name: 'products',
   initialState,
@@ -361,6 +399,48 @@ const productSlice = createSlice({
       })
       .addCase(fetchCategories.rejected, (state, action) => {
         state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      // Fetch products with attribute filters
+      .addCase(fetchProductsWithAttributeFilters.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchProductsWithAttributeFilters.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.products = action.payload.content;
+        state.pagination = {
+          totalElements: action.payload.totalElements,
+          totalPages: action.payload.totalPages,
+          size: action.payload.size,
+          number: action.payload.number,
+          first: action.payload.first,
+          last: action.payload.last,
+        };
+        state.error = null;
+      })
+      .addCase(fetchProductsWithAttributeFilters.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      // Fetch more products with attribute filters (infinite scroll)
+      .addCase(fetchMoreProductsWithAttributeFilters.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(fetchMoreProductsWithAttributeFilters.fulfilled, (state, action) => {
+        // Append new products to existing ones
+        state.products = [...state.products, ...action.payload.content];
+        state.pagination = {
+          totalElements: action.payload.totalElements,
+          totalPages: action.payload.totalPages,
+          size: action.payload.size,
+          number: action.payload.number,
+          first: action.payload.first,
+          last: action.payload.last,
+        };
+        state.error = null;
+      })
+      .addCase(fetchMoreProductsWithAttributeFilters.rejected, (state, action) => {
         state.error = action.payload as string;
       });
   },

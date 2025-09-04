@@ -50,6 +50,66 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
+    // Get products with attribute-based filtering
+    @GetMapping("/filter")
+    public ResponseEntity<Page<ProductResponse>> getProductsWithFilters(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "name") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir,
+            @RequestParam(required = false) String category,
+            @RequestParam Map<String, String> allParams) {
+        
+        Sort sort = sortDir.equalsIgnoreCase("desc") ? 
+            Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+        
+        Pageable pageable = PageRequest.of(page, size, sort);
+        
+        // Extract attribute filters from request parameters
+        Map<String, Object> attributeFilters = extractAttributeFilters(allParams);
+        
+        Page<ProductResponse> products = productService.getProductsWithAttributeFilters(pageable, category, attributeFilters);
+
+        return ResponseEntity.ok(products);
+    }
+
+    // Helper method to extract attribute filters from request parameters
+    private Map<String, Object> extractAttributeFilters(Map<String, String> allParams) {
+        Map<String, Object> attributeFilters = new java.util.HashMap<>();
+        
+        // Skip standard pagination and sorting parameters
+        String[] skipParams = {"page", "size", "sortBy", "sortDir", "category"};
+        
+        for (Map.Entry<String, String> entry : allParams.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            
+            // Skip empty values and standard parameters
+            if (value == null || value.trim().isEmpty()) {
+                continue;
+            }
+            
+            boolean shouldSkip = false;
+            for (String skipParam : skipParams) {
+                if (key.equals(skipParam)) {
+                    shouldSkip = true;
+                    break;
+                }
+            }
+            
+            if (!shouldSkip) {
+                // Handle comma-separated values for multi-select filters
+                if (value.contains(",")) {
+                    attributeFilters.put(key, java.util.Arrays.asList(value.split(",")));
+                } else {
+                    attributeFilters.put(key, value);
+                }
+            }
+        }
+        
+        return attributeFilters;
+    }
+
     // Get product by ID
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponse> getProductById(@PathVariable String id) {

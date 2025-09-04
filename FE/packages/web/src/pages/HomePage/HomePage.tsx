@@ -239,7 +239,7 @@ const HomePage: React.FC = () => {
             </Text>
           </Box>
 
-          <SimpleGrid columns={{ base: 1, sm: 2, lg: 3, xl: 4 }} spacing={{ base: 6, md: 8 }} w="full">
+          <SimpleGrid columns={{ base: 2, sm: 2, md: 3, lg: 4 }} spacing={{ base: 4, sm: 6, md: 8 }} w="full">
             {featuredProducts.map((product) => (
               <Card
                 key={product.id}
@@ -247,7 +247,13 @@ const HomePage: React.FC = () => {
                 cursor="pointer"
                 overflow="hidden"
                 bg="white"
-                borderRadius="2xl"
+                borderRadius={{ base: "xl", md: "2xl" }}
+                _hover={{
+                  transform: { base: 'none', md: 'translateY(-4px)' },
+                  shadow: { base: 'md', md: 'xl' },
+                }}
+                transition="all 0.3s ease"
+                h="fit-content"
               >
                 <Box position="relative">
                   <AspectRatio ratio={1}>
@@ -259,23 +265,23 @@ const HomePage: React.FC = () => {
                   </AspectRatio>
                   <Badge
                     position="absolute"
-                    top={4}
-                    left={4}
+                    top={{ base: 2, md: 4 }}
+                    left={{ base: 2, md: 4 }}
                     bg="accent.500"
                     color="white"
-                    px={3}
+                    px={{ base: 2, md: 3 }}
                     py={1}
                     borderRadius="full"
-                    fontSize="xs"
+                    fontSize={{ base: "2xs", md: "xs" }}
                     fontWeight="700"
                   >
                     {product.badge}
                   </Badge>
                   <Button
                     position="absolute"
-                    top={4}
-                    right={4}
-                    size="sm"
+                    top={{ base: 2, md: 4 }}
+                    right={{ base: 2, md: 4 }}
+                    size={{ base: "xs", md: "sm" }}
                     variant="ghost"
                     bg="whiteAlpha.900"
                     color="gray.600"
@@ -286,25 +292,35 @@ const HomePage: React.FC = () => {
                     <FaHeart />
                   </Button>
                 </Box>
-                <CardBody p={6}>
-                  <VStack align="start" spacing={4}>
+                <CardBody p={{ base: 3, md: 6 }}>
+                  <VStack align="start" spacing={{ base: 2, md: 4 }}>
                     <VStack align="start" spacing={1} w="full">
-                      <Text fontSize="sm" color="primary.600" fontWeight="600">
+                      <Text 
+                        fontSize={{ base: "xs", md: "sm" }}
+                        color="primary.600" 
+                        fontWeight="600"
+                        noOfLines={1}
+                      >
                         {product.category}
                       </Text>
-                      <Heading size="md" color="neutral.800" lineHeight="1.3">
+                      <Heading 
+                        size={{ base: "sm", md: "md" }} 
+                        color="neutral.800" 
+                        lineHeight="1.3"
+                        noOfLines={2}
+                      >
                         {product.name}
                       </Heading>
                     </VStack>
                     
-                    <HStack spacing={2}>
+                    <HStack spacing={2} display={{ base: "none", sm: "flex" }}>
                       <HStack spacing={1}>
                         {[...Array(5)].map((_, i) => (
                           // @ts-ignore
                           <FaStar
                             key={i}
                             color={i < product.rating ? 'var(--chakra-colors-accent-400)' : 'var(--chakra-colors-gray-300)'}
-                            size="12px"
+                            size="10px"
                           />
                         ))}
                       </HStack>

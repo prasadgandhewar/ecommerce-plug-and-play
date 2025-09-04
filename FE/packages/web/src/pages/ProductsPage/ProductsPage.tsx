@@ -44,17 +44,20 @@ import {
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { SearchIcon, SettingsIcon } from '@chakra-ui/icons';
+import { SearchIcon, SettingsIcon, ArrowBackIcon } from '@chakra-ui/icons';
 
 import { RootState, AppDispatch } from '../../store';
 import { 
   fetchProducts, 
   fetchMoreProducts,
+  fetchProductsWithAttributeFilters,
+  fetchMoreProductsWithAttributeFilters,
   searchProducts, 
   fetchProductsByCategory, 
   fetchProductsByPriceRange,
   fetchCategories,
-  setFilters
+  setFilters,
+  clearProducts 
 } from '../../store/slices/productSlice';
 import {
   fetchCategoryFilters,
@@ -62,6 +65,7 @@ import {
   addSelectedFilter,
   removeSelectedFilter,
   clearSelectedFilters,
+  setSelectedFilters,
 } from '../../store/slices/categoryFilterSlice';
 import { addToCartAsync } from '../../store/slices/cartSlice';
 import { Product, SelectedFilter } from '../../types';
@@ -130,18 +134,39 @@ const ProductsPage: React.FC = () => {
     setIsLoadingMore(true);
     const nextPage = currentPage + 1;
 
-    const newFilters = {
-      ...filters,
+    const filterParams = {
       page: nextPage,
       size: 20,
       sortBy: sortBy,
       sortDir: sortDir,
       query: searchTerm.trim() || undefined,
-      category: selectedCategory || undefined
+      category: selectedCategory || undefined,
     };
 
+    // Convert current selected filters to attribute filters
+    const attributeFilters: Record<string, any> = {};
+    selectedFilters.forEach(filter => {
+      if (filter.type === 'string' && filter.selectedValues && filter.selectedValues.length > 0) {
+        attributeFilters[filter.name] = filter.selectedValues.length === 1 ? 
+          filter.selectedValues[0] : 
+          filter.selectedValues;
+      } else if (filter.type === 'range' && filter.selectedRange) {
+        const [min, max] = filter.selectedRange;
+        if (filter.name.toLowerCase() === 'price') {
+          attributeFilters['minPrice'] = min;
+          attributeFilters['maxPrice'] = max;
+        } else {
+          attributeFilters[`${filter.name}_min`] = min;
+          attributeFilters[`${filter.name}_max`] = max;
+        }
+      }
+    });
+
     try {
-      const result = await dispatch(fetchMoreProducts(newFilters)).unwrap();
+      const result = await dispatch(fetchMoreProductsWithAttributeFilters({
+        filters: filterParams,
+        attributeFilters: attributeFilters
+      })).unwrap();
       
       setCurrentPage(nextPage);
       
@@ -154,7 +179,7 @@ const ProductsPage: React.FC = () => {
     } finally {
       setIsLoadingMore(false);
     }
-  }, [dispatch, currentPage, hasMore, isLoading, isLoadingMore, filters, sortBy, sortDir, searchTerm, selectedCategory]);
+  }, [dispatch, currentPage, hasMore, isLoading, isLoadingMore, sortBy, sortDir, searchTerm, selectedCategory, selectedFilters]);
 
   // Intersection Observer for infinite scroll
   useEffect(() => {
@@ -232,22 +257,48 @@ const ProductsPage: React.FC = () => {
   const handleSearch = () => {
     setCurrentPage(0);
     setHasMore(true);
-    const newFilters = {
+    
+    const filterParams = {
       page: 0,
       size: 20,
       sortBy: sortBy,
       sortDir: sortDir,
       query: searchTerm.trim() || undefined,
-      category: selectedCategory || undefined
+      category: selectedCategory || undefined,
     };
     
-    dispatch(setFilters(newFilters));
+    // Convert current selected filters to attribute filters
+    const attributeFilters: Record<string, any> = {};
+    selectedFilters.forEach(filter => {
+      if (filter.type === 'string' && filter.selectedValues && filter.selectedValues.length > 0) {
+        attributeFilters[filter.name] = filter.selectedValues.length === 1 ? 
+          filter.selectedValues[0] : 
+          filter.selectedValues;
+      } else if (filter.type === 'range' && filter.selectedRange) {
+        const [min, max] = filter.selectedRange;
+        if (filter.name.toLowerCase() === 'price') {
+          attributeFilters['minPrice'] = min;
+          attributeFilters['maxPrice'] = max;
+        } else {
+          attributeFilters[`${filter.name}_min`] = min;
+          attributeFilters[`${filter.name}_max`] = max;
+        }
+      }
+    });
+
+    // Use the attribute-based filtering to maintain current filters
+    dispatch(fetchProductsWithAttributeFilters({
+      filters: {
+        ...filterParams,
+        category: selectedCategory || undefined,
+      },
+      attributeFilters: attributeFilters
+    }));
     
-    if (searchTerm.trim()) {
-      dispatch(searchProducts(searchTerm.trim()));
-    } else {
-      dispatch(fetchProducts(newFilters));
-    }
+    dispatch(setFilters({
+      ...filterParams,
+      category: selectedCategory || undefined,
+    }));
   };
 
   // Handle search on Enter key
@@ -266,97 +317,94 @@ const ProductsPage: React.FC = () => {
     // Clear selected filters when category changes
     dispatch(clearSelectedFilters());
     
-    const newFilters = {
+    const filterParams = {
       page: 0,
       size: 20,
       sortBy: sortBy,
       sortDir: sortDir,
       query: searchTerm.trim() || undefined,
-      category: category || undefined
     };
     
-    dispatch(setFilters(newFilters));
-    
     if (category) {
-      dispatch(fetchProductsByCategory(category));
+      // Use attribute-based filtering for category
+      dispatch(fetchProductsWithAttributeFilters({
+        filters: {
+          ...filterParams,
+          category: category,
+        },
+        attributeFilters: {}
+      }));
+      
+      // Load filters for the selected category
+      dispatch(fetchFiltersForCategory(category));
     } else {
-      dispatch(fetchProducts(newFilters));
+      // Fetch all products when no category is selected
+      dispatch(fetchProducts({
+        ...filterParams,
+        category: undefined
+      }));
     }
+    
+    dispatch(setFilters({
+      ...filterParams,
+      category: category || undefined,
+    }));
   };
 
   // Handle dynamic filter changes
   const handleDynamicFiltersChange = useCallback((filters: SelectedFilter[]) => {
+    console.log('Filter change received:', filters); // Debug log
+    
+    // Update Redux state with selected filters
+    dispatch(setSelectedFilters(filters));
+    
     setCurrentPage(0);
     setHasMore(true);
     
-    // Convert selected filters to API format
-    const filterParams: any = {};
+    // Convert selected filters to attribute filters format
+    const attributeFilters: Record<string, any> = {};
     
     filters.forEach(filter => {
-      const filterName = filter.name.toLowerCase();
-      
-      // Map common filter names to backend parameters
       if (filter.type === 'string' && filter.selectedValues && filter.selectedValues.length > 0) {
-        switch (filterName) {
-          case 'subcategory':
-          case 'sub-category':
-          case 'sub category':
-            filterParams.subCategory = filter.selectedValues[0]; // Take first value for single-select
-            break;
-          case 'brand':
-          case 'brands':
-            filterParams.brand = filter.selectedValues[0]; // Take first value for single-select
-            break;
-          case 'size':
-          case 'sizes':
-            // For now, pass as generic parameter (could be expanded later)
-            filterParams[filter.name] = filter.selectedValues.join(',');
-            break;
-          case 'color':
-          case 'colors':
-            // For now, pass as generic parameter (could be expanded later)
-            filterParams[filter.name] = filter.selectedValues.join(',');
-            break;
-          default:
-            // Pass other string filters as comma-separated values
-            filterParams[filter.name] = filter.selectedValues.join(',');
-            break;
-        }
+        // For string filters, use the values directly
+        attributeFilters[filter.name] = filter.selectedValues.length === 1 ? 
+          filter.selectedValues[0] : 
+          filter.selectedValues;
       } else if (filter.type === 'range' && filter.selectedRange) {
-        switch (filterName) {
-          case 'price':
-          case 'pricerange':
-          case 'price range':
-            filterParams.minPrice = filter.selectedRange[0];
-            filterParams.maxPrice = filter.selectedRange[1];
-            break;
-          case 'weight':
-            filterParams.minWeight = filter.selectedRange[0];
-            filterParams.maxWeight = filter.selectedRange[1];
-            break;
-          default:
-            // Pass other range filters with Min/Max suffix
-            filterParams[`${filter.name}Min`] = filter.selectedRange[0];
-            filterParams[`${filter.name}Max`] = filter.selectedRange[1];
-            break;
+        // For range filters, use min/max format
+        const [min, max] = filter.selectedRange;
+        if (filter.name.toLowerCase() === 'price') {
+          attributeFilters['minPrice'] = min;
+          attributeFilters['maxPrice'] = max;
+        } else {
+          attributeFilters[`${filter.name}_min`] = min;
+          attributeFilters[`${filter.name}_max`] = max;
         }
       }
     });
 
-    const newFilters = {
+    const filterParams = {
       page: 0,
       size: 20,
       sortBy: sortBy,
       sortDir: sortDir,
-      query: searchTerm.trim() || undefined,
       category: selectedCategory || undefined,
-      ...filterParams
     };
     
-    console.log('Applying filters:', newFilters); // Debug log
+    console.log('Applying attribute filters:', attributeFilters); // Debug log
     
-    dispatch(setFilters(newFilters));
-    dispatch(fetchProducts(newFilters));
+    // Use the new attribute-based filtering
+    dispatch(fetchProductsWithAttributeFilters({
+      filters: filterParams,
+      attributeFilters: attributeFilters
+    }));
+    
+    // Update the filters in Redux for consistency
+    dispatch(setFilters({
+      ...filterParams,
+      category: selectedCategory || undefined,
+      query: searchTerm.trim() || undefined,
+    }));
   }, [dispatch, sortBy, sortDir, searchTerm, selectedCategory]);
 
   // Handle price range filter
@@ -432,12 +480,27 @@ const ProductsPage: React.FC = () => {
     : [];
 
   const FilterPanel = () => (
-    <VStack spacing={8} align="stretch" w="280px">
+    <Box w="full" h="calc(100vh - 180px)" display="flex" flexDirection="column" px={2}>
       {/* Category Selection - Only show when no category is selected */}
       {!selectedCategory && (
-        <Box>
-          <Heading size="md" mb={4} color="neutral.800">Categories</Heading>
-          <VStack align="start" spacing={3}>
+        <Box mb={4}>
+          <Heading size="sm" mb={3} color="neutral.800" fontSize="md">Categories</Heading>
+          <VStack align="stretch" spacing={2} maxH="200px" overflowY="auto" css={{
+            '&::-webkit-scrollbar': {
+              width: '4px',
+            },
+            '&::-webkit-scrollbar-track': {
+              background: '#f1f1f1',
+              borderRadius: '2px',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              background: '#c1c1c1',
+              borderRadius: '2px',
+            },
+            '&::-webkit-scrollbar-thumb:hover': {
+              background: '#a1a1a1',
+            },
+          }}>
             {categories.map((category) => (
               <Button
                 key={category}
@@ -450,6 +513,10 @@ const ProductsPage: React.FC = () => {
                 fontWeight="500"
                 textTransform="capitalize"
                 _hover={{ bg: 'green.50' }}
+                fontSize="sm"
+                py={2}
+                h="auto"
+                textAlign="left"
               >
                 {category.replace(/([A-Z])/g, ' $1').trim()}
               </Button>
@@ -460,40 +527,53 @@ const ProductsPage: React.FC = () => {
 
       {/* Selected Category Header with Back Button */}
       {selectedCategory && (
-        <Box>
-          <HStack justify="space-between" align="center" mb={4}>
-            <Heading size="md" color="neutral.800" textTransform="capitalize">
+        <Box mb={4}>
+          <Box mb={3}>
+            <Heading size="sm" color="neutral.800" fontSize="md" textTransform="capitalize">
               {selectedCategory.replace(/([A-Z])/g, ' $1').trim()}
             </Heading>
-            <Button
-              size="sm"
-              variant="ghost"
-              colorScheme="blue"
-              onClick={() => handleCategoryChange('')}
-              fontWeight="600"
-            >
-              ← All Categories
-            </Button>
-          </HStack>
+          </Box>
           
-          {/* Loading state for filters */}
-          {filtersLoading && (
-            <VStack spacing={4}>
-              <Spinner size="md" color="primary.500" />
-              <Text fontSize="sm" color="neutral.600">Loading filters...</Text>
-            </VStack>
-          )}
+          <Button
+            variant="ghost"
+            size="sm"
+            leftIcon={<ArrowBackIcon />}
+            onClick={() => handleCategoryChange('')}
+            color="neutral.600"
+            _hover={{ bg: 'neutral.50' }}
+            fontSize="xs"
+            px={2}
+            py={1}
+            h="auto"
+            justifyContent="flex-start"
+            w="auto"
+          >
+            All Categories
+          </Button>
+        </Box>
+      )}
+      
+      {/* Filter Content */}
+      <Box flex="1" overflowY="hidden">
+        {/* Loading state for filters */}
+        {selectedCategory && filtersLoading && (
+          <VStack spacing={3} py={6} align="center">
+            <Spinner size="md" color="primary.500" />
+            <Text fontSize="sm" color="neutral.600" textAlign="center">Loading filters...</Text>
+          </VStack>
+        )}
 
-          {/* Error state for filters */}
-          {filtersError && !filtersLoading && (
-            <Alert status="warning" borderRadius="md" size="sm">
-              <AlertIcon />
-              <Text fontSize="sm">Could not load filters for this category</Text>
-            </Alert>
-          )}
+        {/* Error state for filters */}
+        {selectedCategory && filtersError && !filtersLoading && (
+          <Alert status="warning" borderRadius="md" size="sm">
+            <AlertIcon />
+            <Text fontSize="sm">Could not load filters for this category</Text>
+          </Alert>
+        )}
 
-          {/* Dynamic Filters for Selected Category */}
-          {!filtersLoading && !filtersError && currentCategoryFilters.length > 0 && (
+        {/* Dynamic Filters for Selected Category */}
+        {selectedCategory && !filtersLoading && !filtersError && currentCategoryFilters.length > 0 && (
+          <Box w="full">
             <DynamicFilters
               filters={currentCategoryFilters}
               selectedFilters={selectedFilters}
@@ -502,59 +582,62 @@ const ProductsPage: React.FC = () => {
               error={filtersError}
               title="Filters"
             />
-          )}
-
-          {/* No filters message */}
-          {!filtersLoading && !filtersError && currentCategoryFilters.length === 0 && (
-            <Text fontSize="sm" color="neutral.500" textAlign="center" py={4}>
-              No specific filters available for this category
-            </Text>
-          )}
-        </Box>
-      )}
-
-      {/* Fallback Price Range Filter - Show when no category is selected or when category has no specific filters */}
-      {(!selectedCategory || (!filtersLoading && currentCategoryFilters.length === 0)) && (
-        <>
-          {selectedCategory && <Divider borderColor="neutral.200" />}
-          
-          <Box>
-            <Heading size="md" mb={4} color="neutral.800">Price Range</Heading>
-            <VStack spacing={4}>
-              <RangeSlider
-                value={priceRange}
-                onChange={setPriceRange}
-                min={0}
-                max={200}
-                step={5}
-                colorScheme="green"
-              >
-                <RangeSliderTrack bg="neutral.200">
-                  <RangeSliderFilledTrack bg="primary.500" />
-                </RangeSliderTrack>
-                <RangeSliderThumb index={0} bg="primary.600" />
-                <RangeSliderThumb index={1} bg="primary.600" />
-              </RangeSlider>
-              <HStack justify="space-between" w="full">
-                <Text fontSize="sm" fontWeight="600" color="neutral.600">${priceRange[0]}</Text>
-                <Text fontSize="sm" fontWeight="600" color="neutral.600">${priceRange[1]}</Text>
-              </HStack>
-              <Button
-                size="sm"
-                colorScheme="green"
-                variant="outline"
-                w="full"
-                onClick={handlePriceRangeFilter}
-                borderRadius="lg"
-                fontWeight="600"
-              >
-                Apply Price Filter
-              </Button>
-            </VStack>
           </Box>
-        </>
-      )}
-    </VStack>
+        )}
+
+        {/* No filters message for selected category */}
+        {selectedCategory && !filtersLoading && !filtersError && currentCategoryFilters.length === 0 && (
+          <Text color="neutral.500" fontSize="sm" textAlign="center" py={6}>
+            No specific filters available for this category
+          </Text>
+        )}
+
+        {/* Fallback Price Range Filter - Show when no category is selected or when category has no specific filters */}
+        {(!selectedCategory || (!filtersLoading && currentCategoryFilters.length === 0)) && (
+          <Box flex="1" display="flex" flexDirection="column">
+            {selectedCategory && <Divider borderColor="neutral.200" mb={4} />}
+            
+            <Box w="full">
+              <Heading size="sm" mb={3} color="neutral.800" fontSize="md">Price Range</Heading>
+              <VStack spacing={3} align="stretch">
+                <RangeSlider
+                  value={priceRange}
+                  onChange={setPriceRange}
+                  min={0}
+                  max={200}
+                  step={5}
+                  colorScheme="green"
+                >
+                  <RangeSliderTrack bg="neutral.200">
+                    <RangeSliderFilledTrack bg="primary.500" />
+                  </RangeSliderTrack>
+                  <RangeSliderThumb index={0} bg="primary.600" />
+                  <RangeSliderThumb index={1} bg="primary.600" />
+                </RangeSlider>
+                <HStack justify="space-between" w="full">
+                  <Text fontSize="sm" fontWeight="600" color="neutral.600">${priceRange[0]}</Text>
+                  <Text fontSize="sm" fontWeight="600" color="neutral.600">${priceRange[1]}</Text>
+                </HStack>
+                <Button
+                  size="sm"
+                  colorScheme="green"
+                  variant="outline"
+                  w="full"
+                  onClick={handlePriceRangeFilter}
+                  borderRadius="lg"
+                  fontWeight="600"
+                  fontSize="sm"
+                  py={2}
+                  h="auto"
+                >
+                  Apply Price Filter
+                </Button>
+              </VStack>
+            </Box>
+          </Box>
+        )}
+      </Box>
+    </Box>
   );
 
   return (
@@ -563,8 +646,8 @@ const ProductsPage: React.FC = () => {
         {/* Header */}
         <Box textAlign="center" mb={{ base: 6, md: 8 }}>
           <Heading 
-            size={{ base: 'xl', md: '2xl' }} 
-            mb={4}
+            size={{ base: 'lg', md: '2xl' }} 
+            mb={{ base: 3, md: 4 }}
             bgGradient="linear(to-r, primary.600, primary.400)"
             bgClip="text"
             fontWeight="800"
@@ -573,11 +656,11 @@ const ProductsPage: React.FC = () => {
           </Heading>
           <Text 
             color="neutral.600" 
-            fontSize={{ base: 'md', md: 'lg' }}
-            maxW="2xl"
+            fontSize={{ base: 'sm', md: 'lg' }}
+            maxW={{ base: "90%", md: "2xl" }}
             mx="auto"
             lineHeight="1.6"
-            px={{ base: 4, md: 0 }}
+            px={{ base: 2, md: 0 }}
           >
             Transform your space with our carefully curated collection of premium plants. 
             From air-purifying houseplants to statement botanical pieces.
@@ -591,7 +674,7 @@ const ProductsPage: React.FC = () => {
           align={{ base: 'stretch', md: 'center' }}
           justify="space-between"
         >
-          <InputGroup maxW={{ base: 'full', md: '400px' }}>
+          <InputGroup maxW={{ base: 'full', md: '400px' }} order={{ base: 1, md: 1 }}>
             <InputLeftElement pointerEvents="none">
               <SearchIcon color="neutral.400" />
             </InputLeftElement>
@@ -612,7 +695,7 @@ const ProductsPage: React.FC = () => {
             />
           </InputGroup>
 
-          <HStack spacing={4}>
+          <HStack spacing={4} order={{ base: 2, md: 2 }} justify={{ base: 'space-between', md: 'flex-end' }}>
             {isMobile && (
               <IconButton
                 aria-label="Open filters"
@@ -623,16 +706,19 @@ const ProductsPage: React.FC = () => {
                 borderRadius="xl"
                 borderColor="neutral.200"
                 _hover={{ bg: 'primary.50' }}
+                size="md"
               />
             )}
             
             <Select
               value={sortOption}
               onChange={(e) => handleSortChange(e.target.value)}
-              w="200px"
+              w={{ base: "auto", md: "200px" }}
+              minW={{ base: "140px", md: "200px" }}
               bg="white"
               borderRadius="xl"
               borderColor="neutral.200"
+              fontSize={{ base: "sm", md: "md" }}
               _focus={{
                 borderColor: 'primary.400',
                 boxShadow: '0 0 0 1px var(--chakra-colors-primary-400)',
@@ -649,20 +735,24 @@ const ProductsPage: React.FC = () => {
         </Flex>
 
         {/* Main Content */}
-        <Flex gap={{ base: 0, lg: 8 }} align="start" direction={{ base: 'column', lg: 'row' }}>
+        <Flex gap={{ base: 0, lg: 6 }} align="start" direction={{ base: 'column', lg: 'row' }}>
           {/* Desktop Filters */}
           {!isMobile && (
             <Box
               bg="white"
-              p={{ base: 4, md: 8 }}
+              p={{ base: 4, md: 6 }}
               borderRadius="2xl"
               shadow="sm"
               border="1px"
               borderColor="neutral.200"
-              h="fit-content"
+              h="calc(100vh - 200px)"
               position="sticky"
               top="6"
               minW="280px"
+              maxW="280px"
+              w="280px"
+              display="flex"
+              flexDirection="column"
             >
               <FilterPanel />
             </Box>
@@ -690,42 +780,47 @@ const ProductsPage: React.FC = () => {
                   </Text>
                 </Box>
                 
-                <SimpleGrid columns={{ base: 1, sm: 2, md: 2, lg: 3, xl: 4 }} spacing={{ base: 4, md: 6, lg: 8 }}>
+                <SimpleGrid 
+                  columns={{ base: 2, sm: 2, md: 3, lg: 3, xl: 4 }} 
+                  spacing={{ base: 3, sm: 4, md: 5, lg: 6 }}
+                  w="full"
+                >
                   {products.map((product) => (
                     <Card
                       key={product.id}
                       cursor="pointer"
                       onClick={() => handleProductClick(product.id)}
                       _hover={{
-                        transform: 'translateY(-8px)',
-                        shadow: '2xl',
+                        transform: { base: 'none', md: 'translateY(-8px)' },
+                        shadow: { base: 'md', md: '2xl' },
                       }}
                       transition="all 0.3s ease"
                       bg="white"
-                      borderRadius="2xl"
+                      borderRadius={{ base: 'xl', md: '2xl' }}
                       overflow="hidden"
                       border="1px"
                       borderColor="neutral.100"
+                      h="fit-content"
                     >
                       <Box position="relative">
                         <Image
                           src={product.imageUrl || product.images?.[0] || product.mainImageUrl || "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400"}
                           alt={product.name}
-                          h="280px"
+                          h={{ base: "180px", sm: "200px", md: "220px", lg: "240px" }}
                           w="full"
                           objectFit="cover"
                         />
                         {product.category && (
                           <Badge
                             position="absolute"
-                            top={4}
-                            left={4}
+                            top={{ base: 2, md: 4 }}
+                            left={{ base: 2, md: 4 }}
                             bg="white"
                             color="primary.600"
-                            px={3}
+                            px={{ base: 2, md: 3 }}
                             py={1}
                             borderRadius="full"
-                            fontSize="xs"
+                            fontSize={{ base: "2xs", md: "xs" }}
                             fontWeight="600"
                             textTransform="capitalize"
                             shadow="sm"
@@ -736,14 +831,14 @@ const ProductsPage: React.FC = () => {
                         {product.brand && (
                           <Badge
                             position="absolute"
-                            top={4}
-                            right={product.category ? 20 : 4}
+                            top={{ base: 2, md: 4 }}
+                            right={product.category ? { base: 16, md: 20 } : { base: 2, md: 4 }}
                             bg="accent.500"
                             color="white"
-                            px={3}
+                            px={{ base: 2, md: 3 }}
                             py={1}
                             borderRadius="full"
-                            fontSize="xs"
+                            fontSize={{ base: "2xs", md: "xs" }}
                             fontWeight="600"
                             textTransform="capitalize"
                             shadow="sm"
@@ -753,17 +848,17 @@ const ProductsPage: React.FC = () => {
                         )}
                         <HStack
                           position="absolute"
-                          top={4}
-                          right={4}
+                          top={{ base: 2, md: 4 }}
+                          right={{ base: 2, md: 4 }}
                           spacing={2}
                         >
                           <IconButton
-                            size="sm"
+                            size={{ base: "xs", md: "sm" }}
                             variant="ghost"
                             bg="whiteAlpha.900"
                             _hover={{ bg: 'white', color: 'red.500' }}
                             aria-label="Add to wishlist"
-                            icon={<Text fontSize="md">♡</Text>}
+                            icon={<Text fontSize={{ base: "sm", md: "md" }}>♡</Text>}
                             borderRadius="full"
                             shadow="sm"
                           />
@@ -771,14 +866,14 @@ const ProductsPage: React.FC = () => {
                         
                         <Box
                           position="absolute"
-                          bottom={4}
-                          right={4}
+                          bottom={{ base: 2, md: 4 }}
+                          right={{ base: 2, md: 4 }}
                           bg="primary.600"
                           color="white"
-                          px={3}
-                          py={2}
+                          px={{ base: 2, md: 3 }}
+                          py={{ base: 1, md: 2 }}
                           borderRadius="full"
-                          fontSize="sm"
+                          fontSize={{ base: "xs", md: "sm" }}
                           fontWeight="700"
                           shadow="lg"
                         >
@@ -786,53 +881,59 @@ const ProductsPage: React.FC = () => {
                         </Box>
                       </Box>
                       
-                      <CardBody p={6}>
-                        <VStack align="start" spacing={4}>
+                      <CardBody p={{ base: 3, md: 6 }}>
+                        <VStack align="start" spacing={{ base: 2, md: 4 }}>
                           <Box w="full">
                             <Heading 
-                              size="md" 
+                              size={{ base: "sm", md: "md" }}
                               noOfLines={2} 
-                              mb={2}
+                              mb={{ base: 1, md: 2 }}
                               color="neutral.800"
                               fontWeight="700"
+                              lineHeight="short"
                             >
                               {product.name}
                             </Heading>
                             <Text 
-                              fontSize="sm" 
+                              fontSize={{ base: "xs", md: "sm" }}
                               color="neutral.500"
                               noOfLines={2}
+                              display={{ base: "none", sm: "block" }}
                             >
                               {product.description || "Perfect for brightening any indoor space with natural beauty"}
                             </Text>
                           </Box>
                           
                           {/* Stock status */}
-                          <HStack spacing={2}>
-                            <Badge colorScheme={product.inStock ? "green" : "red"} variant="subtle">
+                          <HStack spacing={2} w="full">
+                            <Badge 
+                              colorScheme={product.inStock ? "green" : "red"} 
+                              variant="subtle"
+                              fontSize={{ base: "2xs", md: "xs" }}
+                            >
                               {product.inStock ? "In Stock" : "Out of Stock"}
                             </Badge>
                             {product.totalStock && (
-                              <Text fontSize="xs" color="neutral.500">
+                              <Text fontSize={{ base: "2xs", md: "xs" }} color="neutral.500">
                                 {product.totalStock} available
                               </Text>
                             )}
                           </HStack>
                           
                           {(product.rating || product.averageRating) && (
-                            <HStack spacing={2}>
+                            <HStack spacing={2} display={{ base: "none", sm: "flex" }}>
                               <HStack spacing={1}>
                                 {[...Array(5)].map((_, i) => (
                                   <Text
                                     key={i}
                                     color={i < Math.floor(product.rating || product.averageRating || 0) ? 'accent.400' : 'neutral.300'}
-                                    fontSize="sm"
+                                    fontSize={{ base: "xs", md: "sm" }}
                                   >
                                     ★
                                   </Text>
                                 ))}
                               </HStack>
-                              <Text fontSize="sm" color="neutral.500" fontWeight="500">
+                              <Text fontSize={{ base: "xs", md: "sm" }} color="neutral.500" fontWeight="500">
                                 ({product.reviewCount || product.totalReviews || 0})
                               </Text>
                             </HStack>
@@ -840,13 +941,14 @@ const ProductsPage: React.FC = () => {
 
                           <Button
                             colorScheme="green"
-                            size="md"
+                            size={{ base: "sm", md: "md" }}
                             w="full"
-                            borderRadius="xl"
+                            borderRadius={{ base: "lg", md: "xl" }}
                             fontWeight="600"
+                            fontSize={{ base: "xs", md: "sm" }}
                             _hover={{
-                              transform: 'translateY(-2px)',
-                              shadow: 'lg',
+                              transform: { base: 'none', md: 'translateY(-2px)' },
+                              shadow: { base: 'md', md: 'lg' },
                             }}
                             transition="all 0.2s"
                             onClick={(e) => {
@@ -889,13 +991,24 @@ const ProductsPage: React.FC = () => {
       </VStack>
 
       {/* Mobile Filter Drawer */}
-      <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>Filters</DrawerHeader>
-          <DrawerBody>
-            <FilterPanel />
+      <Drawer isOpen={isOpen} placement="left" onClose={onClose} size={{ base: "sm", sm: "md" }}>
+        <DrawerOverlay bg="blackAlpha.600" />
+        <DrawerContent borderTopRightRadius="2xl" borderBottomRightRadius="2xl">
+          <DrawerCloseButton 
+            size="lg" 
+            borderRadius="full"
+            top={4}
+            right={4}
+          />
+          <DrawerHeader pb={4} pt={6}>
+            <Text fontSize="lg" fontWeight="bold" color="neutral.800">
+              Filters
+            </Text>
+          </DrawerHeader>
+          <DrawerBody px={4} pb={6}>
+            <Box w="full">
+              <FilterPanel />
+            </Box>
           </DrawerBody>
         </DrawerContent>
       </Drawer>

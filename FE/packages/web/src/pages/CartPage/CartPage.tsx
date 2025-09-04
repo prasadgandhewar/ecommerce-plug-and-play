@@ -60,14 +60,18 @@ const CartPage: React.FC = () => {
 
   if (cartItems.length === 0) {
     return (
-      <Box minH="calc(100vh - 80px)" bg={bgColor} py={12}>
-        <Container maxW="4xl">
-          <VStack spacing={8} textAlign="center" py={12}>
+      <Box minH="calc(100vh - 80px)" bg={bgColor} py={{ base: 8, md: 12 }}>
+        <Container maxW="4xl" px={{ base: 4, md: 6 }}>
+          <VStack spacing={8} textAlign="center" py={{ base: 8, md: 12 }}>
             <VStack spacing={4}>
-              <Heading size="xl" color="gray.600">
+              <Heading size={{ base: "lg", md: "xl" }} color="gray.600">
                 Your Cart is Empty
               </Heading>
-              <Text color="gray.500" fontSize="lg">
+              <Text 
+                color="gray.500" 
+                fontSize={{ base: "md", md: "lg" }}
+                px={{ base: 4, md: 0 }}
+              >
                 Looks like you haven't added any items to your cart yet.
               </Text>
             </VStack>
@@ -77,12 +81,19 @@ const CartPage: React.FC = () => {
                 as={RouterLink}
                 to="/products"
                 colorScheme="primary"
-                size="lg"
+                size={{ base: "md", md: "lg" }}
                 leftIcon={<Text>←</Text>}
+                w={{ base: "full", sm: "auto" }}
+                maxW="300px"
               >
                 Continue Shopping
               </Button>
-              <Text color="gray.500" fontSize="sm">
+              <Text 
+                color="gray.500" 
+                fontSize="sm"
+                px={{ base: 4, md: 0 }}
+                textAlign="center"
+              >
                 Discover our amazing products and add them to your cart
               </Text>
             </VStack>
@@ -93,14 +104,20 @@ const CartPage: React.FC = () => {
   }
 
   return (
-    <Box minH="calc(100vh - 80px)" bg={bgColor} py={8}>
-      <Container maxW="6xl">
-        <VStack spacing={8}>
+    <Box minH="calc(100vh - 80px)" bg={bgColor} py={{ base: 4, md: 8 }}>
+      <Container maxW="6xl" px={{ base: 4, md: 6 }}>
+        <VStack spacing={{ base: 6, md: 8 }}>
           {/* Header */}
-          <HStack w="full" justify="space-between">
+          <VStack 
+            w="full" 
+            spacing={{ base: 3, md: 4 }}
+            align={{ base: "start", md: "center" }}
+            direction={{ base: "column", md: "row" }}
+            justify={{ base: "start", md: "space-between" }}
+          >
             <VStack align="start" spacing={1}>
-              <Heading size="xl">Shopping Cart</Heading>
-              <Text color="gray.600">
+              <Heading size={{ base: "lg", md: "xl" }}>Shopping Cart</Heading>
+              <Text color="gray.600" fontSize={{ base: "sm", md: "md" }}>
                 {totalItems} {totalItems === 1 ? 'item' : 'items'} in your cart
               </Text>
             </VStack>
@@ -109,12 +126,18 @@ const CartPage: React.FC = () => {
               to="/products"
               variant="ghost"
               leftIcon={<Text>←</Text>}
+              size={{ base: "sm", md: "md" }}
+              w={{ base: "auto", md: "auto" }}
             >
               Continue Shopping
             </Button>
-          </HStack>
+          </VStack>
 
-          <Grid templateColumns={{ base: '1fr', lg: '2fr 1fr' }} gap={8} w="full">
+          <Grid 
+            templateColumns={{ base: '1fr', lg: '2fr 1fr' }} 
+            gap={{ base: 6, md: 8 }} 
+            w="full"
+          >
             {/* Cart Items */}
             <GridItem>
               <VStack spacing={4}>

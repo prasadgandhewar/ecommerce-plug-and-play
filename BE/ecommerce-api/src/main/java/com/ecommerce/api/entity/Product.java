@@ -17,6 +17,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 @Document(collection = "products")
 @Data
@@ -71,6 +73,9 @@ public class Product {
 
     @Field("specifications")
     private ProductSpecifications specifications;
+
+    @Field("attributes")
+    private Map<String, Object> attributes = new HashMap<>();
 
     @Field("variations")
     private List<ProductVariation> variations = new ArrayList<>();

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ProductRepository extends MongoRepository<Product, String> {
+public interface ProductRepository extends MongoRepository<Product, String>, CustomProductRepository {
 
     // Basic queries
     List<Product> findByIsActiveTrue();
@@ -84,4 +84,8 @@ public interface ProductRepository extends MongoRepository<Product, String> {
     // Inventory management
     @Query("{ 'variations.sku': ?0 }")
     Optional<Product> findByVariationSku(String variationSku);
+
+    // Category with active filter
+    @Query("{ 'category': ?0, $or: [ { 'isActive': true }, { 'isActive': { $exists: false } }, { 'isActive': null } ] }")
+    Page<Product> findByCategoryWithActiveFilter(String category, Pageable pageable);
 }

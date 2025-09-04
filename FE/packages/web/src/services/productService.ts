@@ -39,6 +39,48 @@ class ProductService {
     return transformedData;
   }
 
+  // New method for attribute-based filtering
+  async getProductsWithAttributeFilters(filters: ProductFilters = {}, attributeFilters: Record<string, any> = {}): Promise<PaginatedProductResponse> {
+    const params: Record<string, any> = {
+      page: filters.page || 0,
+      size: filters.size || 20,
+      sortBy: filters.sortBy || 'name',
+      sortDir: filters.sortDir || 'asc',
+    };
+
+    // Add category if provided
+    if (filters.category) {
+      params.category = filters.category;
+    }
+
+    // Add attribute filters
+    Object.keys(attributeFilters).forEach(key => {
+      const value = attributeFilters[key];
+      if (value !== null && value !== undefined && value !== '') {
+        if (Array.isArray(value)) {
+          // For array values, join with comma
+          params[key] = value.filter(v => v !== null && v !== undefined && v !== '').join(',');
+        } else {
+          params[key] = value;
+        }
+      }
+    });
+
+    // Use the new filter endpoint
+    const queryString = new URLSearchParams(params).toString();
+    const url = `/products/filter?${queryString}`;
+    
+    const response = await api.get(url);
+    
+    // Transform the response to ensure backward compatibility
+    const transformedData = {
+      ...response.data,
+      content: response.data.content.map(this.transformProduct)
+    };
+    
+    return transformedData;
+  }
+
   // Transform product data to ensure frontend compatibility
   private transformProduct(product: any): Product {
     return {

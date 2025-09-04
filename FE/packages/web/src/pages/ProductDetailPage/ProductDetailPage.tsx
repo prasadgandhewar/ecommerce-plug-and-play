@@ -201,19 +201,23 @@ const ProductDetailPage: React.FC = () => {
   ] : [];
 
   return (
-    <Container maxW="7xl" py={8}>
-      <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} gap={8} mb={8}>
+    <Container maxW="7xl" py={{ base: 4, md: 8 }} px={{ base: 4, md: 6 }}>
+      <Grid 
+        templateColumns={{ base: '1fr', lg: '1fr 1fr' }} 
+        gap={{ base: 6, md: 8 }} 
+        mb={{ base: 6, md: 8 }}
+      >
         {/* Product Images */}
         <GridItem>
-          <VStack spacing={4}>
+          <VStack spacing={{ base: 3, md: 4 }}>
             <Box
               position="relative"
               w="full"
-              h="400px"
+              h={{ base: "300px", sm: "350px", md: "400px" }}
               bg={bgColor}
               border="1px"
               borderColor={borderColor}
-              borderRadius="lg"
+              borderRadius={{ base: "lg", md: "xl" }}
               overflow="hidden"
             >
               <Image
@@ -225,31 +229,42 @@ const ProductDetailPage: React.FC = () => {
               />
               <Button
                 position="absolute"
-                top={4}
-                right={4}
+                top={{ base: 3, md: 4 }}
+                right={{ base: 3, md: 4 }}
                 variant="ghost"
-                bg="white"
-                _hover={{ bg: 'gray.50' }}
+                bg="whiteAlpha.900"
+                _hover={{ bg: 'white' }}
                 onClick={handleWishlist}
+                size={{ base: "sm", md: "md" }}
+                borderRadius="full"
               >
-                <Text color={isWishlisted ? 'red.500' : 'gray.500'} fontSize="lg">
+                <Text color={isWishlisted ? 'red.500' : 'gray.500'} fontSize={{ base: "md", md: "lg" }}>
                   ❤️
                 </Text>
               </Button>
             </Box>
             
-            <SimpleGrid columns={4} spacing={2} w="full">
+            <SimpleGrid 
+              columns={{ base: 3, sm: 4 }} 
+              spacing={{ base: 2, md: 3 }} 
+              w="full"
+              display={productImages.length > 1 ? "grid" : "none"}
+            >
               {productImages.map((image, index) => (
                 <Box
                   key={index}
                   w="full"
-                  h="80px"
+                  h={{ base: "60px", sm: "70px", md: "80px" }}
                   border="2px"
                   borderColor={selectedImage === index ? 'primary.500' : borderColor}
-                  borderRadius="md"
+                  borderRadius={{ base: "sm", md: "md" }}
                   overflow="hidden"
                   cursor="pointer"
                   onClick={() => setSelectedImage(index)}
+                  transition="all 0.2s"
+                  _hover={{
+                    borderColor: selectedImage === index ? 'primary.600' : 'primary.300',
+                  }}
                 >
                   <Image
                     src={image}
@@ -266,15 +281,26 @@ const ProductDetailPage: React.FC = () => {
 
         {/* Product Info */}
         <GridItem>
-          <VStack align="stretch" spacing={6}>
-            <VStack align="stretch" spacing={3}>
-              <Badge colorScheme="primary" w="fit-content">
+          <VStack align="stretch" spacing={{ base: 4, md: 6 }}>
+            <VStack align="stretch" spacing={{ base: 2, md: 3 }}>
+              <Badge 
+                colorScheme="primary" 
+                w="fit-content"
+                fontSize={{ base: "xs", md: "sm" }}
+                px={{ base: 2, md: 3 }}
+                py={1}
+              >
                 {product.category}
               </Badge>
               
-              <Heading size="xl">{product.name}</Heading>
+              <Heading 
+                size={{ base: "lg", md: "xl" }}
+                lineHeight="shorter"
+              >
+                {product.name}
+              </Heading>
               
-              <HStack>
+              <HStack spacing={{ base: 2, md: 3 }}>
                 <HStack spacing={1}>
                   {[...Array(5)].map((_, i) => (
                     <Text

@@ -43,6 +43,7 @@ export interface Product {
   stockQuantity: number;
   images: string[]; // Array of image URLs
   specifications?: ProductSpecifications;
+  attributes?: Record<string, any>; // New attributes field for filtering
   variations?: ProductVariation[];
   reviews?: ProductReview[];
   isActive: boolean;
@@ -73,6 +74,7 @@ export interface ProductRequest {
   stockQuantity: number;
   images?: string[];
   specifications?: ProductSpecifications;
+  attributes?: Record<string, any>; // New attributes field for filtering
   variations?: ProductVariation[];
   isActive?: boolean;
 }

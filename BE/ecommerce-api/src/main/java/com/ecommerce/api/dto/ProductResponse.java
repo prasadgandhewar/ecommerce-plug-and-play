@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 @Data
 @NoArgsConstructor
@@ -29,6 +31,7 @@ public class ProductResponse {
     private Integer stockQuantity;
     private List<String> images = new ArrayList<>();
     private ProductSpecifications specifications;
+    private Map<String, Object> attributes = new HashMap<>();
     private List<ProductVariation> variations = new ArrayList<>();
     private List<ProductReview> reviews = new ArrayList<>();
     private Boolean isActive;
