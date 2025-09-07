@@ -11,6 +11,12 @@ export interface ProductSpecifications {
   additionalSpecs?: Record<string, any>;
 }
 
+export interface SpecialProperties {
+  newArrival?: boolean;
+  hasOffer?: boolean;
+  bestSeller?: boolean;
+}
+
 export interface ProductVariation {
   sku: string;
   color?: string;
@@ -47,6 +53,7 @@ export interface Product {
   variations?: ProductVariation[];
   reviews?: ProductReview[];
   isActive: boolean;
+  specialProperties?: SpecialProperties;
   averageRating?: number;
   totalReviews?: number;
   totalStock?: number;
@@ -77,6 +84,14 @@ export interface ProductRequest {
   attributes?: Record<string, any>; // New attributes field for filtering
   variations?: ProductVariation[];
   isActive?: boolean;
+  specialProperties?: SpecialProperties;
+}
+
+// Special products response
+export interface SpecialProductsResponse {
+  newArrivals: Product[];
+  productsWithOffers: Product[];
+  bestSellers: Product[];
 }
 
 // Paginated response from backend

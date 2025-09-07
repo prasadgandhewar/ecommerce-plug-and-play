@@ -88,4 +88,22 @@ public interface ProductRepository extends MongoRepository<Product, String>, Cus
     // Category with active filter
     @Query("{ 'category': ?0, $or: [ { 'isActive': true }, { 'isActive': { $exists: false } }, { 'isActive': null } ] }")
     Page<Product> findByCategoryWithActiveFilter(String category, Pageable pageable);
+
+    // Special properties queries
+    @Query("{ 'isActive': true, 'specialProperties.newArrival': true }")
+    List<Product> findBySpecialPropertiesNewArrivalTrueAndIsActiveTrue(Pageable pageable);
+
+    @Query("{ 'isActive': true, 'specialProperties.hasOffer': true }")
+    List<Product> findBySpecialPropertiesHasOfferTrueAndIsActiveTrue(Pageable pageable);
+
+    @Query("{ 'isActive': true, 'specialProperties.bestSeller': true }")
+    List<Product> findBySpecialPropertiesBestSellerTrueAndIsActiveTrue(Pageable pageable);
+
+    // Combined special properties queries
+    @Query("{ 'isActive': true, $or: [ " +
+           "{ 'specialProperties.newArrival': true }, " +
+           "{ 'specialProperties.hasOffer': true }, " +
+           "{ 'specialProperties.bestSeller': true } " +
+           "] }")
+    List<Product> findProductsWithAnySpecialProperty(Pageable pageable);
 }

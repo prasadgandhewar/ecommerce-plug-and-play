@@ -1,6 +1,6 @@
 import api from './api';
 import { API_CONFIG, createApiMethod } from '../config/apiConfig';
-import { Product, ProductRequest, ProductFilters, PaginatedProductResponse } from '../types';
+import { Product, ProductRequest, ProductFilters, PaginatedProductResponse, SpecialProductsResponse } from '../types';
 
 class ProductService {
   // Create endpoint builders for each product endpoint
@@ -53,6 +53,11 @@ class ProductService {
       params.category = filters.category;
     }
 
+    // Add query parameter if provided
+    if (filters.query) {
+      params.query = filters.query;
+    }
+
     // Add attribute filters
     Object.keys(attributeFilters).forEach(key => {
       const value = attributeFilters[key];
@@ -66,9 +71,16 @@ class ProductService {
       }
     });
 
+    // Debug logging
+    console.log('ProductService - API call params:', params);
+    console.log('ProductService - filters input:', filters);
+    console.log('ProductService - attributeFilters input:', attributeFilters);
+
     // Use the new filter endpoint
     const queryString = new URLSearchParams(params).toString();
     const url = `/products/filter?${queryString}`;
+    
+    console.log('ProductService - Final URL:', url);
     
     const response = await api.get(url);
     
@@ -229,6 +241,62 @@ class ProductService {
     } catch (error) {
       console.error('Error fetching top-rated products:', error);
       return [];
+    }
+  }
+
+  // Get products by special property type
+  async getProductsBySpecialProperty(propertyType: string, limit: number = 5): Promise<Product[]> {
+    try {
+      const endpoint = `/products/special/${propertyType}?limit=${limit}`;
+      const response = await api.get(endpoint);
+      return response.data.map(this.transformProduct);
+    } catch (error) {
+      console.error(`Error fetching products with special property ${propertyType}:`, error);
+      return [];
+    }
+  }
+
+  // Get all special products (new arrivals, offers, best sellers) in one call
+  async getAllSpecialProducts(limitPerType: number = 5): Promise<{ [key: string]: Product[] }> {
+    try {
+      const endpoint = `/products/special?limitPerType=${limitPerType}`;
+      const response = await api.get(endpoint);
+      
+      // Transform each category of products
+      const transformedResponse: { [key: string]: Product[] } = {};
+      Object.keys(response.data).forEach(key => {
+        transformedResponse[key] = response.data[key].map(this.transformProduct);
+      });
+      
+      return transformedResponse;
+    } catch (error) {
+      console.error('Error fetching special products:', error);
+      return {
+        newArrivals: [],
+        productsWithOffers: [],
+        bestSellers: []
+      };
+    }
+  }
+
+  // Get special products using the grouped DTO endpoint
+  async getSpecialProductsGrouped(limitPerType: number = 5): Promise<SpecialProductsResponse> {
+    try {
+      const endpoint = `/products/special-grouped?limitPerType=${limitPerType}`;
+      const response = await api.get(endpoint);
+      
+      return {
+        newArrivals: response.data.newArrivals?.map(this.transformProduct) || [],
+        productsWithOffers: response.data.productsWithOffers?.map(this.transformProduct) || [],
+        bestSellers: response.data.bestSellers?.map(this.transformProduct) || []
+      };
+    } catch (error) {
+      console.error('Error fetching grouped special products:', error);
+      return {
+        newArrivals: [],
+        productsWithOffers: [],
+        bestSellers: []
+      };
     }
   }
 

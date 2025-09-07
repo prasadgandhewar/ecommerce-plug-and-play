@@ -2,6 +2,7 @@ package com.ecommerce.api.dto;
 
 import com.ecommerce.api.entity.ProductSpecifications;
 import com.ecommerce.api.entity.ProductVariation;
+import com.ecommerce.api.entity.SpecialProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -60,4 +61,6 @@ public class ProductRequest {
     private List<ProductVariation> variations = new ArrayList<>();
 
     private Boolean isActive = true;
+
+    private SpecialProperties specialProperties;
 }

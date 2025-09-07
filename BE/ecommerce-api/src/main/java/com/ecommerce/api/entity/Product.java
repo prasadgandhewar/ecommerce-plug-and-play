@@ -86,6 +86,9 @@ public class Product {
     @Field("isActive")
     private Boolean isActive = true;
 
+    @Field("specialProperties")
+    private SpecialProperties specialProperties;
+
     // Computed fields
     private Double averageRating;
     private Integer totalReviews;

@@ -4,6 +4,7 @@ import com.ecommerce.api.dto.ProductRequest;
 import com.ecommerce.api.dto.ProductResponse;
 import com.ecommerce.api.dto.ProductReviewRequest;
 import com.ecommerce.api.dto.ProductReviewResponse;
+import com.ecommerce.api.dto.SpecialProductsResponse;
 import com.ecommerce.api.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -311,5 +312,37 @@ public class ProductController {
             "message", "Updated products with missing isActive field",
             "updatedCount", updatedCount
         ));
+    }
+
+    // Get products by special property type
+    @GetMapping("/special/{propertyType}")
+    public ResponseEntity<List<ProductResponse>> getProductsBySpecialProperty(
+            @PathVariable String propertyType,
+            @RequestParam(defaultValue = "5") int limit) {
+        List<ProductResponse> products = productService.getProductsBySpecialProperty(propertyType, limit);
+        return ResponseEntity.ok(products);
+    }
+
+    // Get all special products in one response (new arrivals, offers, best sellers)
+    @GetMapping("/special")
+    public ResponseEntity<Map<String, List<ProductResponse>>> getAllSpecialProducts(
+            @RequestParam(defaultValue = "5") int limitPerType) {
+        Map<String, List<ProductResponse>> specialProducts = productService.getAllSpecialProducts(limitPerType);
+        return ResponseEntity.ok(specialProducts);
+    }
+
+    // Alternative endpoint using SpecialProductsResponse DTO
+    @GetMapping("/special-grouped")
+    public ResponseEntity<SpecialProductsResponse> getSpecialProductsGrouped(
+            @RequestParam(defaultValue = "5") int limitPerType) {
+        Map<String, List<ProductResponse>> specialProductsMap = productService.getAllSpecialProducts(limitPerType);
+        
+        SpecialProductsResponse response = new SpecialProductsResponse(
+            specialProductsMap.get("newArrivals"),
+            specialProductsMap.get("productsWithOffers"),
+            specialProductsMap.get("bestSellers")
+        );
+        
+        return ResponseEntity.ok(response);
     }
 }

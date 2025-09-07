@@ -3,6 +3,7 @@ package com.ecommerce.api.dto;
 import com.ecommerce.api.entity.ProductSpecifications;
 import com.ecommerce.api.entity.ProductVariation;
 import com.ecommerce.api.entity.ProductReview;
+import com.ecommerce.api.entity.SpecialProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,6 +36,7 @@ public class ProductResponse {
     private List<ProductVariation> variations = new ArrayList<>();
     private List<ProductReview> reviews = new ArrayList<>();
     private Boolean isActive;
+    private SpecialProperties specialProperties;
     private Double averageRating;
     private Integer totalReviews;
     private Integer totalStock;

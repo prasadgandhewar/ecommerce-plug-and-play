@@ -397,6 +397,57 @@ public class ProductService {
         return products.map(this::convertToResponse);
     }
 
+    // New method to get products by special properties
+    public List<ProductResponse> getProductsBySpecialProperty(String propertyType, int limit) {
+        List<Product> products;
+        
+        switch (propertyType.toLowerCase()) {
+            case "newarrival":
+            case "new_arrival":
+                products = productRepository.findBySpecialPropertiesNewArrivalTrueAndIsActiveTrue(PageRequest.of(0, limit));
+                break;
+            case "hasoffer":
+            case "has_offer":
+                products = productRepository.findBySpecialPropertiesHasOfferTrueAndIsActiveTrue(PageRequest.of(0, limit));
+                break;
+            case "bestseller":
+            case "best_seller":
+                products = productRepository.findBySpecialPropertiesBestSellerTrueAndIsActiveTrue(PageRequest.of(0, limit));
+                break;
+            default:
+                return new ArrayList<>();
+        }
+        
+        return products.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+    }
+
+    // Get all special products in one response
+    public Map<String, List<ProductResponse>> getAllSpecialProducts(int limitPerType) {
+        Map<String, List<ProductResponse>> specialProducts = new HashMap<>();
+        
+        // Get new arrivals
+        List<Product> newArrivals = productRepository.findBySpecialPropertiesNewArrivalTrueAndIsActiveTrue(PageRequest.of(0, limitPerType));
+        specialProducts.put("newArrivals", newArrivals.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList()));
+        
+        // Get products with offers
+        List<Product> productsWithOffers = productRepository.findBySpecialPropertiesHasOfferTrueAndIsActiveTrue(PageRequest.of(0, limitPerType));
+        specialProducts.put("productsWithOffers", productsWithOffers.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList()));
+        
+        // Get best sellers
+        List<Product> bestSellers = productRepository.findBySpecialPropertiesBestSellerTrueAndIsActiveTrue(PageRequest.of(0, limitPerType));
+        specialProducts.put("bestSellers", bestSellers.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList()));
+        
+        return specialProducts;
+    }
+
     private void mapRequestToProduct(ProductRequest request, Product product) {
         product.setSku(request.getSku());
         product.setName(request.getName());
@@ -412,6 +463,7 @@ public class ProductService {
         product.setAttributes(request.getAttributes());
         product.setVariations(request.getVariations());
         product.setIsActive(request.getIsActive());
+        product.setSpecialProperties(request.getSpecialProperties());
     }
 
     private ProductResponse convertToResponse(Product product) {

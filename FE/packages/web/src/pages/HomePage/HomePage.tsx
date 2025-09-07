@@ -14,17 +14,58 @@ import {
   AspectRatio,
   IconButton,
   Flex,
+  Spinner,
+  Center,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { useContent } from '../../hooks/useContent';
+import productService from '../../services/productService';
+import { Product, SpecialProductsResponse } from '../../types';
 
 const HomePage: React.FC = () => {
   const { t } = useContent('homepage');
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [specialProducts, setSpecialProducts] = useState<SpecialProductsResponse>({
+    newArrivals: [],
+    productsWithOffers: [],
+    bestSellers: []
+  });
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Get hero slider data from content
   const heroSlides = t('hero.slides', { returnObjects: true }) as any[];
+
+  // Fetch special products from API
+  useEffect(() => {
+    const fetchSpecialProducts = async () => {
+      try {
+        setIsLoadingProducts(true);
+        setError(null);
+        
+        // Fetch special products using the new API (5 products each type)
+        const specialProductsData = await productService.getSpecialProductsGrouped(5);
+        setSpecialProducts(specialProductsData);
+        
+        console.log('Special products loaded:', specialProductsData);
+      } catch (error) {
+        console.error('Error fetching special products:', error);
+        setError('Failed to load products. Please try again later.');
+        
+        // Fallback to empty arrays if API fails - the error component will handle the display
+        setSpecialProducts({
+          newArrivals: [],
+          productsWithOffers: [],
+          bestSellers: []
+        });
+      } finally {
+        setIsLoadingProducts(false);
+      }
+    };
+
+    fetchSpecialProducts();
+  }, []); // Remove 't' dependency to prevent infinite loop
 
   // Auto-advance slider
   useEffect(() => {
@@ -47,10 +88,86 @@ const HomePage: React.FC = () => {
     setCurrentSlide(index);
   };
 
-  // Get product and service data from content
-  const featuredProducts = t('products.featured', { returnObjects: true }) as any[];
-  const bestsellerProducts = t('products.bestsellers', { returnObjects: true }) as any[];
+  // Get service features data from content
   const serviceFeatures = t('serviceFeatures', { returnObjects: true }) as any[];
+
+  // Loading component for product sections
+  const ProductSectionLoader = () => (
+    <Center py={8}>
+      <VStack spacing={4}>
+        <Spinner size="lg" color="gray.600" />
+        <Text color="gray.600">Loading products...</Text>
+      </VStack>
+    </Center>
+  );
+
+  // Empty state component for when no products are available
+  const ProductSectionEmpty: React.FC<{ sectionName: string }> = ({ sectionName }) => (
+    <Center py={12}>
+      <VStack spacing={4}>
+        <Box
+          p={6}
+          borderRadius="full"
+          bg="gray.100"
+          color="gray.400"
+          fontSize="3xl"
+        >
+          📦
+        </Box>
+        <VStack spacing={2}>
+          <Heading size="md" color="gray.600">
+            No {sectionName} Available
+          </Heading>
+          <Text color="gray.500" textAlign="center" maxW="300px">
+            We're working on adding more {sectionName.toLowerCase()} to our collection. Check back soon!
+          </Text>
+        </VStack>
+        <Button
+          as={RouterLink}
+          to="/products"
+          size="sm"
+          colorScheme="gray"
+          variant="outline"
+        >
+          Browse All Products
+        </Button>
+      </VStack>
+    </Center>
+  );
+
+  // Error component for product sections with static fallback
+  const ProductSectionError: React.FC<{ fallbackProducts?: any[] }> = ({ fallbackProducts = [] }) => (
+    <Center py={8}>
+      <VStack spacing={4}>
+        {fallbackProducts.length > 0 ? (
+          <>
+            <Text color="orange.500" textAlign="center" fontSize="sm">
+              Using offline content
+            </Text>
+            <SimpleGrid columns={{ base: 2, sm: 2, md: 3, lg: 4 }} spacing={{ base: 4, md: 6 }} w="full">
+              {fallbackProducts.map((product, index) => (
+                <ProductCard key={`fallback-${index}`} product={product} isApiProduct={false} />
+              ))}
+            </SimpleGrid>
+          </>
+        ) : (
+          <>
+            <Text color="red.500" textAlign="center">
+              {error}
+            </Text>
+            <Button
+              size="sm"
+              onClick={() => window.location.reload()}
+              colorScheme="red"
+              variant="outline"
+            >
+              Retry
+            </Button>
+          </>
+        )}
+      </VStack>
+    </Center>
+  );
 
   return (
     <Box>
@@ -107,7 +224,7 @@ const HomePage: React.FC = () => {
                         bg="red.500"
                         color="white"
                       >
-                        {t('hero.badgeText')}
+                        {String(t('hero.badgeText'))}
                       </Badge>
                       <Heading
                         fontSize={{ base: '3xl', md: '4xl', lg: '5xl' }}
@@ -128,7 +245,7 @@ const HomePage: React.FC = () => {
                             {slide.discount}
                           </Badge>
                           <Text fontSize="lg" fontWeight="600">
-                            {t('hero.pricePrefix')} <Text as="span" color="yellow.400" fontWeight="800">{slide.price}</Text>
+                            {String(t('hero.pricePrefix'))} <Text as="span" color="yellow.400" fontWeight="800">{slide.price}</Text>
                           </Text>
                         </HStack>
                       </VStack>
@@ -169,7 +286,7 @@ const HomePage: React.FC = () => {
 
             {/* Navigation Arrows */}
             <IconButton
-              aria-label={t('navigation.previousSlide')}
+              aria-label={String(t('navigation.previousSlide'))}
               icon={<ChevronLeftIcon />}
               position="absolute"
               left={4}
@@ -184,7 +301,7 @@ const HomePage: React.FC = () => {
               onClick={prevSlide}
             />
             <IconButton
-              aria-label={t('navigation.nextSlide')}
+              aria-label={String(t('navigation.nextSlide'))}
               icon={<ChevronRightIcon />}
               position="absolute"
               right={4}
@@ -230,69 +347,45 @@ const HomePage: React.FC = () => {
       <Container maxW="7xl" py={{ base: 12, md: 16 }} px={{ base: 4, md: 6 }}>
         <VStack spacing={8}>
           <Heading size="xl" color="gray.900" textAlign="center">
-            {t('sections.newArrivals.title')}
+            {String(t('sections.newArrivals.title'))}
           </Heading>
 
-          <SimpleGrid columns={{ base: 2, sm: 2, md: 3, lg: 4 }} spacing={{ base: 4, md: 6 }} w="full">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </SimpleGrid>
+          {isLoadingProducts ? (
+            <ProductSectionLoader />
+          ) : error && specialProducts.newArrivals.length === 0 ? (
+            <ProductSectionError fallbackProducts={(t('products.featured', { returnObjects: true }) as any[])?.slice(0, 5) || []} />
+          ) : specialProducts.newArrivals.length === 0 ? (
+            <ProductSectionEmpty sectionName="New Arrivals" />
+          ) : (
+            <SimpleGrid columns={{ base: 2, sm: 2, md: 3, lg: 4 }} spacing={{ base: 4, md: 6 }} w="full">
+              {specialProducts.newArrivals.map((product) => (
+                <ProductCard key={product.id} product={product} isApiProduct={true} />
+              ))}
+            </SimpleGrid>
+          )}
         </VStack>
       </Container>
-
-      {/* Product of the Year Banner */}
-      <Box bg="gray.100" py={16}>
-        <Container maxW="5xl">
-          <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} gap={8} alignItems="center">
-            <Box>
-              <Image
-                src="https://images.unsplash.com/photo-1586093248969-3d8ea0c76a99?w=500&h=400&fit=crop"
-                alt="Product of the Year"
-                borderRadius="lg"
-                w="full"
-                h="300px"
-                objectFit="cover"
-              />
-            </Box>
-            <VStack spacing={6} align="start" textAlign="left">
-              <Heading size="lg" color="gray.900">
-                {t('sections.productOfYear.title')}
-              </Heading>
-              <Text color="gray.600" fontSize="md" lineHeight="1.6">
-                {t('sections.productOfYear.description')}
-              </Text>
-              <Button
-                as={RouterLink}
-                to="/products"
-                size="md"
-                colorScheme="blackAlpha"
-                bg="gray.900"
-                color="white"
-                _hover={{ bg: 'gray.800' }}
-                borderRadius="sm"
-                textTransform="uppercase"
-                letterSpacing="wider"
-              >
-                {t('sections.productOfYear.buttonText')}
-              </Button>
-            </VStack>
-          </Grid>
-        </Container>
-      </Box>
 
       {/* Our Bestsellers Section */}
       <Container maxW="7xl" py={{ base: 12, md: 16 }} px={{ base: 4, md: 6 }}>
         <VStack spacing={8}>
           <Heading size="xl" color="gray.900" textAlign="center">
-            {t('sections.bestsellers.title')}
+            {String(t('sections.bestsellers.title'))}
           </Heading>
 
-          <SimpleGrid columns={{ base: 2, sm: 2, md: 3, lg: 4 }} spacing={{ base: 4, md: 6 }} w="full">
-            {bestsellerProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </SimpleGrid>
+          {isLoadingProducts ? (
+            <ProductSectionLoader />
+          ) : error && specialProducts.bestSellers.length === 0 ? (
+            <ProductSectionError fallbackProducts={(t('products.bestsellers', { returnObjects: true }) as any[])?.slice(0, 5) || []} />
+          ) : specialProducts.bestSellers.length === 0 ? (
+            <ProductSectionEmpty sectionName="Best Sellers" />
+          ) : (
+            <SimpleGrid columns={{ base: 2, sm: 2, md: 3, lg: 4 }} spacing={{ base: 4, md: 6 }} w="full">
+              {specialProducts.bestSellers.map((product) => (
+                <ProductCard key={product.id} product={product} isApiProduct={true} />
+              ))}
+            </SimpleGrid>
+          )}
         </VStack>
       </Container>
 
@@ -300,42 +393,51 @@ const HomePage: React.FC = () => {
       <Container maxW="7xl" py={{ base: 12, md: 16 }} px={{ base: 4, md: 6 }}>
         <VStack spacing={8}>
           <Heading size="xl" color="gray.900" textAlign="center">
-            {t('sections.specialOffers.title')}
+            {String(t('sections.specialOffers.title'))}
           </Heading>
 
-          <SimpleGrid columns={{ base: 2, sm: 2, md: 3, lg: 4 }} spacing={{ base: 4, md: 6 }} w="full">
-            {bestsellerProducts.slice(0, 3).map((product) => (
-              <ProductCard key={`offer-${product.id}`} product={product} />
-            ))}
-          </SimpleGrid>
+          {isLoadingProducts ? (
+            <ProductSectionLoader />
+          ) : error && specialProducts.productsWithOffers.length === 0 ? (
+            <ProductSectionError fallbackProducts={(t('products.bestsellers', { returnObjects: true }) as any[])?.slice(0, 3) || []} />
+          ) : specialProducts.productsWithOffers.length === 0 ? (
+            <ProductSectionEmpty sectionName="Special Offers" />
+          ) : (
+            <SimpleGrid columns={{ base: 2, sm: 2, md: 3, lg: 4 }} spacing={{ base: 4, md: 6 }} w="full">
+              {specialProducts.productsWithOffers.map((product) => (
+                <ProductCard key={product.id} product={product} isApiProduct={true} />
+              ))}
+            </SimpleGrid>
+          )}
         </VStack>
       </Container>
 
       {/* Service Features Section */}
-      <Box bg="gray.50" py={{ base: 12, md: 16 }}>
+      <Box bg="gray.50" py={{ base: 6, md: 8 }}>
         <Container maxW="7xl" px={{ base: 4, md: 6 }}>
-          <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} spacing={{ base: 8, md: 6 }}>
+          <SimpleGrid columns={{ base: 2, md: 4 }} spacing={{ base: 4, md: 6 }}>
             {serviceFeatures.map((feature, index) => (
-              <VStack key={index} spacing={4} textAlign="center" p={6}>
+              <HStack key={index} spacing={3} p={3} textAlign="left">
                 <Box
-                  p={4}
-                  borderRadius="full"
+                  p={2}
+                  borderRadius="lg"
                   bg="white"
-                  color="gray.700"
+                  color="primary.600"
                   boxShadow="sm"
-                  fontSize="2xl"
+                  fontSize="lg"
+                  flexShrink={0}
                 >
                   {feature.emoji}
                 </Box>
-                <VStack spacing={2}>
-                  <Heading size="md" color="gray.900">
+                <VStack spacing={1} align="start" flex={1}>
+                  <Text fontWeight="600" fontSize="sm" color="gray.900" lineHeight="1.2">
                     {feature.title}
-                  </Heading>
-                  <Text color="gray.600" fontSize="sm" textAlign="center">
+                  </Text>
+                  <Text color="gray.600" fontSize="xs" lineHeight="1.3">
                     {feature.description}
                   </Text>
                 </VStack>
-              </VStack>
+              </HStack>
             ))}
           </SimpleGrid>
         </Container>
@@ -345,8 +447,38 @@ const HomePage: React.FC = () => {
 };
 
 // Product Card Component
-const ProductCard: React.FC<{ product: any }> = ({ product }) => {
+const ProductCard: React.FC<{ product: any; isApiProduct?: boolean }> = ({ product, isApiProduct = false }) => {
   const { t } = useContent('homepage');
+
+  // Extract product data based on source (API vs static content)
+  const productData = isApiProduct ? {
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    originalPrice: null, // Could be calculated from offers
+    image: product.mainImageUrl || product.imageUrl || (product.images && product.images[0]) || '/placeholder-image.jpg',
+    isNew: product.specialProperties?.newArrival || false,
+    hasOffer: product.specialProperties?.hasOffer || false,
+    isBestSeller: product.specialProperties?.bestSeller || false,
+    badge: product.specialProperties?.hasOffer ? 'OFFER' : (product.specialProperties?.newArrival ? 'NEW' : (product.specialProperties?.bestSeller ? 'BESTSELLER' : null)),
+    stock: product.stockQuantity || product.totalStock || 0,
+    rating: product.averageRating || product.rating || 0,
+    reviewCount: product.totalReviews || product.reviewCount || 0
+  } : {
+    // Static content format
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    originalPrice: product.originalPrice,
+    image: product.image,
+    isNew: product.isNew || false,
+    hasOffer: product.discount || false,
+    badge: product.badge,
+    stock: product.stock || 0,
+    rating: product.rating || 0,
+    reviewCount: product.reviewCount || 0
+  };
+
   return (
     <Box
       cursor="pointer"
@@ -364,17 +496,18 @@ const ProductCard: React.FC<{ product: any }> = ({ product }) => {
       <Box position="relative" bg="gray.50" overflow="hidden">
         <AspectRatio ratio={1}>
           <Image
-            src={product.image}
-            alt={product.name}
+            src={productData.image}
+            alt={productData.name}
             objectFit="cover"
             transition="transform 0.3s ease"
             _hover={{ transform: 'scale(1.05)' }}
+            fallbackSrc="/placeholder-image.jpg"
           />
         </AspectRatio>
         
         {/* Badges */}
         <VStack position="absolute" top={3} left={3} spacing={1} align="start">
-          {product.discount && (
+          {productData.hasOffer && (
             <Badge
               bg="red.500"
               color="white"
@@ -384,10 +517,10 @@ const ProductCard: React.FC<{ product: any }> = ({ product }) => {
               fontWeight="600"
               borderRadius="sm"
             >
-              {product.badge}
+              {productData.badge || 'OFFER'}
             </Badge>
           )}
-          {product.isNew && !product.discount && (
+          {productData.isNew && !productData.hasOffer && (
             <Badge
               bg="green.500"
               color="white"
@@ -397,39 +530,82 @@ const ProductCard: React.FC<{ product: any }> = ({ product }) => {
               fontWeight="600"
               borderRadius="sm"
             >
-              {t('buttons.newBadge', { defaultValue: 'NEW' })}
+              {String(t('buttons.newBadge', { defaultValue: 'NEW' }))}
+            </Badge>
+          )}
+          {productData.isBestSeller && !productData.hasOffer && !productData.isNew && (
+            <Badge
+              bg="blue.500"
+              color="white"
+              px={2}
+              py={1}
+              fontSize="xs"
+              fontWeight="600"
+              borderRadius="sm"
+            >
+              BESTSELLER
             </Badge>
           )}
         </VStack>
 
-        {/* Hover overlay with Quick Look button */}
-        <Box
-          position="absolute"
-          top={0}
-          left={0}
-          right={0}
-          bottom={0}
-          bg="blackAlpha.600"
-          opacity={0}
-          _hover={{ opacity: 1 }}
-          transition="opacity 0.3s ease"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Button
-            size="sm"
-            bg="white"
-            color="gray.900"
-            fontSize="xs"
-            fontWeight="600"
-            _hover={{ bg: 'gray.100' }}
-            textTransform="uppercase"
-            letterSpacing="wide"
+        {/* Out of Stock Overlay */}
+        {productData.stock === 0 && (
+          <Box
+            position="absolute"
+            top={0}
+            left={0}
+            right={0}
+            bottom={0}
+            bg="blackAlpha.600"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
           >
-            {t('buttons.quickLook')}
-          </Button>
-        </Box>
+            <Badge
+              bg="red.500"
+              color="white"
+              px={3}
+              py={2}
+              fontSize="sm"
+              fontWeight="600"
+            >
+              OUT OF STOCK
+            </Badge>
+          </Box>
+        )}
+
+        {/* Hover overlay with Quick Look button */}
+        {productData.stock > 0 && (
+          <Box
+            position="absolute"
+            top={0}
+            left={0}
+            right={0}
+            bottom={0}
+            bg="blackAlpha.600"
+            opacity={0}
+            _hover={{ opacity: 1 }}
+            transition="opacity 0.3s ease"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Button
+              as={RouterLink}
+              to={`/products/${productData.id}`}
+              size="sm"
+              bg="white"
+              color="gray.900"
+              fontSize="xs"
+              fontWeight="600"
+              _hover={{ bg: 'gray.100' }}
+              textTransform="uppercase"
+              letterSpacing="wide"
+            >
+              {String(t('buttons.quickLook', { defaultValue: 'QUICK LOOK' }))}
+            </Button>
+          </Box>
+        )}
       </Box>
       
       <Box p={4}>
@@ -444,23 +620,37 @@ const ProductCard: React.FC<{ product: any }> = ({ product }) => {
             fontSize="sm"
             noOfLines={2}
           >
-            {product.name}
+            {productData.name}
           </Heading>
+          
+          {/* Rating */}
+          {productData.rating > 0 && (
+            <HStack spacing={1}>
+              <Text fontSize="sm" color="gray.600">
+                ★ {productData.rating.toFixed(1)}
+              </Text>
+              {productData.reviewCount > 0 && (
+                <Text fontSize="xs" color="gray.500">
+                  ({productData.reviewCount})
+                </Text>
+              )}
+            </HStack>
+          )}
           
           <HStack justify="space-between" w="full" align="center">
             <VStack spacing={0} align="start">
-              {product.originalPrice ? (
+              {productData.originalPrice ? (
                 <HStack spacing={2} align="baseline">
                   <Text fontSize="sm" color="gray.400" textDecoration="line-through">
-                    ${product.originalPrice.toFixed(2)}
+                    ${productData.originalPrice.toFixed(2)}
                   </Text>
                   <Text fontSize="lg" fontWeight="700" color="gray.900">
-                    ${product.price.toFixed(2)}
+                    ${productData.price.toFixed(2)}
                   </Text>
                 </HStack>
               ) : (
                 <Text fontSize="lg" fontWeight="700" color="gray.900">
-                  ${product.price.toFixed(2)}
+                  ${productData.price.toFixed(2)}
                 </Text>
               )}
             </VStack>
@@ -470,16 +660,18 @@ const ProductCard: React.FC<{ product: any }> = ({ product }) => {
           <Button
             w="full"
             size="sm"
-            bg="gray.900"
+            bg={productData.stock > 0 ? "gray.900" : "gray.400"}
             color="white"
-            _hover={{ bg: 'gray.800' }}
+            _hover={productData.stock > 0 ? { bg: 'gray.800' } : {}}
             fontSize="xs"
             fontWeight="600"
             textTransform="uppercase"
             letterSpacing="wide"
             py={6}
+            isDisabled={productData.stock === 0}
+            cursor={productData.stock === 0 ? "not-allowed" : "pointer"}
           >
-            {t('buttons.addToCart')}
+            {productData.stock === 0 ? 'OUT OF STOCK' : String(t('buttons.addToCart', { defaultValue: 'ADD TO CART' }))}
           </Button>
         </VStack>
       </Box>
