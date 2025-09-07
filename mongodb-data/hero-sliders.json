@@ -1,0 +1,68 @@
+[
+  {
+    "_id": {
+      "$oid": "6650a1b4e1d5f3a2b4c8d9e1"
+    },
+    "title": "Household Chairs",
+    "subtitle": "The best deals on Chairs",
+    "description": "Professional-grade chairs for creatives and professionals",
+    "discount": "$250 off",
+    "price": "$2,349.99",
+    "buttonText": "EXPLORE HOME DECOR",
+    "image": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop",
+    "bgColor": "gray.900",
+    "isActive": true,
+    "sortOrder": 1,
+    "locale": "en",
+    "createdAt": {
+      "$date": "2024-09-07T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2024-09-07T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6650a1b4e1d5f3a2b4c8d9e2"
+    },
+    "title": "Modern Furniture",
+    "subtitle": "Transform your living space",
+    "description": "Stylish and comfortable furniture for every room",
+    "discount": "Up to 40% off",
+    "price": "$1,999.99",
+    "buttonText": "SHOP FURNITURE",
+    "image": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&h=600&fit=crop",
+    "bgColor": "blue.900",
+    "isActive": true,
+    "sortOrder": 2,
+    "locale": "en",
+    "createdAt": {
+      "$date": "2024-09-07T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2024-09-07T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6650a1b4e1d5f3a2b4c8d9e3"
+    },
+    "title": "Home Accessories",
+    "subtitle": "Complete your home design",
+    "description": "Beautiful accessories and decor items",
+    "discount": "Free shipping",
+    "price": "$199.99",
+    "buttonText": "DISCOVER MORE",
+    "image": "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800&h=600&fit=crop",
+    "bgColor": "green.900",
+    "isActive": true,
+    "sortOrder": 3,
+    "locale": "en",
+    "createdAt": {
+      "$date": "2024-09-07T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2024-09-07T00:00:00.000Z"
+    }
+  }
+]

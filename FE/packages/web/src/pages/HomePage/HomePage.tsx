@@ -21,6 +21,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { useContent } from '../../hooks/useContent';
 import productService from '../../services/productService';
+import heroBannerService, { HeroBanner } from '../../services/heroBannerService';
 import { Product, SpecialProductsResponse } from '../../types';
 
 const HomePage: React.FC = () => {
@@ -31,11 +32,11 @@ const HomePage: React.FC = () => {
     productsWithOffers: [],
     bestSellers: []
   });
+  const [heroBanners, setHeroBanners] = useState<HeroBanner[]>([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+  const [isLoadingBanners, setIsLoadingBanners] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  // Get hero slider data from content
-  const heroSlides = t('hero.slides', { returnObjects: true }) as any[];
+  const [bannerError, setBannerError] = useState<string | null>(null);
 
   // Fetch special products from API
   useEffect(() => {
@@ -67,21 +68,47 @@ const HomePage: React.FC = () => {
     fetchSpecialProducts();
   }, []); // Remove 't' dependency to prevent infinite loop
 
-  // Auto-advance slider
+  // Fetch hero banners from API
   useEffect(() => {
+    const fetchHeroBanners = async () => {
+      try {
+        setIsLoadingBanners(true);
+        setBannerError(null);
+        
+        // Fetch hero banners from API
+        const bannersData = await heroBannerService.getActiveHeroBanners('en');
+        setHeroBanners(bannersData);
+        
+        console.log('Hero banners loaded:', bannersData);
+      } catch (error) {
+        console.error('Error fetching hero banners:', error);
+        setBannerError('Failed to load hero banners.');
+        setHeroBanners([]);
+      } finally {
+        setIsLoadingBanners(false);
+      }
+    };
+
+    fetchHeroBanners();
+  }, []);
+
+  // Auto-advance slider - only for API data
+  useEffect(() => {
+    if (heroBanners.length === 0) return;
+    
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+      setCurrentSlide((prev) => (prev + 1) % heroBanners.length);
     }, 5000); // Change slide every 5 seconds
 
     return () => clearInterval(timer);
-  }, [heroSlides.length]);
+  }, [heroBanners.length]);
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    setCurrentSlide((prev) => (prev + 1) % heroBanners.length);
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
+    setCurrentSlide((prev) => (prev - 1 + heroBanners.length) % heroBanners.length);
   };
 
   const goToSlide = (index: number) => {
@@ -171,177 +198,209 @@ const HomePage: React.FC = () => {
 
   return (
     <Box>
-      {/* Hero Slider Section */}
-      <Box
-        bg="gray.50"
-        py={{ base: 8, md: 12 }}
-        px={{ base: 4, md: 0 }}
-      >
-        <Container maxW="7xl">
-          {/* Main Hero Slider */}
-          <Box
-            position="relative"
-            bg="white"
-            borderRadius="lg"
-            overflow="hidden"
-            boxShadow="lg"
-            mb={8}
-          >
-            {/* Slider Container */}
-            <Box position="relative" minH="400px" overflow="hidden">
-              {heroSlides.map((slide, index) => (
-                <Box
-                  key={slide.id}
-                  position="absolute"
-                  top={0}
-                  left={0}
-                  w="full"
-                  h="full"
-                  opacity={index === currentSlide ? 1 : 0}
-                  transform={`translateX(${(index - currentSlide) * 100}%)`}
-                  transition="all 0.5s ease-in-out"
-                  zIndex={index === currentSlide ? 1 : 0}
-                >
-                  <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} gap={0} alignItems="center" minH="400px">
-                    <VStack 
-                      spacing={6} 
-                      align={{ base: 'center', lg: 'start' }} 
-                      textAlign={{ base: 'center', lg: 'left' }}
-                      p={{ base: 8, md: 12 }}
-                      bg={slide.bgColor}
-                      color="white"
-                      h="full"
-                      justify="center"
-                    >
-                      <Badge 
-                        colorScheme="red" 
-                        fontSize="sm" 
-                        px={4} 
-                        py={2} 
-                        borderRadius="full"
-                        textTransform="uppercase"
-                        letterSpacing="wider"
-                        bg="red.500"
-                        color="white"
-                      >
-                        {String(t('hero.badgeText'))}
-                      </Badge>
-                      <Heading
-                        fontSize={{ base: '3xl', md: '4xl', lg: '5xl' }}
-                        fontWeight="800"
-                        lineHeight="1.1"
-                      >
-                        {slide.title}
-                      </Heading>
-                      <Text fontSize={{ base: 'lg', md: 'xl' }} opacity={0.9}>
-                        {slide.subtitle}
-                      </Text>
-                      <Text fontSize="md" opacity={0.8}>
-                        {slide.description}
-                      </Text>
-                      <VStack spacing={3} align={{ base: 'center', lg: 'start' }}>
-                        <HStack spacing={3}>
-                          <Badge colorScheme="yellow" fontSize="lg" px={3} py={1} bg="yellow.400" color="gray.900">
-                            {slide.discount}
-                          </Badge>
-                          <Text fontSize="lg" fontWeight="600">
-                            {String(t('hero.pricePrefix'))} <Text as="span" color="yellow.400" fontWeight="800">{slide.price}</Text>
-                          </Text>
-                        </HStack>
-                      </VStack>
-                      <Button
-                        as={RouterLink}
-                        to="/products"
-                        size="lg"
-                        bg="white"
-                        color="gray.900"
-                        _hover={{ bg: 'gray.100', transform: 'translateY(-2px)' }}
-                        px={8}
-                        py={6}
-                        borderRadius="sm"
-                        fontWeight="600"
-                        textTransform="uppercase"
-                        letterSpacing="wider"
-                        mt={4}
-                        transition="all 0.3s ease"
-                      >
-                        {slide.buttonText}
-                      </Button>
-                    </VStack>
-                    <Box h="400px" overflow="hidden">
-                      <Image
-                        src={slide.image}
-                        alt={slide.title}
-                        w="full"
-                        h="full"
-                        objectFit="cover"
-                        transition="transform 0.5s ease"
-                        _hover={{ transform: 'scale(1.05)' }}
-                      />
-                    </Box>
-                  </Grid>
-                </Box>
-              ))}
-            </Box>
-
-            {/* Navigation Arrows */}
-            <IconButton
-              aria-label={String(t('navigation.previousSlide'))}
-              icon={<ChevronLeftIcon />}
-              position="absolute"
-              left={4}
-              top="50%"
-              transform="translateY(-50%)"
-              zIndex={2}
-              bg="whiteAlpha.800"
-              color="gray.900"
-              _hover={{ bg: 'white' }}
-              size="lg"
-              borderRadius="full"
-              onClick={prevSlide}
-            />
-            <IconButton
-              aria-label={String(t('navigation.nextSlide'))}
-              icon={<ChevronRightIcon />}
-              position="absolute"
-              right={4}
-              top="50%"
-              transform="translateY(-50%)"
-              zIndex={2}
-              bg="whiteAlpha.800"
-              color="gray.900"
-              _hover={{ bg: 'white' }}
-              size="lg"
-              borderRadius="full"
-              onClick={nextSlide}
-            />
-
-            {/* Slide Indicators */}
-            <Flex
-              position="absolute"
-              bottom={4}
-              left="50%"
-              transform="translateX(-50%)"
-              zIndex={2}
-              gap={2}
+      {/* Hero Slider Section - Only show when API data is available */}
+      {(isLoadingBanners || heroBanners.length > 0) && (
+        <Box
+          bg="gray.50"
+          py={{ base: 8, md: 12 }}
+          px={{ base: 4, md: 0 }}
+        >
+          <Container maxW="7xl">
+            {/* Main Hero Slider */}
+            <Box
+              position="relative"
+              bg="white"
+              borderRadius="lg"
+              overflow="hidden"
+              boxShadow="lg"
+              mb={8}
             >
-              {heroSlides.map((_, index) => (
-                <Box
-                  key={index}
-                  w={3}
-                  h={3}
-                  borderRadius="full"
-                  bg={index === currentSlide ? 'white' : 'whiteAlpha.500'}
-                  cursor="pointer"
-                  transition="all 0.3s ease"
-                  _hover={{ bg: 'white' }}
-                  onClick={() => goToSlide(index)}
-                />
-              ))}
-            </Flex>
-          </Box>
-        </Container>
-      </Box>
+              {/* Show loading state for banners */}
+              {isLoadingBanners ? (
+                <Center minH="400px">
+                  <VStack spacing={4}>
+                    <Spinner size="lg" color="gray.600" />
+                    <Text color="gray.600">Loading hero banners...</Text>
+                  </VStack>
+                </Center>
+              ) : heroBanners.length > 0 ? (
+                <>
+                  {/* Slider Container */}
+                  <Box position="relative" minH="400px" overflow="hidden">
+                    {heroBanners.map((slide, index) => {
+                      const slideData = {
+                        id: slide.id || index,
+                        title: slide.title,
+                        subtitle: slide.subtitle,
+                        description: slide.description,
+                        discount: slide.discount,
+                        price: slide.price,
+                        buttonText: slide.buttonText,
+                        image: slide.image,
+                        bgColor: slide.bgColor
+                      };
+
+                      return (
+                        <Box
+                          key={slideData.id}
+                          position="absolute"
+                          top={0}
+                          left={0}
+                          w="full"
+                          h="full"
+                          opacity={index === currentSlide ? 1 : 0}
+                          transform={`translateX(${(index - currentSlide) * 100}%)`}
+                          transition="all 0.5s ease-in-out"
+                          zIndex={index === currentSlide ? 1 : 0}
+                        >
+                          <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} gap={0} alignItems="center" minH="400px">
+                            <VStack 
+                              spacing={6} 
+                              align={{ base: 'center', lg: 'start' }} 
+                              textAlign={{ base: 'center', lg: 'left' }}
+                              p={{ base: 8, md: 12 }}
+                              bg={slideData.bgColor}
+                              color="white"
+                              h="full"
+                              justify="center"
+                            >
+                              <Badge 
+                                colorScheme="red" 
+                                fontSize="sm" 
+                                px={4} 
+                                py={2} 
+                                borderRadius="full"
+                                textTransform="uppercase"
+                                letterSpacing="wider"
+                                bg="red.500"
+                                color="white"
+                              >
+                                {String(t('hero.badgeText'))}
+                              </Badge>
+                              <Heading
+                                fontSize={{ base: '3xl', md: '4xl', lg: '5xl' }}
+                                fontWeight="800"
+                                lineHeight="1.1"
+                              >
+                                {slideData.title}
+                              </Heading>
+                              <Text fontSize={{ base: 'lg', md: 'xl' }} opacity={0.9}>
+                                {slideData.subtitle}
+                              </Text>
+                              <Text fontSize="md" opacity={0.8}>
+                                {slideData.description}
+                              </Text>
+                              <VStack spacing={3} align={{ base: 'center', lg: 'start' }}>
+                                <HStack spacing={3}>
+                                  <Badge colorScheme="yellow" fontSize="lg" px={3} py={1} bg="yellow.400" color="gray.900">
+                                    {slideData.discount}
+                                  </Badge>
+                                  <Text fontSize="lg" fontWeight="600">
+                                    {String(t('hero.pricePrefix'))} <Text as="span" color="yellow.400" fontWeight="800">{slideData.price}</Text>
+                                  </Text>
+                                </HStack>
+                              </VStack>
+                              <Button
+                                as={RouterLink}
+                                to="/products"
+                                size="lg"
+                                bg="white"
+                                color="gray.900"
+                                _hover={{ bg: 'gray.100', transform: 'translateY(-2px)' }}
+                                px={8}
+                                py={6}
+                                borderRadius="sm"
+                                fontWeight="600"
+                                textTransform="uppercase"
+                                letterSpacing="wider"
+                                mt={4}
+                                transition="all 0.3s ease"
+                              >
+                                {slideData.buttonText}
+                              </Button>
+                            </VStack>
+                            <Box h="400px" overflow="hidden">
+                              <Image
+                                src={slideData.image}
+                                alt={slideData.title}
+                                w="full"
+                                h="full"
+                                objectFit="cover"
+                                transition="transform 0.5s ease"
+                                _hover={{ transform: 'scale(1.05)' }}
+                              />
+                            </Box>
+                          </Grid>
+                        </Box>
+                      );
+                    })}
+                  </Box>
+
+                  {/* Navigation Arrows - Only show if there are multiple slides */}
+                  {heroBanners.length > 1 && (
+                    <>
+                      <IconButton
+                        aria-label={String(t('navigation.previousSlide'))}
+                        icon={<ChevronLeftIcon />}
+                        position="absolute"
+                        left={4}
+                        top="50%"
+                        transform="translateY(-50%)"
+                        zIndex={2}
+                        bg="whiteAlpha.800"
+                        color="gray.900"
+                        _hover={{ bg: 'white' }}
+                        size="lg"
+                        borderRadius="full"
+                        onClick={prevSlide}
+                      />
+                      <IconButton
+                        aria-label={String(t('navigation.nextSlide'))}
+                        icon={<ChevronRightIcon />}
+                        position="absolute"
+                        right={4}
+                        top="50%"
+                        transform="translateY(-50%)"
+                        zIndex={2}
+                        bg="whiteAlpha.800"
+                        color="gray.900"
+                        _hover={{ bg: 'white' }}
+                        size="lg"
+                        borderRadius="full"
+                        onClick={nextSlide}
+                      />
+
+                      {/* Slide Indicators */}
+                      <Flex
+                        position="absolute"
+                        bottom={4}
+                        left="50%"
+                        transform="translateX(-50%)"
+                        zIndex={2}
+                        gap={2}
+                      >
+                        {heroBanners.map((_, index) => (
+                          <Box
+                            key={index}
+                            w={3}
+                            h={3}
+                            borderRadius="full"
+                            bg={index === currentSlide ? 'white' : 'whiteAlpha.500'}
+                            cursor="pointer"
+                            transition="all 0.3s ease"
+                            _hover={{ bg: 'white' }}
+                            onClick={() => goToSlide(index)}
+                          />
+                        ))}
+                      </Flex>
+                    </>
+                  )}
+                </>
+              ) : null}
+            </Box>
+          </Container>
+        </Box>
+      )}
 
       {/* New Arrivals Section */}
       <Container maxW="7xl" py={{ base: 12, md: 16 }} px={{ base: 4, md: 6 }}>

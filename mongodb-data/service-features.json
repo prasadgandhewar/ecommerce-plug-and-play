@@ -1,0 +1,74 @@
+[
+  {
+    "_id": {
+      "$oid": "6650a2c4e1d5f3a2b4c8d9f1"
+    },
+    "title": "Free Delivery",
+    "description": "Free shipping on all orders over $50",
+    "icon": "🚚",
+    "iconType": "emoji",
+    "isActive": true,
+    "sortOrder": 1,
+    "locale": "en",
+    "createdAt": {
+      "$date": "2024-09-07T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2024-09-07T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6650a2c4e1d5f3a2b4c8d9f2"
+    },
+    "title": "Easy Returns",
+    "description": "30-day return guarantee",
+    "icon": "↩️",
+    "iconType": "emoji",
+    "isActive": true,
+    "sortOrder": 2,
+    "locale": "en",
+    "createdAt": {
+      "$date": "2024-09-07T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2024-09-07T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6650a2c4e1d5f3a2b4c8d9f3"
+    },
+    "title": "24/7 Support",
+    "description": "Expert support anytime",
+    "icon": "🎧",
+    "iconType": "emoji",
+    "isActive": true,
+    "sortOrder": 3,
+    "locale": "en",
+    "createdAt": {
+      "$date": "2024-09-07T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2024-09-07T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6650a2c4e1d5f3a2b4c8d9f4"
+    },
+    "title": "Secure Payment",
+    "description": "100% secure transactions",
+    "icon": "🔒",
+    "iconType": "emoji",
+    "isActive": true,
+    "sortOrder": 4,
+    "locale": "en",
+    "createdAt": {
+      "$date": "2024-09-07T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2024-09-07T00:00:00.000Z"
+    }
+  }
+]
